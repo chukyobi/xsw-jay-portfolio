@@ -173,7 +173,7 @@ export function TestimonialsSection() {
           </p>
         </div>
 
-        <div ref={cardsRef} className="relative h-[450px] flex items-center justify-center mt-8">
+        <div ref={cardsRef} className="relative h-[450px] flex items-center justify-center mt-3">
           {/* Card stack container */}
           <div className="relative w-full max-w-2xl mx-auto">
             {testimonialsData.map((testimonial, index) => (
