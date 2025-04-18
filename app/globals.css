@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.75rem;
+
+    /* Custom colors */
+    --blue-accent: 217 91.2% 59.8%;
+    --purple-accent: 270 50% 40%;
+    --yellow-highlight: 48 96% 53%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 217 91.2% 59.8%; /* Blue */
+    --primary-foreground: 0 0% 98%;
+    --secondary: 270 50% 40%; /* Purple */
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 48 96% 53%; /* Yellow */
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+
+    /* Custom colors */
+    --blue-accent: 217 91.2% 59.8%;
+    --purple-accent: 270 50% 40%;
+    --yellow-highlight: 48 96% 53%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 0);
+    background-size: 30px 30px;
+    background-position: -19px -19px;
+  }
+}
+
+.parallax {
+  overflow: hidden;
+  letter-spacing: -2px;
+  line-height: 0.8;
+  margin: 0;
+  white-space: nowrap;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.parallax .scroller {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 64px;
+  display: flex;
+  white-space: nowrap;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.parallax span {
+  display: block;
+  margin-right: 30px;
+}
+
+.gsap-reveal {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.text-blue-accent {
+  color: hsl(var(--blue-accent));
+}
+
+.text-purple-accent {
+  color: hsl(var(--purple-accent));
+}
+
+.text-yellow-highlight {
+  color: hsl(var(--yellow-highlight));
+}
+
+.bg-blue-accent {
+  background-color: hsl(var(--blue-accent));
+}
+
+.bg-purple-accent {
+  background-color: hsl(var(--purple-accent));
+}
+
+.bg-yellow-highlight {
+  background-color: hsl(var(--yellow-highlight));
+}
+
+/* Testimonial card glow effect */
+.testimonial-glow {
+  box-shadow: 0 10px 30px -15px rgba(var(--blue-accent), 0.2), 0 0 10px -5px rgba(var(--blue-accent), 0.1);
+  transition: all 0.3s ease;
+  transform-origin: center top;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.testimonial-glow:hover {
+  box-shadow: 0 20px 40px -20px rgba(var(--blue-accent), 0.3), 0 0 15px -5px rgba(var(--blue-accent), 0.2);
+  transform: translateY(-5px);
+}
+
+/* Dark mode adjustments */
+.dark .testimonial-glow {
+  box-shadow: 0 10px 30px -15px rgba(var(--blue-accent), 0.3), 0 0 15px -5px rgba(var(--blue-accent), 0.2);
+}
+
+.dark .testimonial-glow:hover {
+  box-shadow: 0 20px 40px -20px rgba(var(--blue-accent), 0.5), 0 0 20px -5px rgba(var(--blue-accent), 0.3);
+}
+
+/* Stacked card effect */
+.testimonial-card:not(:first-child) .testimonial-glow {
+  box-shadow:
+    0 10px 30px -15px rgba(var(--blue-accent), 0.2), 0 0 10px -5px rgba(var(--blue-accent), 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+/* Add a subtle border to make the stack more visible */
+.testimonial-card:not(:first-child) .testimonial-glow {
+  border-top: 2px solid rgba(var(--blue-accent), 0.1);
+}
