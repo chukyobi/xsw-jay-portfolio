@@ -74,16 +74,16 @@ export function ContactSection() {
                     <div className="flex items-center">
                       <Mail className="h-5 w-5 mr-3 text-blue-accent" />
                       <Link href="mailto:contact@example.com" className="text-muted-foreground hover:text-foreground">
-                        contact@example.com
+                        josephclinton.obi@gmail.com
                       </Link>
                     </div>
                     <div className="flex items-center">
                       <Phone className="h-5 w-5 mr-3 text-blue-accent" />
-                      <span className="text-muted-foreground">+1 (555) 123-4567</span>
+                      <span className="text-muted-foreground">+234 816 8400 563</span>
                     </div>
                     <div className="flex items-center">
                       <MapPin className="h-5 w-5 mr-3 text-blue-accent" />
-                      <span className="text-muted-foreground">San Francisco, CA</span>
+                      <span className="text-muted-foreground">Nigeria, NG</span>
                     </div>
                   </div>
                 </div>
@@ -110,7 +110,7 @@ export function ContactSection() {
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-foreground"
                       >
-                        https://www.linkedin.com/in/joseph-clinton-chukwudi-obi/
+                        joseph-clinton-chukwudi-obi
                       </Link>
                     </div>
                     <div className="flex items-center">
