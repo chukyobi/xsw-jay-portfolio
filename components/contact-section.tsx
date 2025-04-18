@@ -94,34 +94,34 @@ export function ContactSection() {
                     <div className="flex items-center">
                       <Github className="h-5 w-5 mr-3 text-blue-accent" />
                       <Link
-                        href="https://github.com"
+                        href="https://github.com/chukyobi"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-foreground"
                       >
-                        github.com/username
+                        chukyobi
                       </Link>
                     </div>
                     <div className="flex items-center">
                       <Linkedin className="h-5 w-5 mr-3 text-blue-accent" />
                       <Link
-                        href="https://linkedin.com"
+                        href="https://www.linkedin.com/in/joseph-clinton-chukwudi-obi/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-foreground"
                       >
-                        linkedin.com/in/username
+                        https://www.linkedin.com/in/joseph-clinton-chukwudi-obi/
                       </Link>
                     </div>
                     <div className="flex items-center">
                       <Twitter className="h-5 w-5 mr-3 text-blue-accent" />
                       <Link
-                        href="https://twitter.com"
+                        href="https://x.com/chukyobi_"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-foreground"
                       >
-                        twitter.com/username
+                        chukyobi_
                       </Link>
                     </div>
                   </div>
