@@ -104,7 +104,7 @@ export function HeroSection() {
               onMouseLeave={() => setIsOpen(false)}
             >
               <Image
-                src="/placeholder.svg?height=300&width=300"
+                src="/profilejay.jpeg"
                 alt="Profile"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-300"
