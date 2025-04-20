@@ -1,100 +1,90 @@
 import { Button } from "@/components/ui/button";
-import { Github, Twitter, Linkedin } from "lucide-react";
+import { Github, Linkedin, Twitter, MousePointerClick, Sparkles } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-import React from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
-import { FloatingNav } from "@/components/ui/floating-navbar";
-import { cn } from "@/lib/utils";
-import { Spotlight } from "@/components/ui/spotlight";
+import { useEffect } from "react";
+import gsap from "gsap";
 
-const HeroSection = () => {
+export default function HeroSection() {
+  useEffect(() => {
+    gsap.from(".animate-fade", {
+      opacity: 0,
+      y: 30,
+      duration: 1,
+      stagger: 0.2,
+    });
+  }, []);
+
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-background text-white">
+    <section className="relative min-h-screen w-full overflow-hidden bg-background text-white">
       {/* Dotted Grid Background */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:40px_40px] pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:16px_16px] z-0" />
 
-      {/* Floating Navbar */}
-      <FloatingNav />
-
-      {/* Spotlight Effect */}
-      <Spotlight className="absolute -top-10 left-0 z-10 h-[80vh] w-full" />
-
-      <div className="relative z-20 grid grid-cols-12 h-full w-full">
+      {/* Content Layout */}
+      <div className="relative z-10 grid grid-cols-5 gap-4 h-full items-center px-6 lg:px-20">
         {/* Left Icons */}
-        <div className="col-span-1 flex flex-col items-center justify-center gap-6">
-          <Github className="text-blue-500" />
-          <Twitter className="text-purple-500" />
-          <Linkedin className="text-yellow-500" />
+        <div className="flex flex-col items-center space-y-6">
+          <MousePointerClick className="text-purple-accent w-6 h-6" />
+          <Sparkles className="text-yellow-highlight w-6 h-6" />
         </div>
 
-        {/* Main Text Section */}
-        <div className="col-span-6 flex flex-col justify-center px-6">
-          <TextGenerateEffect
-            words="Building the Future of Decentralized Intelligence."
-            className="text-4xl md:text-6xl font-bold text-blue-accent"
-          />
-          <p className="mt-6 text-muted-foreground text-lg">
-            We create secure, scalable, and intelligent systems that empower real-world solutions across healthcare, finance, and education.
+        {/* Text Content */}
+        <div className="col-span-2 space-y-6 animate-fade">
+          <h1 className="text-4xl lg:text-6xl font-bold text-blue-accent">
+            Your Creative Tagline Here
+          </h1>
+          <p className="text-muted-foreground text-lg">
+            Building intuitive interfaces with powerful backends. Let’s craft something extraordinary.
           </p>
-          <div className="mt-8 flex gap-4">
-            <Button>Get Started</Button>
-            <Button variant="outline">Learn More</Button>
-          </div>
+          <Button className="bg-purple-accent text-white hover:bg-purple-700 transition">Get Started</Button>
         </div>
 
-        {/* Hero Image Dialog */}
-        <div className="col-span-3 flex items-center justify-center">
+        {/* Floating Hero Image */}
+        <div className="col-span-1 flex justify-center items-center relative">
           <Dialog>
-            <DialogTrigger>
+            <DialogTrigger asChild>
               <Image
-                src="/founder.png"
-                alt="founder"
+                src="/images/hero-image.png"
+                alt="Hero"
                 width={300}
                 height={500}
-                className="rounded-xl hover:scale-105 transition-transform duration-300 shadow-xl"
+                className="rounded-lg shadow-xl hover:scale-105 transition-transform duration-300 cursor-pointer"
               />
             </DialogTrigger>
             <DialogContent>
               <Image
-                src="/founder.png"
-                alt="founder dialog"
-                width={400}
-                height={600}
-                className="rounded-xl"
+                src="/images/hero-image.png"
+                alt="Hero Dialog"
+                width={500}
+                height={800}
+                className="rounded-lg"
               />
             </DialogContent>
           </Dialog>
         </div>
 
-        {/* Right Floating Info Icons */}
-        <div className="col-span-2 flex flex-col justify-center gap-4">
-          <div className="p-4 rounded-xl bg-background/30 border border-white/10 shadow-md">
-            <p className="text-purple-accent font-semibold">Blockchain-Powered</p>
-            <p className="text-muted-foreground text-sm">Immutable and secure data systems</p>
-          </div>
-          <div className="p-4 rounded-xl bg-background/30 border border-white/10 shadow-md">
-            <p className="text-yellow-highlight font-semibold">AI-Driven</p>
-            <p className="text-muted-foreground text-sm">Predictive analytics & automation</p>
-          </div>
+        {/* Social Sidebar */}
+        <div className="flex flex-col items-center space-y-6">
+          <a href="https://github.com" target="_blank">
+            <Github className="text-blue-accent hover:text-white w-6 h-6" />
+          </a>
+          <a href="https://linkedin.com" target="_blank">
+            <Linkedin className="text-blue-accent hover:text-white w-6 h-6" />
+          </a>
+          <a href="https://twitter.com" target="_blank">
+            <Twitter className="text-blue-accent hover:text-white w-6 h-6" />
+          </a>
+          <div className="w-px h-16 bg-muted-foreground" />
         </div>
       </div>
 
-      {/* Footer Social Bar */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-6 z-30">
-        <Link href="https://github.com">
-          <Github className="text-muted-foreground hover:text-white transition" />
-        </Link>
-        <Link href="https://twitter.com">
-          <Twitter className="text-muted-foreground hover:text-white transition" />
-        </Link>
-        <Link href="https://linkedin.com">
-          <Linkedin className="text-muted-foreground hover:text-white transition" />
-        </Link>
+      {/* Scattered Accent Icons */}
+      <div className="absolute top-10 left-10 animate-fade">
+        <Sparkles className="text-purple-accent w-5 h-5" />
       </div>
-    </div>
+      <div className="absolute bottom-20 right-16 animate-fade">
+        <MousePointerClick className="text-yellow-highlight w-5 h-5" />
+      </div>
+    </section>
   );
-};
-
-export default HeroSection;
+}
