@@ -17,9 +17,9 @@ if (typeof window !== "undefined") {
 const fallbackTechnologies: Technology[] = [
   { id: "7", name: "Next.js", category: "frontend", icon: "/brand-nextjs.svg" },
   { id: "8", name: "Expo", category: "frontend", icon: "/placeholder.svg" },
-  { id: "11", name: "Node.js", category: "backend", icon: "/placeholder.svg" },
-  { id: "12", name: "Express", category: "backend", icon: "/placeholder.svg" },
-  { id: "13", name: "Spring Boot", category: "backend", icon: "/placeholder.svg" },
+  { id: "11", name: "Node.js", category: "backend", icon: "/logo-nodejs.svg" },
+  { id: "12", name: "Express", category: "backend", icon: "/express-original.svg" },
+  { id: "13", name: "Spring Boot", category: "backend", icon: "/spring-boot.svg" },
   { id: "14", name: "Golang", category: "languages", icon: "/placeholder.svg" },
 
   
