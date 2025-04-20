@@ -46,7 +46,7 @@ export default function HeroSection() {
           <Dialog>
             <DialogTrigger asChild>
               <Image
-                src="/images/hero-image.png"
+                src="#"
                 alt="Hero"
                 width={300}
                 height={500}
@@ -55,7 +55,7 @@ export default function HeroSection() {
             </DialogTrigger>
             <DialogContent>
               <Image
-                src="/images/hero-image.png"
+                src="#"
                 alt="Hero Dialog"
                 width={500}
                 height={800}
