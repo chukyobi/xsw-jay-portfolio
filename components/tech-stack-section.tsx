@@ -97,7 +97,7 @@ export function TechStackSection() {
           {technologies.map((tech) => (
             <Card key={tech.id} className="tech-card p-4 border rounded-xl hover:shadow-md transition-all">
               <CardContent className="flex items-center gap-4">
-                <div className="w-12 h-12 flex items-center justify-center bg-muted rounded-lg">
+                <div className="w-12 h-12 flex items-center justify-center bg-white rounded-lg">
                   <Image
                     src={tech.icon || "/placeholder.svg"}
                     alt={tech.name}
