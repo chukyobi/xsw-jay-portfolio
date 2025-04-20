@@ -9,71 +9,44 @@ import { Badge } from "@/components/ui/badge"
 import { getTechnologiesByCategory } from "@/lib/actions"
 import type { Technology } from "@/lib/types"
 
-// Register GSAP plugins
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-// Fallback data in case the database is empty
-const fallbackTechnologies: Record<string, Technology[]> = {
-  languages: [
-    { id: "1", name: "JavaScript", category: "languages", icon: "/placeholder.svg?height=50&width=50" },
-    { id: "2", name: "TypeScript", category: "languages", icon: "/placeholder.svg?height=50&width=50" },
-    { id: "3", name: "C#", category: "languages", icon: "/placeholder.svg?height=50&width=50" },
-    { id: "4", name: "Golang", category: "languages", icon: "/placeholder.svg?height=50&width=50" },
-    { id: "5", name: "Proteus", category: "languages", icon: "/placeholder.svg?height=50&width=50" },
-  ],
-  frontend: [
-    { id: "6", name: "React.js", category: "frontend", icon: "/placeholder.svg?height=50&width=50" },
-    { id: "7", name: "Next.js", category: "frontend", icon: "/placeholder.svg?height=50&width=50" },
-    { id: "8", name: "Expo", category: "frontend", icon: "/placeholder.svg?height=50&width=50" },
-    { id: "9", name: "Tailwind CSS", category: "frontend", icon: "/placeholder.svg?height=50&width=50" },
-    { id: "10", name: "GSAP", category: "frontend", icon: "/placeholder.svg?height=50&width=50" },
-  ],
-  backend: [
-    { id: "11", name: "Node.js", category: "backend", icon: "/placeholder.svg?height=50&width=50" },
-    { id: "12", name: "Express", category: "backend", icon: "/placeholder.svg?height=50&width=50" },
-    { id: "13", name: "Spring Boot", category: "backend", icon: "/placeholder.svg?height=50&width=50" },
-    { id: "14", name: "REST API", category: "backend", icon: "/placeholder.svg?height=50&width=50" },
-    { id: "15", name: "GraphQL", category: "backend", icon: "/placeholder.svg?height=50&width=50" },
-  ],
-  databases: [
-    { id: "16", name: "MongoDB", category: "databases", icon: "/placeholder.svg?height=50&width=50" },
-    { id: "17", name: "MySQL", category: "databases", icon: "/placeholder.svg?height=50&width=50" },
-    { id: "18", name: "PostgreSQL", category: "databases", icon: "/placeholder.svg?height=50&width=50" },
-    { id: "19", name: "Supabase", category: "databases", icon: "/placeholder.svg?height=50&width=50" },
-    { id: "20", name: "Redis", category: "databases", icon: "/placeholder.svg?height=50&width=50" },
-  ],
-}
-
-// Category colors and icons
-const categoryConfig = {
-  languages: { color: "bg-blue-accent/10 text-blue-accent border-blue-accent/20", icon: "🔤" },
-  frontend: { color: "bg-purple-accent/10 text-purple-accent border-purple-accent/20", icon: "🖥️" },
-  backend: { color: "bg-green-500/10 text-green-500 border-green-500/20", icon: "⚙️" },
-  databases: { color: "bg-yellow-highlight/10 text-yellow-highlight border-yellow-highlight/20", icon: "🗄️" },
-  devops: { color: "bg-red-500/10 text-red-500 border-red-500/20", icon: "🚀" },
-  tools: { color: "bg-orange-500/10 text-orange-500 border-orange-500/20", icon: "🔧" },
-}
+// Combine all fallback techs into one array
+const fallbackTechnologies: Technology[] = [
+  { id: "1", name: "JavaScript", category: "languages", icon: "/placeholder.svg" },
+  { id: "2", name: "TypeScript", category: "languages", icon: "/placeholder.svg" },
+  { id: "3", name: "Golang", category: "languages", icon: "/placeholder.svg" },
+  { id: "4", name: "Python", category: "languages", icon: "/placeholder.svg" },
+  { id: "7", name: "Next.js", category: "frontend", icon: "/placeholder.svg" },
+  { id: "8", name: "Expo", category: "frontend", icon: "/placeholder.svg" },
+  { id: "11", name: "Node.js", category: "backend", icon: "/placeholder.svg" },
+  { id: "12", name: "Express", category: "backend", icon: "/placeholder.svg" },
+  { id: "13", name: "Spring Boot", category: "backend", icon: "/placeholder.svg" },
+  { id: "16", name: "MongoDB", category: "databases", icon: "/placeholder.svg" },
+  { id: "17", name: "MySQL", category: "databases", icon: "/placeholder.svg" },
+  { id: "18", name: "PostgreSQL", category: "databases", icon: "/placeholder.svg" },
+  { id: "19", name: "Supabase", category: "databases", icon: "/placeholder.svg" },
+  { id: "20", name: "Redis", category: "databases", icon: "/placeholder.svg" },
+]
 
 export function TechStackSection() {
-  const [technologies, setTechnologies] = useState<Record<string, Technology[]>>(fallbackTechnologies)
-  const [isLoading, setIsLoading] = useState(true)
+  const [technologies, setTechnologies] = useState<Technology[]>(fallbackTechnologies)
   const sectionRef = useRef<HTMLDivElement>(null)
   const headingRef = useRef<HTMLDivElement>(null)
-  const categoriesRef = useRef<HTMLDivElement>(null)
+  const gridRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const fetchTechnologies = async () => {
       try {
         const data = await getTechnologiesByCategory()
-        if (Object.keys(data).length > 0) {
-          setTechnologies(data)
+        const flatTechs = Object.values(data).flat()
+        if (flatTechs.length > 0) {
+          setTechnologies(flatTechs)
         }
       } catch (error) {
         console.error("Error fetching technologies:", error)
-      } finally {
-        setIsLoading(false)
       }
     }
 
@@ -81,17 +54,14 @@ export function TechStackSection() {
   }, [])
 
   useEffect(() => {
-    if (isLoading) return
-
     const ctx = gsap.context(() => {
-      // Heading animation
       gsap.fromTo(
         headingRef.current,
-        { opacity: 0, y: 50 },
+        { opacity: 0, y: 40 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 0.6,
           scrollTrigger: {
             trigger: headingRef.current,
             start: "top 80%",
@@ -99,98 +69,55 @@ export function TechStackSection() {
         },
       )
 
-      // Categories animation
-      const categories = categoriesRef.current?.querySelectorAll(".tech-category")
-      if (categories) {
-        gsap.fromTo(
-          categories,
-          { opacity: 0, y: 30 },
-          {
-            opacity: 1,
-            y: 0,
-            stagger: 0.2,
-            duration: 0.8,
-            scrollTrigger: {
-              trigger: categoriesRef.current,
-              start: "top 75%",
-            },
-          },
-        )
-      }
-
-      // Tech cards animation
-      const techCards = document.querySelectorAll(".tech-card")
       gsap.fromTo(
-        techCards,
-        { opacity: 0, scale: 0.9 },
+        ".tech-card",
+        { opacity: 0, y: 20 },
         {
           opacity: 1,
-          scale: 1,
-          stagger: 0.03,
+          y: 0,
+          stagger: 0.1,
           duration: 0.5,
-          ease: "back.out(1.7)",
+          ease: "power2.out",
           scrollTrigger: {
-            trigger: categoriesRef.current,
-            start: "top 70%",
+            trigger: gridRef.current,
+            start: "top 80%",
           },
         },
       )
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [isLoading])
+  }, [])
 
   return (
     <section id="tech-stack" ref={sectionRef} className="py-16 md:py-24 bg-background">
       <div className="container mx-auto px-4">
         <div ref={headingRef} className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Tech Stack</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            A comprehensive collection of technologies I work with to build modern, scalable, and robust applications.
+          <p className="text-muted-foreground max-w-xl mx-auto">
+            Tools and technologies I use to build robust, scalable applications.
           </p>
         </div>
 
-        <div ref={categoriesRef} className="space-y-12">
-          {Object.entries(technologies).map(([category, techs]) => {
-            const config = categoryConfig[category as keyof typeof categoryConfig] || {
-              color: "bg-primary/10 text-primary border-primary/20",
-              icon: "💻",
-            }
-
-            return (
-              <div key={category} className="tech-category">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className={`text-2xl p-2 rounded-md ${config.color.split(" ")[0]}`}>{config.icon}</div>
-                  <h3 className="text-2xl font-bold capitalize">{category}</h3>
-                  <div className="flex-1 h-px bg-border"></div>
+        <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {technologies.map((tech) => (
+            <Card key={tech.id} className="tech-card p-4 border rounded-xl hover:shadow-md transition-all">
+              <CardContent className="flex items-center gap-4">
+                <div className="w-12 h-12 flex items-center justify-center bg-muted rounded-lg">
+                  <Image
+                    src={tech.icon || "/placeholder.svg"}
+                    alt={tech.name}
+                    width={40}
+                    height={40}
+                    className="object-contain"
+                  />
                 </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                  {techs.map((tech) => (
-                    <Card
-                      key={tech.id}
-                      className={`tech-card overflow-hidden border hover:shadow-md transition-all duration-300 ${config.color.split(" ")[2]}`}
-                    >
-                      <CardContent className="p-4 flex flex-col items-center text-center">
-                        <div className="w-12 h-12 flex items-center justify-center mb-3">
-                          <Image
-                            src={tech.icon || "/placeholder.svg?height=50&width=50"}
-                            alt={tech.name}
-                            width={48}
-                            height={48}
-                            className="object-contain"
-                          />
-                        </div>
-                        <Badge variant="outline" className={config.color}>
-                          {tech.name}
-                        </Badge>
-                      </CardContent>
-                    </Card>
-                  ))}
+                <div>
+                  <p className="font-semibold text-lg">{tech.name}</p>
                 </div>
-              </div>
-            )
-          })}
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </div>
     </section>
