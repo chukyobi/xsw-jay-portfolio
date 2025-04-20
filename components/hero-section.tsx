@@ -1,3 +1,6 @@
+"use client"
+
+
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin, Twitter, MousePointerClick, Sparkles } from "lucide-react";
 import Image from "next/image";
