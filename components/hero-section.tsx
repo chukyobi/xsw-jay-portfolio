@@ -8,7 +8,7 @@ import { gsap } from "gsap"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
-export function HeroSection() {
+export default function HeroSection() {
   const [isOpen, setIsOpen] = useState(false)
   const heroRef = useRef<HTMLDivElement>(null)
   const imageRef = useRef<HTMLDivElement>(null)
