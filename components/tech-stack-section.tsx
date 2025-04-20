@@ -79,22 +79,39 @@ const techIcons: Record<string, string> = {
 }
 
 export async function TechStackSection() {
-  // Fetch data in server component
-  const technologiesByCategory = await getTechnologiesByCategory()
+  try {
+    // Fetch data in server component
+    const technologiesByCategory = await getTechnologiesByCategory()
 
-  return (
-    <section id="tech-stack" className="py-20">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Tech Stack</h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">Technologies and tools I work with</p>
+    return (
+      <section id="tech-stack" className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Tech Stack</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">Technologies and tools I work with</p>
+          </div>
+
+          {/* Pass data to client component */}
+          <TechStackDisplay technologiesByCategory={technologiesByCategory} />
         </div>
-
-        {/* Pass data to client component */}
-        <TechStackDisplay technologiesByCategory={technologiesByCategory} />
-      </div>
-    </section>
-  )
+      </section>
+    )
+  } catch (error) {
+    console.error("Error fetching tech stack data:", error)
+    return (
+      <section id="tech-stack" className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Tech Stack</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">Technologies and tools I work with</p>
+          </div>
+          <div className="text-center">
+            <p>Failed to load tech stack data. Please try again later.</p>
+          </div>
+        </div>
+      </section>
+    )
+  }
 }
 
 function TechCategory({ category, technologies }: { category: string; technologies: Technology[] }) {
