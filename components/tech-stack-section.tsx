@@ -15,7 +15,7 @@ if (typeof window !== "undefined") {
 
 // Combine all fallback techs into one array
 const fallbackTechnologies: Technology[] = [
-  { id: "7", name: "Next.js", category: "frontend", icon: "/placeholder.svg" },
+  { id: "7", name: "Next.js", category: "frontend", icon: "/brand-nextjs.svg" },
   { id: "8", name: "Expo", category: "frontend", icon: "/placeholder.svg" },
   { id: "11", name: "Node.js", category: "backend", icon: "/placeholder.svg" },
   { id: "12", name: "Express", category: "backend", icon: "/placeholder.svg" },
