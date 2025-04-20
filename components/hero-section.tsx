@@ -68,12 +68,12 @@ export default function HeroSection() {
 {/*           <a href="https://github.com" target="_blank">
             <Github className="text-blue-accent hover:text-white w-6 h-6" />
           </a> */}
-          <a href="https://linkedin.com" target="_blank">
+{/*           <a href="https://linkedin.com" target="_blank">
             <Linkedin className="text-blue-accent hover:text-white w-6 h-6" />
           </a>
           <a href="https://twitter.com" target="_blank">
             <Twitter className="text-blue-accent hover:text-white w-6 h-6" />
-          </a>
+          </a> */}
           <div className="w-px h-16 bg-muted-foreground" />
         </div>
       </div>
