@@ -65,9 +65,9 @@ export default function HeroSection() {
 
         {/* Social Sidebar */}
         <div className="flex flex-col items-center space-y-6">
-          <a href="https://github.com" target="_blank">
+{/*           <a href="https://github.com" target="_blank">
             <Github className="text-blue-accent hover:text-white w-6 h-6" />
-          </a>
+          </a> */}
           <a href="https://linkedin.com" target="_blank">
             <Linkedin className="text-blue-accent hover:text-white w-6 h-6" />
           </a>
