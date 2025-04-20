@@ -11,6 +11,7 @@ if (typeof window !== "undefined") {
 export function AboutSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
+  const kineticRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -28,6 +29,21 @@ export function AboutSection() {
           },
         }
       )
+
+      gsap.fromTo(
+        kineticRef.current,
+        { opacity: 0, y: 60 },
+        {
+          opacity: 0.07,
+          y: 0,
+          duration: 2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 90%",
+          },
+        }
+      )
     }, sectionRef)
 
     return () => ctx.revert()
@@ -37,32 +53,51 @@ export function AboutSection() {
     <section
       id="about"
       ref={sectionRef}
-      className="py-24 md:py-32 bg-background border-t border-border"
+      className="py-24 md:py-32 bg-background border-t border-border relative overflow-hidden"
     >
-      <div className="container mx-auto px-4 max-w-4xl">
-        <div ref={contentRef} className="space-y-8">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight leading-snug">
+      {/* Decorative vertical line */}
+      <div className="absolute left-4 top-16 bottom-16 w-0.5 bg-gradient-to-b from-muted to-transparent rounded-full hidden md:block" />
+
+      {/* Kinetic Typography Background */}
+      <div
+        ref={kineticRef}
+        className="absolute inset-0 flex justify-center items-center pointer-events-none"
+      >
+        <h1 className="text-[15vw] md:text-[12vw] font-bold tracking-tight whitespace-nowrap text-white opacity-5 select-none">
+          CHUKWUDI OBI
+        </h1>
+      </div>
+
+      <div className="container mx-auto px-4 max-w-4xl relative z-10">
+        <div ref={contentRef} className="space-y-10">
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight leading-snug border-l-4 border-primary pl-4">
             Who I Am
           </h2>
 
           <p className="text-muted-foreground text-lg leading-relaxed">
             I’m a software engineer passionate about designing meaningful
             technology experiences that make life easier, smarter, and more
-            connected. With a background rooted in both creative problem-solving
-            and strong engineering principles, I enjoy building clean, scalable,
-            and intuitive digital systems.
+            connected.
+          </p>
+
+          <div className="w-24 h-0.5 bg-gradient-to-r from-primary to-transparent rounded-full" />
+
+          <p className="text-muted-foreground text-lg leading-relaxed">
+            — With a background rooted in creative problem-solving and strong engineering principles, I enjoy building clean, scalable, and intuitive systems.
           </p>
 
           <p className="text-muted-foreground text-lg leading-relaxed">
-            My journey blends years of hands-on development across front-end and
-            back-end systems with a growing love for AI, cybersecurity, and
-            digital accessibility. I believe in crafting code with empathy —
-            always thinking about the user first, and how technology can serve
-            rather than overwhelm.
+            — My journey blends hands-on development with a love for AI,
+            cybersecurity, and digital accessibility. I write code with empathy —
+            always thinking about how tech can truly serve.
           </p>
 
+          <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground text-base">
+            “The best interfaces feel invisible — guiding, never demanding.”
+          </blockquote>
+
           <p className="text-muted-foreground text-lg leading-relaxed">
-            Outside the codebase, I explore innovative intersections of tech,
+            — Outside the codebase, I explore the intersections of tech,
             human experience, and social impact — continually asking: how can we
             build smarter and better for everyone?
           </p>
