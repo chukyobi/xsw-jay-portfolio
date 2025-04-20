@@ -15,21 +15,15 @@ if (typeof window !== "undefined") {
 
 // Combine all fallback techs into one array
 const fallbackTechnologies: Technology[] = [
-  { id: "1", name: "JavaScript", category: "languages", icon: "/placeholder.svg" },
-  { id: "2", name: "TypeScript", category: "languages", icon: "/placeholder.svg" },
-  { id: "3", name: "Golang", category: "languages", icon: "/placeholder.svg" },
-  { id: "4", name: "Python", category: "languages", icon: "/placeholder.svg" },
   { id: "7", name: "Next.js", category: "frontend", icon: "/placeholder.svg" },
   { id: "8", name: "Expo", category: "frontend", icon: "/placeholder.svg" },
   { id: "11", name: "Node.js", category: "backend", icon: "/placeholder.svg" },
   { id: "12", name: "Express", category: "backend", icon: "/placeholder.svg" },
   { id: "13", name: "Spring Boot", category: "backend", icon: "/placeholder.svg" },
-  { id: "16", name: "MongoDB", category: "databases", icon: "/placeholder.svg" },
-  { id: "17", name: "MySQL", category: "databases", icon: "/placeholder.svg" },
-  { id: "18", name: "PostgreSQL", category: "databases", icon: "/placeholder.svg" },
-  { id: "19", name: "Supabase", category: "databases", icon: "/placeholder.svg" },
-  { id: "20", name: "Redis", category: "databases", icon: "/placeholder.svg" },
-]
+  { id: "14", name: "Golang", category: "languages", icon: "/placeholder.svg" },
+
+  
+  ]
 
 export function TechStackSection() {
   const [technologies, setTechnologies] = useState<Technology[]>(fallbackTechnologies)
