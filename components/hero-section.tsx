@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useEffect } from "react";
 import gsap from "gsap";
 
-export default function HeroSection() {
+export function HeroSection() {
   useEffect(() => {
     gsap.from(".animate-fade", {
       opacity: 0,
