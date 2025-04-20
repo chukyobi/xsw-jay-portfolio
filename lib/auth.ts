@@ -75,48 +75,36 @@ export async function getSession() {
   return session
 }
 
-// For App Router only - will need to be modified for Pages Router
 export async function requireAuth() {
-  try {
-    const supabase = createServerSupabaseClient()
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
+  const supabase = createServerSupabaseClient()
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
 
-    if (!session) {
-      redirect("/admin/login")
-    }
-
-    return session
-  } catch (error) {
-    console.error("Auth check error:", error)
+  if (!session) {
     redirect("/admin/login")
   }
+
+  return session
 }
 
-// For App Router only - will need to be modified for Pages Router
 export async function requireAdmin() {
-  try {
-    const supabase = createServerSupabaseClient()
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
+  const supabase = createServerSupabaseClient()
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
 
-    if (!session) {
-      redirect("/admin/login")
-    }
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-
-    if (user?.user_metadata?.role !== "admin") {
-      redirect("/admin/unauthorized")
-    }
-
-    return session
-  } catch (error) {
-    console.error("Admin check error:", error)
+  if (!session) {
     redirect("/admin/login")
   }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (user?.user_metadata?.role !== "admin") {
+    redirect("/admin/unauthorized")
+  }
+
+  return session
 }

@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js"
+import { cookies } from "next/headers"
 
 // This is safe to expose on the client as it only includes public anon key
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -43,7 +44,6 @@ export function createClientSupabaseClient() {
   }
 }
 
-// Server-side Supabase client that doesn't use next/headers
 export function createServerSupabaseClient() {
   if (!supabaseUrl || !supabaseAnonKey) {
     console.error("Cannot create Supabase server client: Missing environment variables")
@@ -51,10 +51,24 @@ export function createServerSupabaseClient() {
   }
 
   try {
-    // For server components, without using next/headers
+    const cookieStore = cookies()
+
+    // For server components
     return createClient(supabaseUrl, supabaseAnonKey, {
       auth: {
-        persistSession: false,
+        persistSession: true,
+        autoRefreshToken: true,
+      },
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value
+        },
+        set(name: string, value: string, options: any) {
+          cookieStore.set({ name, value, ...options })
+        },
+        remove(name: string, options: any) {
+          cookieStore.set({ name, value: "", ...options })
+        },
       },
     })
   } catch (error) {

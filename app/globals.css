@@ -5,53 +5,57 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
-    --blue-accent: 221.2 83.2% 53.3%;
-    --purple-accent: 262.1 83.3% 57.8%;
-    --yellow-highlight: 47.9 95.8% 53.1%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.75rem;
+
+    /* Custom colors */
+    --blue-accent: 217 91.2% 59.8%;
+    --purple-accent: 270 50% 40%;
+    --yellow-highlight: 48 96% 53%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 217 91.2% 59.8%; /* Blue */
+    --primary-foreground: 0 0% 98%;
+    --secondary: 270 50% 40%; /* Purple */
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 48 96% 53%; /* Yellow */
+    --accent-foreground: 240 5.9% 10%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
-    --blue-accent: 217.2 91.2% 59.8%;
-    --purple-accent: 263.4 70% 50.4%;
-    --yellow-highlight: 47.9 95.8% 53.1%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+
+    /* Custom colors */
+    --blue-accent: 217 91.2% 59.8%;
+    --purple-accent: 270 50% 40%;
+    --yellow-highlight: 48 96% 53%;
   }
 }
 
@@ -61,95 +65,97 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 0);
+    background-size: 30px 30px;
+    background-position: -19px -19px;
   }
 }
 
-/* Animated timeline connector */
-.timeline-connector {
-  position: absolute;
-  background: linear-gradient(90deg, var(--blue-accent), var(--purple-accent));
-  transition: transform 0.5s ease;
-  transform-origin: left;
+.parallax {
+  overflow: hidden;
+  letter-spacing: -2px;
+  line-height: 0.8;
+  margin: 0;
+  white-space: nowrap;
+  display: flex;
+  flex-wrap: nowrap;
 }
 
-/* Animated avatar placeholders */
-.avatar-placeholder {
-  animation: float 6s ease-in-out infinite;
+.parallax .scroller {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 64px;
+  display: flex;
+  white-space: nowrap;
+  display: flex;
+  flex-wrap: nowrap;
 }
 
-@keyframes float {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
+.parallax span {
+  display: block;
+  margin-right: 30px;
 }
 
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(90deg, hsl(var(--blue-accent)), hsl(var(--purple-accent)));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-}
-
-/* Animated gradient background */
-.animated-gradient {
-  background: linear-gradient(
-    -45deg,
-    hsl(var(--blue-accent) / 0.05),
-    hsl(var(--background)),
-    hsl(var(--purple-accent) / 0.05),
-    hsl(var(--background))
-  );
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
-}
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* Scroll animations */
-.scroll-fade-in {
+.gsap-reveal {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  visibility: hidden;
 }
 
-.scroll-fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
+.text-blue-accent {
+  color: hsl(var(--blue-accent));
 }
 
-/* Animated connecting lines */
-.connecting-line {
-  position: absolute;
-  background-color: hsl(var(--border));
-  transition: transform 0.5s ease;
-  transform-origin: top;
+.text-purple-accent {
+  color: hsl(var(--purple-accent));
 }
 
-.node-circle {
-  position: absolute;
-  border-radius: 50%;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+.text-yellow-highlight {
+  color: hsl(var(--yellow-highlight));
 }
 
-.node-circle.active {
-  transform: scale(1.2);
-  background-color: hsl(var(--primary));
+.bg-blue-accent {
+  background-color: hsl(var(--blue-accent));
+}
+
+.bg-purple-accent {
+  background-color: hsl(var(--purple-accent));
+}
+
+.bg-yellow-highlight {
+  background-color: hsl(var(--yellow-highlight));
+}
+
+/* Testimonial card glow effect */
+.testimonial-glow {
+  box-shadow: 0 10px 30px -15px rgba(var(--blue-accent), 0.2), 0 0 10px -5px rgba(var(--blue-accent), 0.1);
+  transition: all 0.3s ease;
+  transform-origin: center top;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.testimonial-glow:hover {
+  box-shadow: 0 20px 40px -20px rgba(var(--blue-accent), 0.3), 0 0 15px -5px rgba(var(--blue-accent), 0.2);
+  transform: translateY(-5px);
+}
+
+/* Dark mode adjustments */
+.dark .testimonial-glow {
+  box-shadow: 0 10px 30px -15px rgba(var(--blue-accent), 0.3), 0 0 15px -5px rgba(var(--blue-accent), 0.2);
+}
+
+.dark .testimonial-glow:hover {
+  box-shadow: 0 20px 40px -20px rgba(var(--blue-accent), 0.5), 0 0 20px -5px rgba(var(--blue-accent), 0.3);
+}
+
+/* Stacked card effect */
+.testimonial-card:not(:first-child) .testimonial-glow {
+  box-shadow:
+    0 10px 30px -15px rgba(var(--blue-accent), 0.2), 0 0 10px -5px rgba(var(--blue-accent), 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+/* Add a subtle border to make the stack more visible */
+.testimonial-card:not(:first-child) .testimonial-glow {
+  border-top: 2px solid rgba(var(--blue-accent), 0.1);
 }
