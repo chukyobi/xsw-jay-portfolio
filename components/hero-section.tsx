@@ -1,68 +1,36 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Download, Code, Database, Server } from "lucide-react"
-import { gsap } from "gsap"
+import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
 export function HeroSection() {
   const [isOpen, setIsOpen] = useState(false)
-  const heroRef = useRef<HTMLDivElement>(null)
-  const imageRef = useRef<HTMLDivElement>(null)
-  const textRef = useRef<HTMLDivElement>(null)
-  const iconsLeftRef = useRef<HTMLDivElement>(null)
-  const iconsRightRef = useRef<HTMLDivElement>(null)
+  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Initial animations
-      gsap.fromTo(textRef.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1, ease: "power3.out" })
-
-      gsap.fromTo(
-        imageRef.current,
-        { opacity: 0, scale: 0.8 },
-        { opacity: 1, scale: 1, duration: 1, ease: "back.out(1.7)", delay: 0.3 },
-      )
-
-      gsap.fromTo(
-        iconsLeftRef.current?.children,
-        { opacity: 0, x: -30 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: "power3.out",
-          delay: 0.6,
-        },
-      )
-
-      gsap.fromTo(
-        iconsRightRef.current?.children,
-        { opacity: 0, x: 30 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: "power3.out",
-          delay: 0.6,
-        },
-      )
-    }, heroRef)
-
-    return () => ctx.revert()
+    setIsVisible(true)
   }, [])
 
   return (
-    <section ref={heroRef} className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
+      {/* Gradient shadows */}
+      <div className="absolute -bottom-32 -left-32 w-64 h-64 rounded-full bg-gradient-to-tr from-blue-accent/30 to-purple-accent/30 blur-3xl pointer-events-none"></div>
+      <div className="absolute -top-32 -right-32 w-64 h-64 rounded-full bg-gradient-to-bl from-yellow-highlight/30 to-green-500/30 blur-3xl pointer-events-none"></div>
+
       <div className="container mx-auto px-4 py-16 md:py-24 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
           {/* Left icons */}
-          <div ref={iconsLeftRef} className="hidden lg:flex flex-col items-end space-y-12">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: isVisible ? 1 : 0, x: isVisible ? 0 : -30 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="hidden lg:flex flex-col items-end space-y-12"
+          >
             <div className="flex flex-col items-center">
               <Code className="w-12 h-12 text-blue-accent mb-2" />
               <span className="text-sm text-muted-foreground">Frontend</span>
@@ -75,11 +43,15 @@ export function HeroSection() {
               <Database className="w-12 h-12 text-yellow-highlight mb-2" />
               <span className="text-sm text-muted-foreground">Database</span>
             </div>
-          </div>
+          </motion.div>
 
           {/* Center content */}
           <div className="flex flex-col items-center text-center lg:col-span-1">
-            <div ref={textRef}>
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 50 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+            >
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
                 Full-Stack <span className="text-blue-accent">Developer</span>
               </h1>
@@ -95,16 +67,18 @@ export function HeroSection() {
                   Download CV
                 </Button>
               </div>
-            </div>
+            </motion.div>
 
-            <div
-              ref={imageRef}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: isVisible ? 1 : 0, scale: isVisible ? 1 : 0.8 }}
+              transition={{ duration: 1, ease: "backOut", delay: 0.3 }}
               className="relative w-64 h-64 md:w-72 md:h-72 rounded-full overflow-hidden border-4 border-blue-accent/20 hover:border-blue-accent transition-all duration-300 group"
               onMouseEnter={() => setIsOpen(true)}
               onMouseLeave={() => setIsOpen(false)}
             >
               <Image
-                src="/ProfileJay.jpeg"
+                src="/placeholder.svg?height=300&width=300"
                 alt="Profile"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -140,11 +114,16 @@ export function HeroSection() {
                   </div>
                 </DialogContent>
               </Dialog>
-            </div>
+            </motion.div>
           </div>
 
           {/* Right icons */}
-          <div ref={iconsRightRef} className="hidden lg:flex flex-col items-start space-y-12">
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: isVisible ? 1 : 0, x: isVisible ? 0 : 30 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="hidden lg:flex flex-col items-start space-y-12"
+          >
             <div className="flex flex-col items-center">
               <svg
                 className="w-12 h-12 text-blue-accent mb-2"
@@ -218,7 +197,7 @@ export function HeroSection() {
               </svg>
               <span className="text-sm text-muted-foreground">Fast</span>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

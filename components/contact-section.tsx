@@ -74,16 +74,16 @@ export function ContactSection() {
                     <div className="flex items-center">
                       <Mail className="h-5 w-5 mr-3 text-blue-accent" />
                       <Link href="mailto:contact@example.com" className="text-muted-foreground hover:text-foreground">
-                        josephclinton.obi@gmail.com
+                        contact@example.com
                       </Link>
                     </div>
                     <div className="flex items-center">
                       <Phone className="h-5 w-5 mr-3 text-blue-accent" />
-                      <span className="text-muted-foreground">+234 816 8400 563</span>
+                      <span className="text-muted-foreground">+1 (555) 123-4567</span>
                     </div>
                     <div className="flex items-center">
                       <MapPin className="h-5 w-5 mr-3 text-blue-accent" />
-                      <span className="text-muted-foreground">Nigeria, NG</span>
+                      <span className="text-muted-foreground">San Francisco, CA</span>
                     </div>
                   </div>
                 </div>
@@ -94,34 +94,34 @@ export function ContactSection() {
                     <div className="flex items-center">
                       <Github className="h-5 w-5 mr-3 text-blue-accent" />
                       <Link
-                        href="https://github.com/chukyobi"
+                        href="https://github.com"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-foreground"
                       >
-                        chukyobi
+                        github.com/username
                       </Link>
                     </div>
                     <div className="flex items-center">
                       <Linkedin className="h-5 w-5 mr-3 text-blue-accent" />
                       <Link
-                        href="https://www.linkedin.com/in/joseph-clinton-chukwudi-obi/"
+                        href="https://linkedin.com"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-foreground"
                       >
-                        joseph-clinton-chukwudi-obi
+                        linkedin.com/in/username
                       </Link>
                     </div>
                     <div className="flex items-center">
                       <Twitter className="h-5 w-5 mr-3 text-blue-accent" />
                       <Link
-                        href="https://x.com/chukyobi_"
+                        href="https://twitter.com"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-foreground"
                       >
-                        chukyobi_
+                        twitter.com/username
                       </Link>
                     </div>
                   </div>

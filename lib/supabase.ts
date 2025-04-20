@@ -1,30 +1,105 @@
 import { createClient } from "@supabase/supabase-js"
+import { cookies } from "next/headers"
 
-// Create a single supabase client for the server
-export const createServerSupabaseClient = () => {
-  const supabaseUrl = process.env.SUPABASE_URL
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+// This is safe to expose on the client as it only includes public anon key
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  if (!supabaseUrl || !supabaseKey) {
-    throw new Error("Missing Supabase environment variables")
-  }
-
-  return createClient(supabaseUrl, supabaseKey)
+// Check if environment variables are set
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error(
+    "Missing Supabase environment variables. Make sure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are set.",
+  )
 }
 
-// Create a singleton client for the client-side
-let clientSupabaseClient: ReturnType<typeof createClient> | null = null
+// Create a singleton instance for the client
+let clientInstance: ReturnType<typeof createClient> | null = null
 
-export const createClientSupabaseClient = () => {
-  if (clientSupabaseClient) return clientSupabaseClient
-
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-  if (!supabaseUrl || !supabaseAnonKey) {
-    throw new Error("Missing Supabase environment variables")
+export function createClientSupabaseClient() {
+  if (typeof window === "undefined") {
+    console.warn("Attempted to create client Supabase instance on the server")
   }
 
-  clientSupabaseClient = createClient(supabaseUrl, supabaseAnonKey)
-  return clientSupabaseClient
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error("Cannot create Supabase client: Missing environment variables")
+    throw new Error("Supabase configuration error: Missing environment variables")
+  }
+
+  if (clientInstance) return clientInstance
+
+  try {
+    // For client components
+    clientInstance = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        storageKey: "supabase.auth.token",
+      },
+    })
+
+    return clientInstance
+  } catch (error) {
+    console.error("Error creating Supabase client:", error)
+    throw new Error("Failed to initialize Supabase client")
+  }
+}
+
+export function createServerSupabaseClient() {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error("Cannot create Supabase server client: Missing environment variables")
+    throw new Error("Supabase configuration error: Missing environment variables")
+  }
+
+  try {
+    const cookieStore = cookies()
+
+    // For server components
+    return createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+      },
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value
+        },
+        set(name: string, value: string, options: any) {
+          cookieStore.set({ name, value, ...options })
+        },
+        remove(name: string, options: any) {
+          cookieStore.set({ name, value: "", ...options })
+        },
+      },
+    })
+  } catch (error) {
+    console.error("Error creating Supabase server client:", error)
+    throw new Error("Failed to initialize Supabase server client")
+  }
+}
+
+// Debug function to check Supabase connection
+export async function checkSupabaseConnection() {
+  try {
+    const supabase = createClientSupabaseClient()
+    const { data, error } = await supabase.from("projects").select("count").limit(1)
+
+    if (error) {
+      return {
+        connected: false,
+        error: error.message,
+        details: error,
+      }
+    }
+
+    return {
+      connected: true,
+      data,
+    }
+  } catch (error) {
+    return {
+      connected: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+      details: error,
+    }
+  }
 }
