@@ -140,82 +140,24 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Right icons */}
-          <div ref={iconsRightRef} className="hidden lg:flex flex-col items-start space-y-12">
-            <div className="flex flex-col items-center">
-              <svg
-                className="w-12 h-12 text-blue-accent mb-2"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 2L2 7L12 12L22 7L12 2Z"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M2 17L12 22L22 17"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M2 12L12 17L22 12"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="text-sm text-muted-foreground">Stack</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <svg
-                className="w-12 h-12 text-purple-accent mb-2"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M16 18L22 12L16 6"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M8 6L2 12L8 18"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="text-sm text-muted-foreground">Code</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <svg
-                className="w-12 h-12 text-yellow-highlight mb-2"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-                <path
-                  d="M12 8V12L15 15"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="text-sm text-muted-foreground">Fast</span>
-            </div>
-          </div>
+{/* Curved Icons - Bottom Right */}
+<div className="absolute bottom-10 right-10 w-48 h-48 rounded-full hidden lg:block">
+  <div className="absolute right-0 bottom-0 transform translate-x-4 translate-y-4 rotate-0">
+    <svg className="w-10 h-10 text-blue-accent" viewBox="0 0 24 24" fill="none">
+      <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" />
+    </svg>
+  </div>
+  <div className="absolute right-6 bottom-2 transform rotate-[30deg]">
+    <svg className="w-10 h-10 text-purple-accent" viewBox="0 0 24 24" fill="none">
+      <path d="M16 18L22 12L16 6" stroke="currentColor" strokeWidth="2" />
+    </svg>
+  </div>
+  <div className="absolute right-12 bottom-6 transform rotate-[60deg]">
+    <svg className="w-10 h-10 text-yellow-highlight" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+    </svg>
+  </div>
+</div>
         </div>
       </div>
     </section>
