@@ -30,8 +30,7 @@ const fallbackExperience: Experience[] = [
     company: "National Bureau of Statistics",
     position: "Data Editor",
     description:
-      "comprehensive data manipulation, editing, and refinement processes by utilizing survey solutions for the National Agricultural Sample Survey (NASS) sponsored by the World Bank. Collaborated with the software engineering team to implement real-time updates of pertinent statistical data to both their database and public website.
-",
+      "comprehensive data manipulation, editing, and refinement processes by utilizing survey solutions for the National Agricultural Sample Survey (NASS) sponsored by the World Bank. Collaborated with the software engineering team to implement real-time updates of pertinent statistical data to both their database and public website.",
     start_date: "2022-08-01",
     end_date: "2023-07-23",
     is_current: false,
