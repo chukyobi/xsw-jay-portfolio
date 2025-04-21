@@ -110,7 +110,7 @@ export function HeroSection() {
                 className="object-cover group-hover:scale-105 transition-transform duration-300"
               />
 
-              <Dialog open={isOpen} onOpenChange={setIsOpen}>
+{/*               <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogContent className="sm:max-w-md">
                   <DialogHeader>
                     <DialogTitle>About Me</DialogTitle>
@@ -139,7 +139,7 @@ export function HeroSection() {
                     </div>
                   </div>
                 </DialogContent>
-              </Dialog>
+              </Dialog> */}
             </div>
           </div>
 
