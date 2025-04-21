@@ -51,7 +51,7 @@ export function HeroSection() {
       <div className="container mx-auto px-4 py-16 md:py-24 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
           {/* Left icons */}
-          <div ref={iconsLeftRef} className="hidden lg:flex flex-col items-end space-y-12">
+          <div ref={iconsLeftRef} className="hidden lg:flex items-end space-y-12">
             <div className="flex flex-col items-center">
               <Code className="w-12 h-12 text-blue-accent mb-2" />
               <span className="text-sm text-muted-foreground">Frontend</span>
@@ -86,7 +86,7 @@ export function HeroSection() {
           </div>
 
           {/* Right icons */}
-          <div ref={iconsRightRef} className="hidden lg:flex flex-col items-start space-y-12">
+          <div ref={iconsRightRef} className="hidden lg:flex items-start space-y-12">
             <div className="flex flex-col items-center">
               <svg
                 className="w-12 h-12 text-blue-accent mb-2"
