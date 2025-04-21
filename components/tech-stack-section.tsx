@@ -5,7 +5,6 @@ import Image from "next/image"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { getTechnologiesByCategory } from "@/lib/actions"
 import type { Technology } from "@/lib/types"
 
@@ -13,7 +12,6 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-// Combine all fallback techs into one array
 const fallbackTechnologies: Technology[] = [
   { id: "7", name: "Next.js", category: "frontend", icon: "/brand-nextjs.svg" },
   { id: "8", name: "Expo", category: "frontend", icon: "/icons8-expo.svg" },
@@ -23,9 +21,7 @@ const fallbackTechnologies: Technology[] = [
   { id: "14", name: "Golang", category: "languages", icon: "/Go-black.png" },
   { id: "15", name: "Java", category: "languages", icon: "/icons8-java-logo.svg" },
   { id: "16", name: "Python", category: "languages", icon: "/python.svg" },
-
-  
-  ]
+]
 
 export function TechStackSection() {
   const [technologies, setTechnologies] = useState<Technology[]>(fallbackTechnologies)
@@ -95,9 +91,16 @@ export function TechStackSection() {
           </p>
         </div>
 
-        <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {/* Mobile: Horizontal scroll | Tablet/Desktop: Grid */}
+        <div
+          ref={gridRef}
+          className="md:grid md:grid-cols-3 lg:grid-cols-4 gap-6 flex md:flex-none overflow-x-auto space-x-4 scrollbar-hide px-1 -mx-1"
+        >
           {technologies.map((tech) => (
-            <Card key={tech.id} className="tech-card p-4 border rounded-xl hover:shadow-md transition-all">
+            <Card
+              key={tech.id}
+              className="tech-card min-w-[45%] md:min-w-0 p-4 border rounded-xl hover:shadow-md transition-all flex-shrink-0 md:flex-shrink"
+            >
               <CardContent className="flex items-center gap-4">
                 <div className="w-12 h-12 flex items-center justify-center bg-white rounded-lg">
                   <Image
