@@ -21,6 +21,8 @@ const fallbackTechnologies: Technology[] = [
   { id: "12", name: "Express", category: "backend", icon: "/express-original.svg" },
   { id: "13", name: "Spring Boot", category: "backend", icon: "/spring-boot.svg" },
   { id: "14", name: "Golang", category: "languages", icon: "/Go-black.png" },
+  { id: "15", name: "Java", category: "languages", icon: "/icons8-java-logo.svg" },
+  { id: "16", name: "Python", category: "languages", icon: "/python.svg" },
 
   
   ]
