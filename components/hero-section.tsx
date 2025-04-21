@@ -53,15 +53,15 @@ export function HeroSection() {
           {/* Left icons */}
           <div ref={iconsLeftRef} className="flex gap-4 items-end space-y-12">
             <div className="flex flex-col items-center">
-              <Code className="w-12 h-12 text-blue-accent mb-2" />
+              <Code className="w-8 h-8 text-blue-accent mb-2 lg:w-12 h-12" />
               <span className="text-sm text-muted-foreground">Frontend</span>
             </div>
             <div className="flex flex-col items-center">
-              <Server className="w-12 h-12 text-purple-accent mb-2" />
+              <Server className="w-8 h-8 text-purple-accent mb-2 lg:w-12 h-12" />
               <span className="text-sm text-muted-foreground">Backend</span>
             </div>
             <div className="flex flex-col items-center">
-              <Database className="w-12 h-12 text-yellow-highlight mb-2" />
+              <Database className="w-8 h-8 text-yellow-highlight mb-2 lg:w-12 h-12" />
               <span className="text-sm text-muted-foreground">Database</span>
             </div>
           </div>
