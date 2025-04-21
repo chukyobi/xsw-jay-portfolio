@@ -47,7 +47,7 @@ export function HeroSection() {
           <Dialog>
             <DialogTrigger asChild>
               <Image
-                src="/Profile.jpeg"
+                src="/ProfileJay.jpeg"
                 alt="Hero"
                 width={300}
                 height={500}
@@ -56,7 +56,7 @@ export function HeroSection() {
             </DialogTrigger>
             <DialogContent>
               <Image
-                src="/Profile.jpeg"
+                src="/ProfileJay.jpeg"
                 alt="Hero Dialog"
                 width={500}
                 height={800}
