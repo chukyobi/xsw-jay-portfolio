@@ -228,21 +228,17 @@ export function ExperienceSection() {
             </TabsList>
 
             <TabsContent value="experience" className="mt-0">
-  <div
-    ref={timelineRef}
-    className="grid md:grid-cols-2 gap-6"
-  >
+  <div ref={timelineRef} className="grid md:grid-cols-2 gap-6 timeline-container">
     {experience.map((item) => {
-      const isCurrent = item.end_date === null || new Date(item.end_date) > new Date();
+      const isCurrent = item.end_date === null || new Date(item.end_date) > new Date()
       return (
         <Card
           key={item.id}
-          className="border border-border/50 hover:shadow-lg hover:border-blue-500/50 transition-all duration-300"
+          className="timeline-item border border-border/50 hover:shadow-lg hover:border-blue-500/50 transition-all duration-300"
         >
           <CardContent className="p-6 space-y-3">
             <div className="flex justify-between items-start">
               <div className="flex items-center space-x-3">
-                {/* Optional company logo or icon */}
                 <div className="h-8 w-8 bg-muted rounded-full flex items-center justify-center text-sm font-bold text-primary">
                   {item.company.charAt(0)}
                 </div>
@@ -266,27 +262,23 @@ export function ExperienceSection() {
             <p className="text-sm text-muted-foreground">{item.description}</p>
           </CardContent>
         </Card>
-      );
+      )
     })}
   </div>
 </TabsContent>
 
 <TabsContent value="education" className="mt-0">
-  <div
-    ref={timelineRef}
-    className="grid md:grid-cols-2 gap-6"
-  >
+  <div ref={mobileTimelineRef} className="grid md:grid-cols-2 gap-6 mobile-timeline-container">
     {education.map((item) => {
-      const graduated = item.end_date && new Date(item.end_date) < new Date();
+      const graduated = item.end_date && new Date(item.end_date) < new Date()
       return (
         <Card
           key={item.id}
-          className="border border-border/50 hover:shadow-lg hover:border-purple-500/50 transition-all duration-300"
+          className="mobile-timeline-item border border-border/50 hover:shadow-lg hover:border-purple-500/50 transition-all duration-300"
         >
           <CardContent className="p-6 space-y-3">
             <div className="flex justify-between items-start">
               <div className="flex items-center space-x-3">
-                {/* Optional institution logo or icon */}
                 <div className="h-8 w-8 bg-muted rounded-full flex items-center justify-center text-sm font-bold text-primary">
                   {item.institution.charAt(0)}
                 </div>
@@ -312,10 +304,11 @@ export function ExperienceSection() {
             <p className="text-sm text-muted-foreground">{item.description}</p>
           </CardContent>
         </Card>
-      );
+      )
     })}
   </div>
 </TabsContent>
+
 
           </Tabs>
         </div>
