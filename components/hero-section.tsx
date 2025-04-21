@@ -61,21 +61,18 @@ export function HeroSection() {
     <section ref={heroRef} className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
       <div className="container mx-auto px-4 py-16 md:py-24 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-          {/* Left icons */}
-          <div ref={iconsLeftRef} className="hidden lg:flex flex-col items-end space-y-12">
-            <div className="flex flex-col items-center">
-              <Code className="w-12 h-12 text-blue-accent mb-2" />
-              <span className="text-sm text-muted-foreground">Frontend</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <Server className="w-12 h-12 text-purple-accent mb-2" />
-              <span className="text-sm text-muted-foreground">Backend</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <Database className="w-12 h-12 text-yellow-highlight mb-2" />
-              <span className="text-sm text-muted-foreground">Database</span>
-            </div>
-          </div>
+         {/* Curved Icons - Top Left */}
+<div className="absolute top-10 left-10 w-48 h-48 rounded-full hidden lg:block">
+  <div className="absolute left-0 top-0 transform -translate-x-4 -translate-y-4 rotate-0">
+    <Code className="w-10 h-10 text-blue-accent" />
+  </div>
+  <div className="absolute left-6 top-2 transform rotate-[-30deg]">
+    <Server className="w-10 h-10 text-purple-accent" />
+  </div>
+  <div className="absolute left-12 top-6 transform rotate-[-60deg]">
+    <Database className="w-10 h-10 text-yellow-highlight" />
+  </div>
+</div>
 
           {/* Center content */}
           <div className="flex flex-col items-center text-center lg:col-span-1">
