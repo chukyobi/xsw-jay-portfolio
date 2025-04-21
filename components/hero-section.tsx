@@ -198,7 +198,7 @@ export function HeroSection() {
                   strokeLinejoin="round"
                 />
               </svg>
-              <span className="text-sm text-muted-foreground">Code</span>
+              <span className="text-sm text-muted-foreground">DevOps</span>
             </div>
             <div className="flex flex-col items-center">
               <svg
