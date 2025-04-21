@@ -10,12 +10,10 @@ import { getExperience, getEducation } from "@/lib/actions"
 import type { Experience, Education } from "@/lib/types"
 import { useIsMobile } from "@/hooks/use-mobile"
 
-// Register GSAP plugins
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-// Fallback data in case the database is empty
 const fallbackExperience: Experience[] = [
   {
     id: "1",
@@ -84,7 +82,7 @@ export function ExperienceSection() {
   const [experience, setExperience] = useState<Experience[]>(fallbackExperience)
   const [education, setEducation] = useState<Education[]>(fallbackEducation)
   const [isLoading, setIsLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState("experience")
+  const [activeTab, setActiveTab] = useState<"experience" | "education">("experience")
 
   const sectionRef = useRef<HTMLDivElement>(null)
   const headingRef = useRef<HTMLDivElement>(null)
@@ -117,7 +115,6 @@ export function ExperienceSection() {
     if (isLoading) return
 
     const ctx = gsap.context(() => {
-      // Heading animation
       gsap.fromTo(
         headingRef.current,
         { opacity: 0, y: 50 },
@@ -132,7 +129,6 @@ export function ExperienceSection() {
         },
       )
 
-      // Tabs animation
       gsap.fromTo(
         tabsRef.current,
         { opacity: 0, y: 30 },
@@ -149,7 +145,6 @@ export function ExperienceSection() {
       )
 
       if (!isMobile) {
-        // Desktop timeline animation
         const timelineItems = timelineRef.current?.querySelectorAll(".timeline-item")
         if (timelineItems) {
           gsap.fromTo(
@@ -168,7 +163,6 @@ export function ExperienceSection() {
           )
         }
       } else {
-        // Mobile timeline animation
         const mobileItems = mobileTimelineRef.current?.querySelectorAll(".mobile-timeline-item")
         if (mobileItems) {
           gsap.fromTo(
@@ -187,7 +181,6 @@ export function ExperienceSection() {
           )
         }
 
-        // Animate the vertical line drawing
         if (verticalLineRef.current) {
           gsap.fromTo(
             verticalLineRef.current,
@@ -222,7 +215,7 @@ export function ExperienceSection() {
         </div>
 
         <div ref={tabsRef}>
-          <Tabs defaultValue="experience" value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "experience" | "education")}>
             <TabsList className="grid grid-cols-2 w-[400px] mx-auto mb-8">
               <TabsTrigger value="experience" className="flex items-center gap-2">
                 <BriefcaseIcon className="h-4 w-4" />
@@ -235,168 +228,95 @@ export function ExperienceSection() {
             </TabsList>
 
             <TabsContent value="experience" className="mt-0">
-              {!isMobile ? (
-                // Desktop/Tablet View - Horizontal Timeline
-                <div ref={timelineRef} className="relative flex flex-col items-center">
-                  {/* Main vertical line */}
-                  <div className="absolute h-full w-1 bg-blue-accent/30 left-1/2 transform -translate-x-1/2"></div>
-
-                  {experience.map((item, index) => (
-                    <div
-                      key={item.id}
-                      className={`timeline-item relative w-full flex ${
-                        index % 2 === 0 ? "justify-start" : "justify-end"
-                      } mb-12`}
-                    >
-                      {/* Horizontal connector line */}
-                      <div
-                        className={`absolute top-8 h-0.5 bg-blue-accent/30 w-1/4 ${
-                          index % 2 === 0 ? "left-1/2" : "right-1/2"
-                        }`}
-                      ></div>
-
-                      {/* Node */}
-                      <div className="absolute left-1/2 top-8 w-4 h-4 rounded-full bg-blue-accent transform -translate-x-1/2 -translate-y-1/2 z-10"></div>
-
-                      {/* Content */}
-                      <Card
-                        className={`w-5/12 border border-border/50 hover:border-blue-accent/50 transition-all duration-300 ${
-                          index % 2 === 0 ? "ml-auto mr-8" : "mr-auto ml-8"
-                        }`}
-                      >
-                        <CardContent className="p-6">
-                          <div className="mb-2">
-                            <h3 className="font-bold text-lg">{item.company}</h3>
-                            <p className="text-blue-accent">{item.position}</p>
-                            <p className="text-sm text-muted-foreground">
-                              {formatDate(item.start_date)} - {formatDate(item.end_date)}
-                            </p>
-                          </div>
-                          <p className="text-sm">{item.description}</p>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  ))}
+  <div
+    ref={timelineRef}
+    className="grid md:grid-cols-2 gap-6"
+  >
+    {experience.map((item) => {
+      const isCurrent = item.end_date === null || new Date(item.end_date) > new Date();
+      return (
+        <Card
+          key={item.id}
+          className="border border-border/50 hover:shadow-lg hover:border-blue-500/50 transition-all duration-300"
+        >
+          <CardContent className="p-6 space-y-3">
+            <div className="flex justify-between items-start">
+              <div className="flex items-center space-x-3">
+                {/* Optional company logo or icon */}
+                <div className="h-8 w-8 bg-muted rounded-full flex items-center justify-center text-sm font-bold text-primary">
+                  {item.company.charAt(0)}
                 </div>
-              ) : (
-                // Mobile View - Vertical Timeline
-                <div ref={mobileTimelineRef} className="relative">
-                  {/* Vertical animated line */}
-                  <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-blue-accent/10 z-0">
-                    <div ref={verticalLineRef} className="absolute top-0 left-0 w-full bg-blue-accent h-0"></div>
-                  </div>
-
-                  {experience.map((item, index) => (
-                    <div key={item.id} className="mobile-timeline-item pl-12 relative mb-8">
-                      {/* Timeline node */}
-                      <div className="absolute left-2 top-2 w-4 h-4 rounded-full bg-blue-accent z-10 transform -translate-x-1/2"></div>
-
-                      <Card className="border border-border/50 hover:border-blue-accent/50 transition-all duration-300">
-                        <CardContent className="p-4">
-                          <div className="flex justify-between items-start mb-2">
-                            <div>
-                              <h3 className="font-bold text-lg">{item.company}</h3>
-                              <p className="text-blue-accent">{item.position}</p>
-                            </div>
-                            <div className="flex items-center text-sm text-muted-foreground">
-                              <CalendarIcon className="h-3 w-3 mr-1" />
-                              <span>
-                                {formatDate(item.start_date)} - {formatDate(item.end_date)}
-                              </span>
-                            </div>
-                          </div>
-                          <p className="text-sm">{item.description}</p>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  ))}
+                <div>
+                  <h3 className="font-bold text-lg">{item.company}</h3>
+                  <p className="text-blue-accent">{item.position}</p>
                 </div>
+              </div>
+              {isCurrent && (
+                <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded-full">
+                  Current
+                </span>
               )}
-            </TabsContent>
+            </div>
+            <div className="flex items-center text-sm text-muted-foreground">
+              <CalendarIcon className="h-3 w-3 mr-1" />
+              <span>
+                {formatDate(item.start_date)} – {item.end_date ? formatDate(item.end_date) : "Present"}
+              </span>
+            </div>
+            <p className="text-sm text-muted-foreground">{item.description}</p>
+          </CardContent>
+        </Card>
+      );
+    })}
+  </div>
+</TabsContent>
 
-            <TabsContent value="education" className="mt-0">
-              {!isMobile ? (
-                // Desktop/Tablet View - Horizontal Timeline
-                <div ref={timelineRef} className="relative flex flex-col items-center">
-                  {/* Main vertical line */}
-                  <div className="absolute h-full w-1 bg-purple-accent/30 left-1/2 transform -translate-x-1/2"></div>
-
-                  {education.map((item, index) => (
-                    <div
-                      key={item.id}
-                      className={`timeline-item relative w-full flex ${
-                        index % 2 === 0 ? "justify-start" : "justify-end"
-                      } mb-12`}
-                    >
-                      {/* Horizontal connector line */}
-                      <div
-                        className={`absolute top-8 h-0.5 bg-purple-accent/30 w-1/4 ${
-                          index % 2 === 0 ? "left-1/2" : "right-1/2"
-                        }`}
-                      ></div>
-
-                      {/* Node */}
-                      <div className="absolute left-1/2 top-8 w-4 h-4 rounded-full bg-purple-accent transform -translate-x-1/2 -translate-y-1/2 z-10"></div>
-
-                      {/* Content */}
-                      <Card
-                        className={`w-5/12 border border-border/50 hover:border-purple-accent/50 transition-all duration-300 ${
-                          index % 2 === 0 ? "ml-auto mr-8" : "mr-auto ml-8"
-                        }`}
-                      >
-                        <CardContent className="p-6">
-                          <div className="mb-2">
-                            <h3 className="font-bold text-lg">{item.institution}</h3>
-                            <p className="text-purple-accent">
-                              {item.degree} in {item.field_of_study}
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                              {formatDate(item.start_date)} - {formatDate(item.end_date)}
-                            </p>
-                          </div>
-                          <p className="text-sm">{item.description}</p>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  ))}
+<TabsContent value="education" className="mt-0">
+  <div
+    ref={timelineRef}
+    className="grid md:grid-cols-2 gap-6"
+  >
+    {education.map((item) => {
+      const graduated = item.end_date && new Date(item.end_date) < new Date();
+      return (
+        <Card
+          key={item.id}
+          className="border border-border/50 hover:shadow-lg hover:border-purple-500/50 transition-all duration-300"
+        >
+          <CardContent className="p-6 space-y-3">
+            <div className="flex justify-between items-start">
+              <div className="flex items-center space-x-3">
+                {/* Optional institution logo or icon */}
+                <div className="h-8 w-8 bg-muted rounded-full flex items-center justify-center text-sm font-bold text-primary">
+                  {item.institution.charAt(0)}
                 </div>
-              ) : (
-                // Mobile View - Vertical Timeline
-                <div ref={mobileTimelineRef} className="relative">
-                  {/* Vertical animated line */}
-                  <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-purple-accent/10 z-0">
-                    <div ref={verticalLineRef} className="absolute top-0 left-0 w-full bg-purple-accent h-0"></div>
-                  </div>
-
-                  {education.map((item, index) => (
-                    <div key={item.id} className="mobile-timeline-item pl-12 relative mb-8">
-                      {/* Timeline node */}
-                      <div className="absolute left-2 top-2 w-4 h-4 rounded-full bg-purple-accent z-10 transform -translate-x-1/2"></div>
-
-                      <Card className="border border-border/50 hover:border-purple-accent/50 transition-all duration-300">
-                        <CardContent className="p-4">
-                          <div className="flex justify-between items-start mb-2">
-                            <div>
-                              <h3 className="font-bold text-lg">{item.institution}</h3>
-                              <p className="text-purple-accent">
-                                {item.degree} in {item.field_of_study}
-                              </p>
-                            </div>
-                            <div className="flex items-center text-sm text-muted-foreground">
-                              <CalendarIcon className="h-3 w-3 mr-1" />
-                              <span>
-                                {formatDate(item.start_date)} - {formatDate(item.end_date)}
-                              </span>
-                            </div>
-                          </div>
-                          <p className="text-sm">{item.description}</p>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  ))}
+                <div>
+                  <h3 className="font-bold text-lg">{item.institution}</h3>
+                  <p className="text-purple-accent">
+                    {item.degree} in {item.field_of_study}
+                  </p>
                 </div>
+              </div>
+              {graduated && (
+                <span className="bg-purple-100 text-purple-800 text-xs font-semibold px-2 py-0.5 rounded-full">
+                  Graduated
+                </span>
               )}
-            </TabsContent>
+            </div>
+            <div className="flex items-center text-sm text-muted-foreground">
+              <CalendarIcon className="h-3 w-3 mr-1" />
+              <span>
+                {formatDate(item.start_date)} – {item.end_date ? formatDate(item.end_date) : "Present"}
+              </span>
+            </div>
+            <p className="text-sm text-muted-foreground">{item.description}</p>
+          </CardContent>
+        </Card>
+      );
+    })}
+  </div>
+</TabsContent>
+
           </Tabs>
         </div>
       </div>
