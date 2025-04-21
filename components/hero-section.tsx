@@ -81,7 +81,7 @@ export function HeroSection() {
           <div className="flex flex-col items-center text-center lg:col-span-1">
             <div ref={textRef}>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Full-Stack <span className="text-blue-accent">Developer</span>
+                Software <span className="text-blue-accent">Engineer</span>
               </h1>
               <p className="text-lg text-muted-foreground mb-8 max-w-md mx-auto">
                 Building modern web applications with cutting-edge technologies and exceptional user experiences.
