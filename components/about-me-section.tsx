@@ -32,7 +32,7 @@ export function AboutSection() {
         }
       )
 
-      // Parallax & fade animation for kinetic "CHUKWUDI"
+      // Kinetic CHUKWUDI
       gsap.fromTo(
         kineticRef1.current,
         { opacity: 0, y: 60 },
@@ -48,7 +48,7 @@ export function AboutSection() {
         }
       )
 
-      // Parallax for "OBI" with delayed movement
+      // Kinetic OBI
       gsap.fromTo(
         kineticRef2.current,
         { opacity: 0, y: 80 },
@@ -74,10 +74,10 @@ export function AboutSection() {
       ref={sectionRef}
       className="py-24 md:py-32 bg-background border-t border-border relative overflow-hidden"
     >
-      {/* Subtle vertical accent line */}
+      {/* Accent line */}
       <div className="absolute left-4 top-16 bottom-16 w-0.5 bg-gradient-to-b from-muted to-transparent rounded-full hidden md:block" />
 
-      {/* Kinetic Typography Background */}
+      {/* Background kinetic text */}
       <div className="absolute inset-0 flex justify-center items-center pointer-events-none z-0">
         <h1
           ref={kineticRef1}
@@ -94,39 +94,56 @@ export function AboutSection() {
       </div>
 
       {/* Foreground content */}
-      <div className="container mx-auto px-4 max-w-4xl relative z-10">
-        <div ref={contentRef} className="space-y-10">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight leading-snug border-l-4 border-primary pl-4">
-            Who I Am
-          </h2>
+      <div className="container mx-auto px-4 max-w-5xl relative z-10">
+        <div
+          ref={contentRef}
+          className="grid md:grid-cols-2 gap-12 items-center"
+        >
+          {/* Image */}
+          <div className="flex justify-center md:justify-start">
+            <img
+              src="/ProfileJay.jpeg" 
+              alt="Chukwudi Obi"
+              className="rounded-2xl w-60 h-60 object-cover shadow-xl border border-border"
+            />
+          </div>
 
-          <p className="text-muted-foreground text-lg leading-relaxed">
-            I’m a software engineer passionate about designing meaningful
-            technology experiences that make life easier, smarter, and more
-            connected.
-          </p>
+          {/* Text content */}
+          <div className="space-y-6">
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight leading-snug border-l-4 border-primary pl-4">
+              Who I Am
+            </h2>
 
-          <div className="w-24 h-0.5 bg-gradient-to-r from-primary to-transparent rounded-full" />
+            <p className="text-muted-foreground text-lg leading-relaxed">
+              I’m a software engineer passionate about designing meaningful
+              technology experiences that make life easier, smarter, and more
+              connected.
+            </p>
 
-          <p className="text-muted-foreground text-lg leading-relaxed">
-            — With a background rooted in creative problem-solving and strong engineering principles, I enjoy building clean, scalable, and intuitive systems.
-          </p>
+            <div className="w-24 h-0.5 bg-gradient-to-r from-primary to-transparent rounded-full" />
 
-          <p className="text-muted-foreground text-lg leading-relaxed">
-            — My journey blends hands-on development with a love for AI,
-            cybersecurity, and digital accessibility. I write code with empathy —
-            always thinking about how tech can truly serve.
-          </p>
+            <p className="text-muted-foreground text-lg leading-relaxed">
+              — With a background rooted in creative problem-solving and strong
+              engineering principles, I enjoy building clean, scalable, and
+              intuitive systems.
+            </p>
 
-          <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground text-base">
-            “The best interfaces feel invisible — guiding, never demanding.”
-          </blockquote>
+            <p className="text-muted-foreground text-lg leading-relaxed">
+              — My journey blends hands-on development with a love for AI,
+              cybersecurity, and digital accessibility. I write code with
+              empathy — always thinking about how tech can truly serve.
+            </p>
 
-          <p className="text-muted-foreground text-lg leading-relaxed">
-            — Outside the codebase, I explore the intersections of tech,
-            human experience, and social impact — continually asking: how can we
-            build smarter and better for everyone?
-          </p>
+            <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground text-base">
+              “The best interfaces feel invisible — guiding, never demanding.”
+            </blockquote>
+
+            <p className="text-muted-foreground text-lg leading-relaxed">
+              — Outside the codebase, I explore the intersections of tech,
+              human experience, and social impact — continually asking: how can
+              we build smarter and better for everyone?
+            </p>
+          </div>
         </div>
       </div>
     </section>
