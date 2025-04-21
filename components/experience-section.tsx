@@ -17,32 +17,33 @@ if (typeof window !== "undefined") {
 const fallbackExperience: Experience[] = [
   {
     id: "1",
-    company: "Tech Innovations Inc.",
-    position: "Senior Full-Stack Developer",
+    company: "Soltec Engineering",
+    position: "Software Engineer",
     description:
-      "Led the development of a SaaS platform using React, Node.js, and PostgreSQL. Implemented CI/CD pipelines and improved application performance by 40%.",
-    start_date: "2021-06-01",
+      "Leading the development of the company's academy platform using React, Node.js, and PostgreSQL. Hosted on AWS cloud infracsture, Implemented CI/CD pipelines and improved application performance by 40%.",
+    start_date: "2025-01-08",
     end_date: null,
     is_current: true,
   },
   {
     id: "2",
-    company: "Digital Solutions Ltd.",
-    position: "Full-Stack Developer",
+    company: "National Bureau of Statistics",
+    position: "Data Editor",
     description:
-      "Developed and maintained multiple web applications using the MERN stack. Collaborated with design and product teams to deliver high-quality software solutions.",
-    start_date: "2019-03-01",
-    end_date: "2021-05-31",
+      "comprehensive data manipulation, editing, and refinement processes by utilizing survey solutions for the National Agricultural Sample Survey (NASS) sponsored by the World Bank. Collaborated with the software engineering team to implement real-time updates of pertinent statistical data to both their database and public website.
+",
+    start_date: "2022-08-01",
+    end_date: "2023-07-23",
     is_current: false,
   },
   {
     id: "3",
-    company: "WebTech Startup",
-    position: "Frontend Developer",
+    company: "Urban10 Media",
+    position: "Software Developer",
     description:
       "Built responsive user interfaces using React and implemented state management with Redux. Worked in an agile environment with daily stand-ups and sprint planning.",
-    start_date: "2017-09-01",
-    end_date: "2019-02-28",
+    start_date: "2021-07-12",
+    end_date: "2022-05-28",
     is_current: false,
   },
 ]
@@ -50,24 +51,24 @@ const fallbackExperience: Experience[] = [
 const fallbackEducation: Education[] = [
   {
     id: "1",
-    institution: "Tech University",
+    institution: "Nnamdi Azikwiwe University",
     degree: "Master of Science",
     field_of_study: "Computer Science",
     description:
-      "Specialized in Software Engineering and Artificial Intelligence. Completed thesis on optimizing neural networks for edge computing.",
-    start_date: "2015-09-01",
-    end_date: "2017-06-30",
-    is_current: false,
+      "Specialized in Software Engineering and Artificial Intelligence. Completing thesis on assistive glasses for the hearing impaired using artificial intelligence.",
+    start_date: "2024-02-10",
+    end_date: null,
+    is_current: true,
   },
   {
     id: "2",
-    institution: "State University",
-    degree: "Bachelor of Science",
-    field_of_study: "Computer Engineering",
+    institution: "Nnamdi Azikiwe University",
+    degree: "Bachelor of Engineering",
+    field_of_study: "Electronic and Computer Engineering",
     description:
-      "Focused on software development, algorithms, and data structures. Participated in multiple hackathons and coding competitions.",
-    start_date: "2011-09-01",
-    end_date: "2015-06-30",
+      "Focused on computer engineering, electronic design algorithms, and data structures. Participated in multiple hackathons and coding competitions.",
+    start_date: "2015-10-15",
+    end_date: "2021-05-17",
     is_current: false,
   },
 ]
