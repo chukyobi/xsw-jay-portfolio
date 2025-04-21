@@ -159,3 +159,11 @@
 .testimonial-card:not(:first-child) .testimonial-glow {
   border-top: 2px solid rgba(var(--blue-accent), 0.1);
 }
+/* Hide scrollbar on mobile carousel */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
