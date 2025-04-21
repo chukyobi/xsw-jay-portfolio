@@ -104,7 +104,7 @@ export function AboutSection() {
             <img
               src="/ProfileJay.jpeg" 
               alt="Chukwudi Obi"
-              className="rounded-2xl w-60 h-60 object-cover shadow-xl border border-border"
+              className="rounded-2xl w-80 h-100 object-cover shadow-xl border border-border"
             />
           </div>
 
