@@ -3,7 +3,7 @@
 import { Home, Twitter, Instagram, FileText } from "lucide-react"
 import Link from "next/link"
 
-export function NewNavbar() {
+export function Navbar() {
   return (
     <div className="fixed top-6 left-1/2 transform -translate-x-1/2 bg-white border rounded-full shadow-md flex items-center space-x-4 px-6 py-2 z-50">
       {/* Icons */}
