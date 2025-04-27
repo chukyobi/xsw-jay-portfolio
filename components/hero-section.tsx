@@ -23,7 +23,7 @@ export function HeroSection() {
       ref={heroRef}
       className="relative min-h-screen flex flex-col items-center justify-center text-center px-4"
     >
-      {/* Navbar INSIDE Hero */}
+  
       <div className="absolute top-0 left-0 w-full flex justify-between items-center p-6">
         <div className="flex items-center space-x-2 text-lg font-bold">
           <span>Chukwudi</span>
@@ -37,20 +37,20 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Background Polka Dots */}
-      <div className="absolute inset-0 bg-dot bg-repeat opacity-10 pointer-events-none" />
+ 
+      <div className="absolute inset-2 bg-dot bg-repeat opacity-10 pointer-events-none" />
 
-      {/* Main Title */}
+ 
       <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-tight">
         SENIOR<br />SOFTWARE<br />ENGINEER<span className="inline-block align-top ml-2">©</span>
       </h1>
 
-      {/* Subtitle */}
+   
       <p className="text-muted-foreground text-sm md:text-base mt-6 font-medium">
-        CURRENTLY CRAFTING EXPERIENCES AT AJIAN LABS (2024 - PRESENT)
+       CRAFTING SCALABLE SOFTWARE THROUGH CREATIVE PROBLEM-SOLVING.
       </p>
 
-      {/* Skills icons */}
+    
       <div className="flex flex-wrap justify-center items-center gap-6 mt-16">
         {/* Skill icons here */}
       </div>
