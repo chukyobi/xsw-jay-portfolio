@@ -26,8 +26,8 @@ export function HeroSection() {
       {/* Navbar INSIDE Hero */}
       <div className="absolute top-0 left-0 w-full flex justify-between items-center p-6">
         <div className="flex items-center space-x-2 text-lg font-bold">
-          <span>David Nelson</span>
-          <span>👨‍💻</span>
+          <span>Chukwudi</span>
+          <span className="text-gray-200">Obi</span>
         </div>
         <div className="flex items-center space-x-4">
           <span className="text-sm text-muted-foreground hidden md:inline">Let's Connect</span>
