@@ -23,6 +23,20 @@ export function HeroSection() {
       ref={heroRef}
       className="relative min-h-screen flex flex-col items-center justify-center text-center px-4"
     >
+      {/* Navbar INSIDE Hero */}
+      <div className="absolute top-0 left-0 w-full flex justify-between items-center p-6">
+        <div className="flex items-center space-x-2 text-lg font-bold">
+          <span>David Nelson</span>
+          <span>👨‍💻</span>
+        </div>
+        <div className="flex items-center space-x-4">
+          <span className="text-sm text-muted-foreground hidden md:inline">Let's Connect</span>
+          <div className="bg-background border px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2">
+            ogwunelsondavid@gmail.com
+          </div>
+        </div>
+      </div>
+
       {/* Background Polka Dots */}
       <div className="absolute inset-0 bg-dot bg-repeat opacity-10 pointer-events-none" />
 
@@ -38,12 +52,7 @@ export function HeroSection() {
 
       {/* Skills icons */}
       <div className="flex flex-wrap justify-center items-center gap-6 mt-16">
-        {/* You can replace these with actual icons */}
-        <img src="/icons/js.svg" alt="JS" className="w-8 h-8" />
-        <img src="/icons/react.svg" alt="React" className="w-8 h-8" />
-        <img src="/icons/nodejs.svg" alt="Node.js" className="w-8 h-8" />
-        <img src="/icons/python.svg" alt="Python" className="w-8 h-8" />
-        {/* Add more icons... */}
+        {/* Skill icons here */}
       </div>
     </section>
   )
