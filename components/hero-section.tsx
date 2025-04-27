@@ -4,10 +4,12 @@ import { useRef, useEffect } from "react"
 import { gsap } from "gsap"
 
 const placeholderImages = [
-  "https://via.placeholder.com/300x400?text=Project+1",
-  "https://via.placeholder.com/300x400?text=Project+2",
-  "https://via.placeholder.com/300x400?text=Project+3",
-  "https://via.placeholder.com/300x400?text=Project+4",
+  "/placeholder.svg",
+  "/placeholder.svg",
+  "/placeholder.svg",
+  "/placeholder.svg",
+  "/placeholder.svg",
+  
 ]
 
 export function HeroSection() {
