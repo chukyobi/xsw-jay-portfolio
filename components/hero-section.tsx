@@ -87,7 +87,7 @@ export function HeroSection() {
       </div>
 
       {/* Top Content */}
-      <div className="relative z-10 w-full px-6 pt-10">
+      <div className="relative z-10 w-full px-6 ">
         {/* Navbar */}
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2 text-lg font-bold">
