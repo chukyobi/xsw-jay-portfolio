@@ -11,10 +11,10 @@ export function NewNavbar() {
         <Home className="w-5 h-5" />
       </Link>
       <div className="h-5 w-px bg-muted" />
-      <Link href="https://twitter.com" target="_blank" className="text-muted-foreground hover:text-foreground">
+      <Link href="https://twitter.com/chukyobi_" target="_blank" className="text-muted-foreground hover:text-foreground">
         <Twitter className="w-5 h-5" />
       </Link>
-      <Link href="https://instagram.com" target="_blank" className="text-muted-foreground hover:text-foreground">
+      <Link href="https://instagram.com/chuky.obi_" target="_blank" className="text-muted-foreground hover:text-foreground">
         <Instagram className="w-5 h-5" />
       </Link>
       <Link href="/resume.pdf" target="_blank" className="text-muted-foreground hover:text-foreground">
@@ -24,7 +24,7 @@ export function NewNavbar() {
 
       {/* Github Button */}
       <Link
-        href="https://github.com/yourusername"
+        href="https://github.com/chukyobi"
         target="_blank"
         className="bg-black text-white text-sm font-medium px-4 py-2 rounded-full ml-2"
       >
