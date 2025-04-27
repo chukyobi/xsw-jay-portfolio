@@ -4,12 +4,11 @@ import { useRef, useEffect } from "react"
 import { gsap } from "gsap"
 
 const placeholderImages = [
-  "/placeholder.svg",
-  "/placeholder.svg",
-  "/placeholder.svg",
-  "/placeholder.svg",
-  "/placeholder.svg",
- 
+  "/placeholder1.png",
+  "/placeholder2.png",
+  "/placeholder3.png",
+  "/placeholder4.png",
+  "/placeholder5.png",
 ]
 
 export function HeroSection() {
@@ -26,17 +25,17 @@ export function HeroSection() {
       )
 
       gsap.to(leftScrollRef.current, {
-        y: "-=200", // Move up
+        yPercent: -50,
         repeat: -1,
         ease: "none",
-        duration: 20,
+        duration: 30,
       })
 
       gsap.to(rightScrollRef.current, {
-        y: "+=200", // Move down
+        yPercent: 50,
         repeat: -1,
         ease: "none",
-        duration: 20,
+        duration: 30,
       })
     }, heroRef)
 
@@ -48,29 +47,34 @@ export function HeroSection() {
       ref={heroRef}
       className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden"
     >
+      {/* Gradient Fade Top */}
+      <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-background to-transparent pointer-events-none z-10" />
+      {/* Gradient Fade Bottom */}
+      <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
+
       {/* Left Scrolling Images */}
-      <div className="absolute top-0 left-0 h-full w-32 overflow-hidden opacity-20 hidden md:block">
-        <div ref={leftScrollRef} className="flex flex-col gap-6">
-          {placeholderImages.map((src, i) => (
+      <div className="absolute top-24 bottom-24 left-4 w-40 overflow-hidden opacity-30 hidden md:block">
+        <div ref={leftScrollRef} className="flex flex-col gap-8">
+          {[...placeholderImages, ...placeholderImages].map((src, i) => (
             <img
-              key={i}
+              key={`left-${i}`}
               src={src}
               alt="project"
-              className="w-full rounded-lg shadow-lg"
+              className="w-full rounded-xl shadow-xl object-cover"
             />
           ))}
         </div>
       </div>
 
       {/* Right Scrolling Images */}
-      <div className="absolute top-0 right-0 h-full w-32 overflow-hidden opacity-20 hidden md:block">
-        <div ref={rightScrollRef} className="flex flex-col gap-6">
-          {placeholderImages.map((src, i) => (
+      <div className="absolute top-24 bottom-24 right-4 w-40 overflow-hidden opacity-30 hidden md:block">
+        <div ref={rightScrollRef} className="flex flex-col gap-8">
+          {[...placeholderImages, ...placeholderImages].map((src, i) => (
             <img
-              key={i}
+              key={`right-${i}`}
               src={src}
               alt="project"
-              className="w-full rounded-lg shadow-lg"
+              className="w-full rounded-xl shadow-xl object-cover"
             />
           ))}
         </div>
@@ -90,7 +94,7 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Background */}
+      {/* Background Dots */}
       <div className="absolute inset-2 bg-dot bg-repeat opacity-10 pointer-events-none" />
 
       {/* Hero Text */}
@@ -98,6 +102,7 @@ export function HeroSection() {
         SENIOR<br />SOFTWARE<br />ENGINEER<span className="inline-block align-top ml-2">©</span>
       </h1>
 
+      {/* Subheading */}
       <p className="text-muted-foreground text-sm md:text-base mt-6 font-medium">
         CRAFTING SCALABLE SOFTWARE THROUGH CREATIVE PROBLEM-SOLVING.
       </p>
