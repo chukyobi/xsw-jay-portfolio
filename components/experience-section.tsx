@@ -22,14 +22,35 @@ interface CompanyGroupedExperience {
 }
 
 const fallbackExperience: Experience[] = [
-  {
+   {
     id: "1",
     company: "Soltec Engineering",
     position: "Software Engineer",
-    description: "Leading platform development and CI/CD pipelines.",
+    description:
+      "Leading the development of the company's academy platform using React, Node.js, and PostgreSQL. Hosted on AWS cloud infracsture, Implemented CI/CD pipelines and improved application performance by 40%.",
     start_date: "2025-01-08",
     end_date: null,
     is_current: true,
+  },
+  {
+    id: "2",
+    company: "National Bureau of Statistics",
+    position: "Data Editor",
+    description:
+      "comprehensive data manipulation, editing, and refinement processes by utilizing survey solutions for the National Agricultural Sample Survey (NASS) sponsored by the World Bank. Collaborated with the software engineering team to implement real-time updates of pertinent statistical data to both their database and public website.",
+    start_date: "2022-08-01",
+    end_date: "2023-07-23",
+    is_current: false,
+  },
+  {
+    id: "3",
+    company: "Urban10 Media",
+    position: "Software Developer",
+    description:
+      "Built responsive user interfaces using React and implemented state management with Redux. Worked in an agile environment with daily stand-ups and sprint planning.",
+    start_date: "2021-07-12",
+    end_date: "2022-05-28",
+    is_current: false,
   },
 ]
 
@@ -107,7 +128,7 @@ export function ExperienceSection() {
       <div className="container mx-auto px-8">
         <h2 className="text-3xl font-bold mb-12">Experience</h2>
 
-        <div className="relative border-l border-border pl-14">
+        <div className="relative border-l border-border pl-12">
           {groupedExperience.map(company => (
             <div key={company.company} className="mb-12 relative">
               <div className="flex items-center mb-4">
