@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from "react"
 import { Phone, Rocket } from "lucide-react"
+import { FaDiscord } from "react-icons/fa"
 import { gsap } from "gsap"
 
 const leftImages = [
@@ -114,10 +115,17 @@ export function HeroSection() {
             <span className="text-gray-200">Obi</span>
           </div>
           <div className="flex items-center space-x-4">
-            <span className="text-sm text-muted-foreground hidden md:inline">Let's Connect</span>
-            <div className="bg-background border px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2">
-              Josephclinton.obi@gmail.com
-            </div>
+           <span className="text-sm text-muted-foreground hidden md:inline">
+      Join My Community
+    </span>
+
+    <div className="relative flex items-center justify-center bg-background border px-4 py-2 rounded-full">
+      {/* Discord Icon */}
+      <FaDiscord className="text-indigo-500 w-6 h-6" />
+
+      {/* Online Green Dot */}
+      <span className="absolute top-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-background" />
+    </div>
           </div>
         </div>
 
