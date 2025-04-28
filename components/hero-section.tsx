@@ -3,7 +3,16 @@
 import { useRef, useEffect } from "react"
 import { gsap } from "gsap"
 
-const placeholderImages = [
+const leftImages = [
+  "/placeholder.svg",
+  "/placeholder.svg",
+  "/placeholder.svg",
+  "/placeholder.svg",
+  "/placeholder.svg",
+
+]
+
+const rightImages = [
   "/placeholder.svg",
   "/placeholder.svg",
   "/placeholder.svg",
@@ -36,7 +45,7 @@ export function HeroSection() {
 
       gsap.to(right, {
         yPercent: 50,
-        repeat: 1,
+        repeat: -1,
         ease: "none",
         duration: 40,
       })
@@ -51,18 +60,18 @@ export function HeroSection() {
       className="relative min-h-screen flex flex-col items-center justify-start text-center px-4 overflow-hidden bg-background"
     >
       {/* Dotted Grid Background */}
-      <div className="absolute inset-0 bg-dot bg-repeat opacity-10 pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-[url('/dot-grid.svg')] bg-repeat opacity-10 pointer-events-none z-0" />
 
-      {/* Scrolling Images Behind Content */}
+      {/* Scrolling Images */}
       <div className="absolute inset-0 flex justify-between px-12 pointer-events-none z-0">
-        {/* Left Scrolling Column */}
+        {/* Left Column */}
         <div className="w-[250px] overflow-hidden relative">
           <div ref={leftScrollRef} className="flex flex-col space-y-6">
-            {[...placeholderImages, ...placeholderImages, ...placeholderImages].map((src, i) => (
+            {[...leftImages, ...leftImages, ...leftImages].map((src, i) => (
               <img
                 key={`left-${i}`}
                 src={src}
-                alt="project"
+                alt="left-project"
                 className="w-full rounded-xl object-cover opacity-20"
               />
             ))}
@@ -73,14 +82,14 @@ export function HeroSection() {
           <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background via-transparent to-transparent" />
         </div>
 
-        {/* Right Scrolling Column */}
+        {/* Right Column */}
         <div className="w-[250px] overflow-hidden relative">
           <div ref={rightScrollRef} className="flex flex-col space-y-6">
-            {[...placeholderImages, ...placeholderImages, ...placeholderImages].map((src, i) => (
+            {[...rightImages, ...rightImages, ...rightImages].map((src, i) => (
               <img
                 key={`right-${i}`}
                 src={src}
-                alt="project"
+                alt="right-project"
                 className="w-full rounded-xl object-cover opacity-20"
               />
             ))}
