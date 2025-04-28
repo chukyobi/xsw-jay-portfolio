@@ -4,11 +4,11 @@ import { useRef, useEffect } from "react"
 import { gsap } from "gsap"
 
 const placeholderImages = [
-   "/placeholder.svg",
-   "/placeholder.svg",
-   "/placeholder.svg",
-   "/placeholder.svg",
-   "/placeholder.svg",
+  "/placeholder.svg",
+  "/placeholder.svg",
+  "/placeholder.svg",
+  "/placeholder.svg",
+  "/placeholder.svg",
 ]
 
 export function HeroSection() {
@@ -24,18 +24,21 @@ export function HeroSection() {
         { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }
       )
 
-      gsap.to(leftScrollRef.current, {
+      const left = leftScrollRef.current
+      const right = rightScrollRef.current
+
+      gsap.to(left, {
         yPercent: -50,
         repeat: -1,
         ease: "none",
-        duration: 30,
+        duration: 40,
       })
 
-      gsap.to(rightScrollRef.current, {
-        yPercent: -50,
+      gsap.to(right, {
+        yPercent: 50,
         repeat: -1,
         ease: "none",
-        duration: 30,
+        duration: 40,
       })
     }, heroRef)
 
@@ -45,14 +48,17 @@ export function HeroSection() {
   return (
     <section
       ref={heroRef}
-      className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden bg-background"
+      className="relative min-h-screen flex flex-col items-center justify-start text-center px-4 overflow-hidden bg-background"
     >
-      {/* Scrolling Images Background */}
-      <div className="absolute inset-0 flex justify-between items-center px-8 z-0 pointer-events-none">
+      {/* Dotted Grid Background */}
+      <div className="absolute inset-0 bg-dot bg-repeat opacity-10 pointer-events-none z-0" />
+
+      {/* Scrolling Images Behind Content */}
+      <div className="absolute inset-0 flex justify-between px-12 pointer-events-none z-0">
         {/* Left Scrolling Column */}
-        <div className="w-[220px] overflow-hidden relative">
+        <div className="w-[250px] overflow-hidden relative">
           <div ref={leftScrollRef} className="flex flex-col space-y-6">
-            {[...placeholderImages, ...placeholderImages].map((src, i) => (
+            {[...placeholderImages, ...placeholderImages, ...placeholderImages].map((src, i) => (
               <img
                 key={`left-${i}`}
                 src={src}
@@ -62,15 +68,15 @@ export function HeroSection() {
             ))}
           </div>
 
-          {/* Gradient for fade effect */}
+          {/* Fade top and bottom */}
           <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background via-transparent to-transparent" />
           <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background via-transparent to-transparent" />
         </div>
 
         {/* Right Scrolling Column */}
-        <div className="w-[220px] overflow-hidden relative">
+        <div className="w-[250px] overflow-hidden relative">
           <div ref={rightScrollRef} className="flex flex-col space-y-6">
-            {[...placeholderImages, ...placeholderImages].reverse().map((src, i) => (
+            {[...placeholderImages, ...placeholderImages, ...placeholderImages].map((src, i) => (
               <img
                 key={`right-${i}`}
                 src={src}
@@ -80,14 +86,14 @@ export function HeroSection() {
             ))}
           </div>
 
-          {/* Gradient for fade effect */}
+          {/* Fade top and bottom */}
           <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background via-transparent to-transparent" />
           <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background via-transparent to-transparent" />
         </div>
       </div>
 
       {/* Top Content */}
-      <div className="relative z-10 w-full px-6 ">
+      <div className="relative z-10 w-full px-6 pt-8">
         {/* Navbar */}
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2 text-lg font-bold">
