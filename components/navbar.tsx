@@ -32,7 +32,7 @@ export function Navbar() {
         target="_blank"
         className="bg-black text-white text-sm font-medium px-4 py-2 rounded-full ml-2"
       >
-        <Github className="w-8 h-8" />
+        <Github className="w-5 h-5" />
       </Link>
     </div>
   )
