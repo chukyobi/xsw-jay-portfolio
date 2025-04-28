@@ -2,14 +2,37 @@
 
 import { Home, Twitter, Instagram, FileText } from "lucide-react"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+import { motion } from "framer-motion"
 
 export function Navbar() {
+  const [hidden, setHidden] = useState(false)
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY
+
+    const updateNavbar = () => {
+      if (window.scrollY > lastScrollY && window.scrollY > 50) {
+        setHidden(true) // Scroll Down -> Hide Navbar
+      } else {
+        setHidden(false) // Scroll Up -> Show Navbar
+      }
+      lastScrollY = window.scrollY
+    }
+
+    window.addEventListener("scroll", updateNavbar)
+    return () => window.removeEventListener("scroll", updateNavbar)
+  }, [])
+
   return (
-    <div className="fixed z-50 flex items-center space-x-4 px-6 py-2 bg-white border rounded-full shadow-md
-                    left-1/2 -translate-x-1/2 
-                    top-6 md:top-6 bottom-auto
-                    md:bottom-auto md:top-6
-                    sm:bottom-6 sm:top-auto">
+    <motion.div
+      animate={{ y: hidden ? 100 : 0 }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+      className="fixed z-50 flex items-center space-x-4 px-6 py-2 bg-white border rounded-full shadow-md
+                  left-1/2 -translate-x-1/2
+                  top-6 md:top-6
+                  sm:bottom-6 sm:top-auto"
+    >
       {/* Icons */}
       <Link href="/" className="text-muted-foreground hover:text-foreground">
         <Home className="w-5 h-5" />
@@ -34,6 +57,6 @@ export function Navbar() {
       >
         My Github
       </Link>
-    </div>
+    </motion.div>
   )
 }
