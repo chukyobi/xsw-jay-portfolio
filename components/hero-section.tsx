@@ -59,7 +59,7 @@ export function HeroSection() {
   return (
     <section
       ref={heroRef}
-      className="relative min-h-screen flex flex-col items-center justify-start text-center px-4 overflow-hidden bg-background"
+      className="relative min-h-screen flex flex-col items-center justify-start text-center px-4 overflow-hidden bg-white"
     >
       {/* Dotted Grid Background */}
      <div className="absolute inset-0 bg-dot bg-repeat opacity-10 pointer-events-none" />
@@ -123,7 +123,7 @@ export function HeroSection() {
         {/* Hero Main Text */}
         <div className="mt-24 text-center">
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-tight">
-            SENIOR<br />SOFTWARE<br />ENGINEER<span className="inline-block align-top ml-2">©</span>
+            SENIOR<br /><span className="text-blue-500">SOFTWARE</span><br />ENGINEER<span className="inline-block align-top ml-2">©</span>
           </h1>
 
           <p className="text-muted-foreground text-sm md:text-base mt-6 font-medium">
