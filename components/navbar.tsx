@@ -1,6 +1,6 @@
 "use client"
 
-import { Home, Twitter, Instagram, Mail, FileText } from "lucide-react"
+import { Home, Twitter, Instagram, Mail, FileText, Github  } from "lucide-react"
 import Link from "next/link"
 
 export function Navbar() {
@@ -32,7 +32,7 @@ export function Navbar() {
         target="_blank"
         className="bg-black text-white text-sm font-medium px-4 py-2 rounded-full ml-2"
       >
-        My Github
+        <Github className="w-8 h-8" />
       </Link>
     </div>
   )
