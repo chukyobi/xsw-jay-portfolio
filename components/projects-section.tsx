@@ -14,7 +14,7 @@ const projectsData = [
   {
     id: "1",
     title: "Webflow Template",
-    thumbnail_url: "/lumina-ecommerce.png",
+    thumbnail_url: "/left1.png",
     technologies: ["Figma", "Webflow", "UI/UX"],
     href: "/projects/1",
     size: "large",
@@ -29,16 +29,16 @@ const projectsData = [
   },
   {
     id: "3",
-    title: "Color Bubble",
-    thumbnail_url: "/cinema_app.png",
+    title: "Bubbles Cinema",
+    thumbnail_url: "/right4.png",
     technologies: ["React", "Three.js"],
     href: "/projects/3",
     size: "small",
   },
   {
     id: "4",
-    title: "Black Square",
-    thumbnail_url: "/real-eastate.png",
+    title: "Estate Nigeria",
+    thumbnail_url: "/right3.png",
     technologies: ["Next.js", "Tailwind"],
     href: "/projects/4",
     size: "large",
@@ -111,7 +111,7 @@ export function ProjectsSection() {
               <Link key={project.id} href={project.href} className="block">
                 <div
                   className={`project-card group relative overflow-hidden rounded-2xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 ${
-                    project.size === "large" ? "h-[6000px]" : "h-[550px]"
+                    project.size === "large" ? "h-[600px]" : "h-[550px]"
                   }`}
                 >
                   <div className="relative w-full h-full">
@@ -150,7 +150,7 @@ export function ProjectsSection() {
               <Link key={project.id} href={project.href} className="block">
                 <div
                   className={`project-card group relative overflow-hidden rounded-2xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 ${
-                    project.size === "large" ? "h-[600px]" "w-[400]": "h-[550px]" "w-[350]"
+                    project.size === "large" ? "h-[600px]": "h-[550px]"
                   }`}
                 >
                   <div className="relative w-full h-full">
