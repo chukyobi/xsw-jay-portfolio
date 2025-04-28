@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { ExternalLink } from "lucide-react" // using lucide icons (very clean)
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
@@ -17,6 +18,8 @@ const projectsData = [
     thumbnail_url: "/left1.png",
     technologies: ["Figma", "Webflow", "UI/UX"],
     href: "/projects/1",
+    github: "https://github.com/example/webflow-template",
+    live: "https://example.com/webflow-template",
     size: "large",
   },
   {
@@ -25,6 +28,8 @@ const projectsData = [
     thumbnail_url: "/alpharand.png",
     technologies: ["Next.js", "GSAP", "Framer Motion"],
     href: "/projects/2",
+    github: "https://github.com/example/kendrick-agency",
+    live: "https://example.com/kendrick-agency",
     size: "small",
   },
   {
@@ -33,6 +38,8 @@ const projectsData = [
     thumbnail_url: "/right4.png",
     technologies: ["React", "Three.js"],
     href: "/projects/3",
+    github: "https://github.com/example/bubbles-cinema",
+    live: "https://example.com/bubbles-cinema",
     size: "small",
   },
   {
@@ -41,6 +48,8 @@ const projectsData = [
     thumbnail_url: "/right3.png",
     technologies: ["Next.js", "Tailwind"],
     href: "/projects/4",
+    github: "https://github.com/example/estate-nigeria",
+    live: "https://example.com/estate-nigeria",
     size: "large",
   },
 ]
@@ -95,7 +104,7 @@ export function ProjectsSection() {
 
   return (
     <section id="projects" ref={sectionRef} className="py-24 bg-[#0D0D0D] text-white">
-      <div className="container mx-auto px-8 sm:px-16">
+      <div className="container mx-auto px-6 sm:px-12">
         {/* Heading */}
         <div className="mb-16">
           <h2 className="text-5xl md:text-7xl font-extrabold leading-tight">
@@ -104,83 +113,109 @@ export function ProjectsSection() {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 relative">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 relative">
           {/* Left Column */}
-          <div className="flex flex-col gap-12 items-center">
+          <div className="flex flex-col gap-10 items-center">
             {projectsData.filter((_, i) => i % 2 === 0).map((project) => (
               <Link key={project.id} href={project.href} className="block w-[90%]">
                 <div
-                  className={`project-card group relative overflow-hidden rounded-2xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 ${
+                  className={`project-card group relative overflow-hidden rounded-3xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 ${
                     project.size === "large" ? "h-[600px]" : "h-[550px]"
                   }`}
                 >
-                  <div className="relative w-full h-full">
+                  {/* External Live Link Icon */}
+                  <a
+                    href={project.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute top-4 right-4 z-10 bg-white text-black rounded-full p-2 hover:bg-gray-300 transition"
+                  >
+                    <ExternalLink size={20} />
+                  </a>
+
+                  <div className="relative w-full h-5/6">
                     <Image
                       src={project.thumbnail_url}
                       alt={project.title}
                       fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105 rounded-t-3xl"
                     />
-                    {/* Dark Overlay */}
-                    <div className="absolute inset-0 bg-black/40"></div>
+                  </div>
 
-                    {/* Tech stack */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  {/* Bottom Solid Info Section */}
+                  <div className="h-1/6 flex items-center justify-between px-4 bg-neutral-900 rounded-b-3xl">
+                    <div className="flex gap-2 flex-wrap">
                       {project.technologies.map((tech, idx) => (
                         <span
                           key={idx}
-                          className="tech-pill px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white text-xs"
+                          className="tech-pill px-3 py-1 rounded-full bg-neutral-800 text-white text-xs"
                         >
                           {tech}
                         </span>
                       ))}
                     </div>
-                  </div>
-
-                  {/* Title */}
-                  <div className="absolute bottom-4 left-4 text-lg font-bold">
-                    {project.title}
+                    <div className="flex gap-2">
+                      <a href={project.live} target="_blank" rel="noopener noreferrer" className="text-xs underline">
+                        Visit
+                      </a>
+                      <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-xs underline">
+                        GitHub
+                      </a>
+                    </div>
                   </div>
                 </div>
               </Link>
             ))}
           </div>
 
-          {/* Right Column (Offset Down) */}
-          <div className="flex flex-col gap-12 items-center mt-16 sm:mt-24">
+          {/* Right Column (Offset) */}
+          <div className="flex flex-col gap-10 items-center mt-12 sm:mt-20">
             {projectsData.filter((_, i) => i % 2 !== 0).map((project) => (
               <Link key={project.id} href={project.href} className="block w-[90%]">
                 <div
-                  className={`project-card group relative overflow-hidden rounded-2xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 ${
+                  className={`project-card group relative overflow-hidden rounded-3xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 ${
                     project.size === "large" ? "h-[600px]" : "h-[550px]"
                   }`}
                 >
-                  <div className="relative w-full h-full">
+                  {/* External Live Link Icon */}
+                  <a
+                    href={project.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute top-4 right-4 z-10 bg-white text-black rounded-full p-2 hover:bg-gray-300 transition"
+                  >
+                    <ExternalLink size={20} />
+                  </a>
+
+                  <div className="relative w-full h-5/6">
                     <Image
                       src={project.thumbnail_url}
                       alt={project.title}
                       fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105 rounded-t-3xl"
                     />
-                    {/* Dark Overlay */}
-                    <div className="absolute inset-0 bg-black/40"></div>
+                  </div>
 
-                    {/* Tech stack */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  {/* Bottom Solid Info Section */}
+                  <div className="h-1/6 flex items-center justify-between px-4 bg-neutral-900 rounded-b-3xl">
+                    <div className="flex gap-2 flex-wrap">
                       {project.technologies.map((tech, idx) => (
                         <span
                           key={idx}
-                          className="tech-pill px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white text-xs"
+                          className="tech-pill px-3 py-1 rounded-full bg-neutral-800 text-white text-xs"
                         >
                           {tech}
                         </span>
                       ))}
                     </div>
-                  </div>
-
-                  {/* Title */}
-                  <div className="absolute bottom-4 left-4 text-lg font-bold">
-                    {project.title}
+                    <div className="flex gap-2">
+                      <a href={project.live} target="_blank" rel="noopener noreferrer" className="text-xs underline">
+                        Visit
+                      </a>
+                      <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-xs underline">
+                        GitHub
+                      </a>
+                    </div>
                   </div>
                 </div>
               </Link>
@@ -188,7 +223,7 @@ export function ProjectsSection() {
           </div>
         </div>
 
-        {/* View All Button */}
+        {/* View All */}
         <div className="flex justify-center mt-20">
           <Link href="/projects">
             <button className="group inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition">
