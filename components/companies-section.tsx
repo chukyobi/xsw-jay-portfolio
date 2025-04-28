@@ -16,7 +16,7 @@ const companiesData = [
   { id: "2", name: "Company 2", logoUrl: "/jambaze-logo.svg?height=80&width=200" },
   { id: "3", name: "Company 3", logoUrl: "/jecbricks-logo-removebg-preview.png?height=80&width=200" },
   { id: "4", name: "Company 4", logoUrl: "/ipdigi.png?height=80&width=200" },
-  { id: "5", name: "Company 5", logoUrl: "/Black_Yellow_Minimalist_Brain_logo-removebg-preview.png?height=80&width=200" },
+  { id: "5", name: "Company 5", logoUrl: "/Black_Yellow_Minimalist_Brain_Logo-removebg-preview.png?height=80&width=200" },
 ]
 
 export function CompaniesSection() {
