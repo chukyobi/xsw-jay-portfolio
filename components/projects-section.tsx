@@ -95,7 +95,7 @@ export function ProjectsSection() {
 
   return (
     <section id="projects" ref={sectionRef} className="py-24 bg-[#0D0D0D] text-white">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-8 sm:px-16">
         {/* Heading */}
         <div className="mb-16">
           <h2 className="text-5xl md:text-7xl font-extrabold leading-tight">
@@ -104,11 +104,11 @@ export function ProjectsSection() {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 relative">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 relative">
           {/* Left Column */}
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-12 items-center">
             {projectsData.filter((_, i) => i % 2 === 0).map((project) => (
-              <Link key={project.id} href={project.href} className="block">
+              <Link key={project.id} href={project.href} className="block w-[90%]">
                 <div
                   className={`project-card group relative overflow-hidden rounded-2xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 ${
                     project.size === "large" ? "h-[600px]" : "h-[550px]"
@@ -121,6 +121,8 @@ export function ProjectsSection() {
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
+                    {/* Dark Overlay */}
+                    <div className="absolute inset-0 bg-black/40"></div>
 
                     {/* Tech stack */}
                     <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -144,13 +146,13 @@ export function ProjectsSection() {
             ))}
           </div>
 
-          {/* Right Column (OFFSET) */}
-          <div className="flex flex-col gap-8 mt-16 sm:mt-24">
+          {/* Right Column (Offset Down) */}
+          <div className="flex flex-col gap-12 items-center mt-16 sm:mt-24">
             {projectsData.filter((_, i) => i % 2 !== 0).map((project) => (
-              <Link key={project.id} href={project.href} className="block">
+              <Link key={project.id} href={project.href} className="block w-[90%]">
                 <div
                   className={`project-card group relative overflow-hidden rounded-2xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 ${
-                    project.size === "large" ? "h-[600px]": "h-[550px]"
+                    project.size === "large" ? "h-[600px]" : "h-[550px]"
                   }`}
                 >
                   <div className="relative w-full h-full">
@@ -160,6 +162,8 @@ export function ProjectsSection() {
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
+                    {/* Dark Overlay */}
+                    <div className="absolute inset-0 bg-black/40"></div>
 
                     {/* Tech stack */}
                     <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -184,7 +188,7 @@ export function ProjectsSection() {
           </div>
         </div>
 
-        {/* View All */}
+        {/* View All Button */}
         <div className="flex justify-center mt-20">
           <Link href="/projects">
             <button className="group inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition">
