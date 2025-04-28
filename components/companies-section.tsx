@@ -10,14 +10,13 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-// Sample data - would be fetched from Supabase in a real implementation
+// Sample data
 const companiesData = [
   { id: "1", name: "Company 1", logoUrl: "/adavanapp-logo-removebg-preview.png?height=80&width=200" },
   { id: "2", name: "Company 2", logoUrl: "/jambaze-logo.svg?height=80&width=200" },
   { id: "3", name: "Company 3", logoUrl: "/jecbricks-logo-removebg-preview.png?height=80&width=200" },
   { id: "4", name: "Company 4", logoUrl: "/ipdigi.png?height=80&width=200" },
-  { id: "4", name: "Company 4", logoUrl: "/Black_Yellow_Minimalist_Brain_logo-removebg-preview.png?height=80&width=200" },
-  
+  { id: "5", name: "Company 5", logoUrl: "/Black_Yellow_Minimalist_Brain_logo-removebg-preview.png?height=80&width=200" },
 ]
 
 export function CompaniesSection() {
@@ -74,14 +73,14 @@ export function CompaniesSection() {
           {[...companiesData, ...companiesData].map((company, index) => (
             <div
               key={`${company.id}-${index}`}
-              className="flex-shrink-0 flex items-center justify-center w-40 h-20 grayscale opacity-70 hover:opacity-100 transition-all duration-300"
+              className="flex-shrink-0 flex items-center justify-center w-40 h-20 transition-all duration-300"
             >
               <Image
                 src={company.logoUrl || "/placeholder.svg"}
                 alt={company.name}
                 width={160}
                 height={80}
-                className="object-contain"
+                className="object-contain brightness-0 invert opacity-60 hover:opacity-100 transition-all duration-300"
               />
             </div>
           ))}
