@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useEffect } from "react"
+import { useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { gsap } from "gsap"
@@ -14,9 +14,10 @@ const projectsData = [
   {
     id: "1",
     title: "Webflow Template",
-    thumbnail_url: "/right2.png", 
+    thumbnail_url: "/right2.png",
     technologies: ["Figma", "Webflow", "UI/UX"],
     href: "/projects/1",
+    size: "large",
   },
   {
     id: "2",
@@ -24,6 +25,7 @@ const projectsData = [
     thumbnail_url: "/placeholder.svg",
     technologies: ["Next.js", "GSAP", "Framer Motion"],
     href: "/projects/2",
+    size: "small",
   },
   {
     id: "3",
@@ -31,6 +33,15 @@ const projectsData = [
     thumbnail_url: "/placeholder.svg",
     technologies: ["React", "Three.js"],
     href: "/projects/3",
+    size: "small",
+  },
+  {
+    id: "4",
+    title: "Black Square",
+    thumbnail_url: "/placeholder.svg",
+    technologies: ["Next.js", "Tailwind"],
+    href: "/projects/4",
+    size: "large",
   },
 ]
 
@@ -61,10 +72,10 @@ export function ProjectsSection() {
         card.addEventListener("mouseenter", () => {
           techs.forEach((pill) => {
             gsap.to(pill, {
-              y: () => gsap.utils.random(-10, 10),
+              y: () => gsap.utils.random(-8, 8),
               repeat: -1,
               yoyo: true,
-              duration: 1,
+              duration: 1.2,
               ease: "sine.inOut",
             })
           })
@@ -93,11 +104,15 @@ export function ProjectsSection() {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 auto-rows-[300px]">
           {projectsData.map((project) => (
             <Link key={project.id} href={project.href}>
-              <div className="project-card group relative overflow-hidden rounded-2xl bg-neutral-900 hover:shadow-lg transition-shadow">
-                <div className="relative h-[300px] w-full overflow-hidden">
+              <div
+                className={`project-card group relative overflow-hidden rounded-2xl bg-neutral-900 hover:bg-neutral-800 transition-colors duration-300 ${
+                  project.size === "large" ? "row-span-2" : ""
+                }`}
+              >
+                <div className="relative h-full w-full overflow-hidden">
                   <Image
                     src={project.thumbnail_url}
                     alt={project.title}
@@ -105,12 +120,12 @@ export function ProjectsSection() {
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
 
-                  {/* Tech stack pills */}
+                  {/* Glassmorphism Tech Stack */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
                     {project.technologies.map((tech, idx) => (
                       <span
                         key={idx}
-                        className="tech-pill text-sm bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm"
+                        className="tech-pill text-xs px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white"
                       >
                         {tech}
                       </span>
@@ -118,17 +133,17 @@ export function ProjectsSection() {
                   </div>
                 </div>
 
-                {/* Project Title */}
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold">{project.title}</h3>
+                {/* Title */}
+                <div className="absolute bottom-4 left-4 text-lg font-semibold">
+                  {project.title}
                 </div>
               </div>
             </Link>
           ))}
         </div>
 
-        {/* View All Projects Button */}
-        <div className="flex justify-center mt-16">
+        {/* View All Projects */}
+        <div className="flex justify-center mt-20">
           <Link href="/projects">
             <button className="group inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition">
               View All Projects
