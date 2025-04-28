@@ -99,7 +99,7 @@ export function HeroSection() {
 
           {/* Fade top and bottom */}
           <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background via-transparent to-transparent" />
-          <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background via-transparent to-transparent" />
+          <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-background via-transparent to-transparent" />
         </div>
       </div>
         <div className="absolute inset-0 bg-dot bg-repeat opacity-10 pointer-events-none" />
@@ -130,8 +130,13 @@ export function HeroSection() {
             CRAFTING SCALABLE SOFTWARE THROUGH CREATIVE PROBLEM-SOLVING.
           </p>
 
-          <div className="flex flex-wrap justify-center items-center gap-6">
-            {/* Skill icons here */}
+          <div className="flex flex-wrap justify-center items-center gap-6 mt-16">
+            <button className="px-8 py-4 rounded-full bg-background border border-white/20 text-lg font-semibold hover:bg-white hover:text-background transition-all duration-300">
+              Book a Call
+            </button>
+            <button className="px-8 py-4 rounded-full bg-blue-500 text-background text-lg font-semibold hover:bg-blue-600 transition-all duration-300">
+              Amazing Projects
+            </button>
           </div>
         </div>
       </div>
