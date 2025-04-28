@@ -5,8 +5,11 @@ import Link from "next/link"
 
 export function Navbar() {
   return (
-    <div className="fixed inset-x-0 mx-auto flex w-fit items-center space-x-4 px-6 py-2 border rounded-full shadow-md bg-white z-50
-      top-6 md:top-6 md:bottom-auto bottom-6">
+    <div className="fixed flex items-center justify-center gap-4 px-6 py-2 rounded-full border shadow-md bg-white z-50
+      top-6 md:top-6 md:bottom-auto bottom-6
+      left-1/2 transform -translate-x-1/2
+      w-[90%] max-w-[380px]">
+      
       {/* Icons */}
       <Link href="/" className="text-muted-foreground hover:text-foreground">
         <Home className="w-5 h-5" />
