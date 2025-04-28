@@ -104,43 +104,84 @@ export function ProjectsSection() {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 auto-rows-[20rem]">
-          {projectsData.map((project) => (
-            <Link key={project.id} href={project.href} className="block">
-              <div
-                className={`project-card group relative overflow-hidden rounded-2xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 ${
-                  project.size === "large" ? "row-span-2" : ""
-                }`}
-              >
-                {/* Image Container */}
-                <div className="relative w-full h-full min-h-[20rem]">
-                  <Image
-                    src={project.thumbnail_url}
-                    alt={project.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 relative">
+          {/* Left Column */}
+          <div className="flex flex-col gap-8">
+            {projectsData.filter((_, i) => i % 2 === 0).map((project) => (
+              <Link key={project.id} href={project.href} className="block">
+                <div
+                  className={`project-card group relative overflow-hidden rounded-2xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 ${
+                    project.size === "large" ? "h-[550px]" : "h-[450px]"
+                  }`}
+                >
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={project.thumbnail_url}
+                      alt={project.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
 
-                  {/* Glassmorphism tech stack */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    {project.technologies.map((tech, idx) => (
-                      <span
-                        key={idx}
-                        className="tech-pill px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white text-xs"
-                      >
-                        {tech}
-                      </span>
-                    ))}
+                    {/* Tech stack */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      {project.technologies.map((tech, idx) => (
+                        <span
+                          key={idx}
+                          className="tech-pill px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white text-xs"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Title */}
+                  <div className="absolute bottom-4 left-4 text-lg font-bold">
+                    {project.title}
                   </div>
                 </div>
+              </Link>
+            ))}
+          </div>
 
-                {/* Title */}
-                <div className="absolute bottom-4 left-4 text-lg font-bold">
-                  {project.title}
+          {/* Right Column (OFFSET) */}
+          <div className="flex flex-col gap-8 mt-16 sm:mt-24">
+            {projectsData.filter((_, i) => i % 2 !== 0).map((project) => (
+              <Link key={project.id} href={project.href} className="block">
+                <div
+                  className={`project-card group relative overflow-hidden rounded-2xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 ${
+                    project.size === "large" ? "h-[550px]" : "h-[450px]"
+                  }`}
+                >
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={project.thumbnail_url}
+                      alt={project.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+
+                    {/* Tech stack */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      {project.technologies.map((tech, idx) => (
+                        <span
+                          key={idx}
+                          className="tech-pill px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white text-xs"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Title */}
+                  <div className="absolute bottom-4 left-4 text-lg font-bold">
+                    {project.title}
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
+          </div>
         </div>
 
         {/* View All */}
