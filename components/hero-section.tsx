@@ -132,11 +132,11 @@ export function HeroSection() {
           </p>
 
           <div className="flex flex-wrap justify-center items-center gap-6 mt-16">
-            <button className="px-8 py-4 rounded-full bg-background border border-white/20 text-lg font-semibold hover:bg-white hover:text-background transition-all duration-300">
+            <button className="flex px-8 py-4 rounded-full bg-background border border-white/20 text-lg font-semibold hover:bg-white hover:text-background transition-all duration-300">
               <Phone size={20} />
               Book a Call
             </button>
-            <button className="px-8 py-4 rounded-full bg-blue-500 text-background text-lg font-semibold hover:bg-blue-600 transition-all duration-300">
+            <button className="flex px-8 py-4 rounded-full bg-blue-500 text-background text-lg font-semibold hover:bg-blue-600 transition-all duration-300">
               <Rocket size={20} />
               Amazing Projects
             </button>
