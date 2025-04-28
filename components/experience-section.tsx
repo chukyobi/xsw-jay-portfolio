@@ -48,7 +48,7 @@ const fallbackExperience: Experience[] = [
     id: "3",
     company: "Urban10 Media",
     position: "Software Developer",
-    location: "Anambra, NG"
+    location: "Anambra, NG",
     description:
       "Built responsive user interfaces using React and implemented state management with Redux. Worked in an agile environment with daily stand-ups and sprint planning.",
     start_date: "2021-07-12",
