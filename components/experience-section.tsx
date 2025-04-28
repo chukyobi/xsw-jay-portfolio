@@ -35,7 +35,7 @@ const fallbackExperience: Experience[] = [
   {
     id: "2",
     company: "National Bureau of Statistics",
-    position: "Data Editor",
+    position: "Technical Support Engineer",
     description:
       "comprehensive data manipulation, editing, and refinement processes by utilizing survey solutions for the National Agricultural Sample Survey (NASS) sponsored by the World Bank. Collaborated with the software engineering team to implement real-time updates of pertinent statistical data to both their database and public website.",
     start_date: "2022-08-01",
@@ -71,7 +71,7 @@ function groupByCompany(experience: Experience[]): CompanyGroupedExperience[] {
       description: item.description,
       start_date: item.start_date,
       end_date: item.end_date,
-      location: "Bangalore, India", // you can customize based on your schema
+      //location: "Bangalore, India"
       is_current: item.is_current,
       is_highlight: item.position.includes("Senior"),
     })
