@@ -5,163 +5,137 @@ import Image from "next/image"
 import Link from "next/link"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Github, ExternalLink, ArrowRight } from "lucide-react"
 
-// Register GSAP plugins
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-// Sample data - would be fetched from Supabase in a real implementation
 const projectsData = [
   {
     id: "1",
-    title: "E-Commerce Platform",
-    description:
-      "A full-featured e-commerce platform with product management, cart functionality, and payment processing.",
-    thumbnail_url: "/placeholder.svg?height=400&width=600",
-    github_url: "https://github.com",
-    live_url: "https://example.com",
-    technologies: ["React", "Node.js", "MongoDB", "Express", "Stripe"],
+    title: "Webflow Template",
+    thumbnail_url: "/right2.png", 
+    technologies: ["Figma", "Webflow", "UI/UX"],
+    href: "/projects/1",
   },
   {
     id: "2",
-    title: "Task Management App",
-    description: "A collaborative task management application with real-time updates and team features.",
-    thumbnail_url: "/placeholder.svg?height=400&width=600",
-    github_url: "https://github.com",
-    live_url: "https://example.com",
-    technologies: ["React", "Firebase", "Material UI", "Redux"],
+    title: "Kendrick Agency",
+    thumbnail_url: "/placeholder.svg",
+    technologies: ["Next.js", "GSAP", "Framer Motion"],
+    href: "/projects/2",
   },
   {
     id: "3",
-    title: "Fitness Tracker Mobile App",
-    description: "A cross-platform mobile application for tracking workouts and fitness progress.",
-    thumbnail_url: "/placeholder.svg?height=400&width=600",
-    github_url: "https://github.com",
-    live_url: "https://example.com",
-    technologies: ["React Native", "Expo", "Firebase", "Redux"],
+    title: "Color Bubble",
+    thumbnail_url: "/placeholder.svg",
+    technologies: ["React", "Three.js"],
+    href: "/projects/3",
   },
 ]
 
 export function ProjectsSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
-  const headingRef = useRef<HTMLDivElement>(null)
-  const projectsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Heading animation
       gsap.fromTo(
-        headingRef.current,
+        sectionRef.current,
         { opacity: 0, y: 50 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 1,
           scrollTrigger: {
-            trigger: headingRef.current,
+            trigger: sectionRef.current,
             start: "top 80%",
           },
-        },
+        }
       )
 
-      // Projects animation
-      if (projectsRef.current) {
-        const projects = projectsRef.current.querySelectorAll(".project-card")
-        gsap.fromTo(
-          projects,
-          { opacity: 0, y: 50 },
-          {
-            opacity: 1,
-            y: 0,
-            stagger: 0.2,
-            duration: 0.8,
-            scrollTrigger: {
-              trigger: projectsRef.current,
-              start: "top 75%",
-            },
-          },
-        )
-      }
+      const cards = document.querySelectorAll(".project-card")
+
+      cards.forEach((card) => {
+        const techs = card.querySelectorAll(".tech-pill")
+
+        card.addEventListener("mouseenter", () => {
+          techs.forEach((pill) => {
+            gsap.to(pill, {
+              y: () => gsap.utils.random(-10, 10),
+              repeat: -1,
+              yoyo: true,
+              duration: 1,
+              ease: "sine.inOut",
+            })
+          })
+        })
+
+        card.addEventListener("mouseleave", () => {
+          techs.forEach((pill) => {
+            gsap.killTweensOf(pill)
+            gsap.to(pill, { y: 0, duration: 0.5, ease: "power3.out" })
+          })
+        })
+      })
     }, sectionRef)
 
     return () => ctx.revert()
   }, [])
 
   return (
-    <section id="projects" ref={sectionRef} className="py-16 md:py-24 bg-background">
+    <section id="projects" ref={sectionRef} className="py-24 bg-[#0D0D0D] text-white">
       <div className="container mx-auto px-4">
-        <div ref={headingRef} className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Projects</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            A selection of my recent work and personal projects.
-          </p>
+        {/* Heading */}
+        <div className="mb-16">
+          <h2 className="text-5xl md:text-7xl font-extrabold leading-tight">
+            RECENT <br /> PROJECTS <span className="text-gray-500 text-xl">(2024)</span>
+          </h2>
         </div>
 
-        <div ref={projectsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projectsData.map((project, index) => (
-            <Card
-              key={project.id}
-              className="project-card border border-border/50 hover:border-blue-accent/50 transition-all duration-300 hover:-translate-y-2 overflow-hidden"
-            >
-              <div className="relative h-48 w-full overflow-hidden">
-                <Image
-                  src={project.thumbnail_url || "/placeholder.svg"}
-                  alt={project.title}
-                  fill
-                  className="object-cover transition-transform hover:scale-105"
-                />
+        {/* Projects Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {projectsData.map((project) => (
+            <Link key={project.id} href={project.href}>
+              <div className="project-card group relative overflow-hidden rounded-2xl bg-neutral-900 hover:shadow-lg transition-shadow">
+                <div className="relative h-[300px] w-full overflow-hidden">
+                  <Image
+                    src={project.thumbnail_url}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+
+                  {/* Tech stack pills */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                    {project.technologies.map((tech, idx) => (
+                      <span
+                        key={idx}
+                        className="tech-pill text-sm bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Project Title */}
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold">{project.title}</h3>
+                </div>
               </div>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                <p className="text-muted-foreground mb-4">{project.description}</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.technologies.map((tech, techIndex) => (
-                    <span key={techIndex} className="text-xs px-2 py-1 rounded-full bg-muted text-muted-foreground">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </CardContent>
-              <CardFooter className="px-6 pb-6 pt-0 flex justify-between">
-                <div className="flex space-x-2">
-                  {project.github_url && (
-                    <Link href={project.github_url} target="_blank" rel="noopener noreferrer">
-                      <Button size="icon" variant="outline">
-                        <Github className="h-4 w-4" />
-                        <span className="sr-only">GitHub</span>
-                      </Button>
-                    </Link>
-                  )}
-                  {project.live_url && (
-                    <Link href={project.live_url} target="_blank" rel="noopener noreferrer">
-                      <Button size="icon" variant="outline">
-                        <ExternalLink className="h-4 w-4" />
-                        <span className="sr-only">Live Demo</span>
-                      </Button>
-                    </Link>
-                  )}
-                </div>
-                <Link href={`/projects/${index + 1}`}>
-                  <Button variant="ghost" className="text-blue-accent">
-                    Details
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </CardFooter>
-            </Card>
+            </Link>
           ))}
         </div>
 
-        <div className="flex justify-center mt-12">
+        {/* View All Projects Button */}
+        <div className="flex justify-center mt-16">
           <Link href="/projects">
-            <Button className="group">
+            <button className="group inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition">
               View All Projects
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
+              <span className="inline-block transform group-hover:translate-x-1 transition-transform">
+                →
+              </span>
+            </button>
           </Link>
         </div>
       </div>
