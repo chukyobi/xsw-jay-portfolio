@@ -36,7 +36,7 @@ export function HeroSection() {
 
       gsap.to(right, {
         yPercent: 50,
-        repeat: -1,
+        repeat: 1,
         ease: "none",
         duration: 40,
       })
