@@ -14,7 +14,7 @@ const projectsData = [
   {
     id: "1",
     title: "Webflow Template",
-    thumbnail_url: "/right2.png",
+    thumbnail_url: "/lumina-ecommerce.png",
     technologies: ["Figma", "Webflow", "UI/UX"],
     href: "/projects/1",
     size: "large",
@@ -22,7 +22,7 @@ const projectsData = [
   {
     id: "2",
     title: "Kendrick Agency",
-    thumbnail_url: "/right2.png",
+    thumbnail_url: "/alpharand.png",
     technologies: ["Next.js", "GSAP", "Framer Motion"],
     href: "/projects/2",
     size: "small",
@@ -30,7 +30,7 @@ const projectsData = [
   {
     id: "3",
     title: "Color Bubble",
-    thumbnail_url: "/right2.png",
+    thumbnail_url: "/cinema_app.png",
     technologies: ["React", "Three.js"],
     href: "/projects/3",
     size: "small",
@@ -38,7 +38,7 @@ const projectsData = [
   {
     id: "4",
     title: "Black Square",
-    thumbnail_url: "/right2.png",
+    thumbnail_url: "/real-eastate.png",
     technologies: ["Next.js", "Tailwind"],
     href: "/projects/4",
     size: "large",
@@ -111,7 +111,7 @@ export function ProjectsSection() {
               <Link key={project.id} href={project.href} className="block">
                 <div
                   className={`project-card group relative overflow-hidden rounded-2xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 ${
-                    project.size === "large" ? "h-[550px]" : "h-[450px]"
+                    project.size === "large" ? "h-[6000px]" : "h-[550px]"
                   }`}
                 >
                   <div className="relative w-full h-full">
@@ -150,7 +150,7 @@ export function ProjectsSection() {
               <Link key={project.id} href={project.href} className="block">
                 <div
                   className={`project-card group relative overflow-hidden rounded-2xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 ${
-                    project.size === "large" ? "h-[550px]" : "h-[450px]"
+                    project.size === "large" ? "h-[600px]" "w-[400]": "h-[550px]" "w-[350]"
                   }`}
                 >
                   <div className="relative w-full h-full">
