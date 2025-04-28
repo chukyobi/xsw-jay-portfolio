@@ -108,7 +108,7 @@ export function ProjectsSection() {
         {/* Heading */}
         <div className="mb-16">
           <h2 className="text-5xl md:text-7xl font-extrabold leading-tight">
-            RECENT <br /> PROJECTS <span className="text-gray-500 text-xl">(2024)</span>
+            RECENT <br /> PROJECTS <span className="text-gray-500 text-xl">(2025)</span>
           </h2>
         </div>
 
