@@ -22,7 +22,7 @@ const projectsData = [
   {
     id: "2",
     title: "Kendrick Agency",
-    thumbnail_url: "/placeholder.svg",
+    thumbnail_url: "/right2.png",
     technologies: ["Next.js", "GSAP", "Framer Motion"],
     href: "/projects/2",
     size: "small",
@@ -30,7 +30,7 @@ const projectsData = [
   {
     id: "3",
     title: "Color Bubble",
-    thumbnail_url: "/placeholder.svg",
+    thumbnail_url: "/right2.png",
     technologies: ["React", "Three.js"],
     href: "/projects/3",
     size: "small",
@@ -38,7 +38,7 @@ const projectsData = [
   {
     id: "4",
     title: "Black Square",
-    thumbnail_url: "/placeholder.svg",
+    thumbnail_url: "/right2.png",
     technologies: ["Next.js", "Tailwind"],
     href: "/projects/4",
     size: "large",
@@ -104,15 +104,16 @@ export function ProjectsSection() {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 auto-rows-[300px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 auto-rows-[20rem]">
           {projectsData.map((project) => (
-            <Link key={project.id} href={project.href}>
+            <Link key={project.id} href={project.href} className="block">
               <div
-                className={`project-card group relative overflow-hidden rounded-2xl bg-neutral-900 hover:bg-neutral-800 transition-colors duration-300 ${
+                className={`project-card group relative overflow-hidden rounded-2xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 ${
                   project.size === "large" ? "row-span-2" : ""
                 }`}
               >
-                <div className="relative h-full w-full overflow-hidden">
+                {/* Image Container */}
+                <div className="relative w-full h-full min-h-[20rem]">
                   <Image
                     src={project.thumbnail_url}
                     alt={project.title}
@@ -120,12 +121,12 @@ export function ProjectsSection() {
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
 
-                  {/* Glassmorphism Tech Stack */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                  {/* Glassmorphism tech stack */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                     {project.technologies.map((tech, idx) => (
                       <span
                         key={idx}
-                        className="tech-pill text-xs px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white"
+                        className="tech-pill px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white text-xs"
                       >
                         {tech}
                       </span>
@@ -134,7 +135,7 @@ export function ProjectsSection() {
                 </div>
 
                 {/* Title */}
-                <div className="absolute bottom-4 left-4 text-lg font-semibold">
+                <div className="absolute bottom-4 left-4 text-lg font-bold">
                   {project.title}
                 </div>
               </div>
@@ -142,7 +143,7 @@ export function ProjectsSection() {
           ))}
         </div>
 
-        {/* View All Projects */}
+        {/* View All */}
         <div className="flex justify-center mt-20">
           <Link href="/projects">
             <button className="group inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition">
