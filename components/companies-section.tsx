@@ -12,14 +12,11 @@ if (typeof window !== "undefined") {
 
 // Sample data - would be fetched from Supabase in a real implementation
 const companiesData = [
-  { id: "1", name: "Company 1", logoUrl: "/placeholder.svg?height=80&width=200" },
-  { id: "2", name: "Company 2", logoUrl: "/placeholder.svg?height=80&width=200" },
-  { id: "3", name: "Company 3", logoUrl: "/placeholder.svg?height=80&width=200" },
-  { id: "4", name: "Company 4", logoUrl: "/placeholder.svg?height=80&width=200" },
-  { id: "5", name: "Company 5", logoUrl: "/placeholder.svg?height=80&width=200" },
-  { id: "6", name: "Company 6", logoUrl: "/placeholder.svg?height=80&width=200" },
-  { id: "7", name: "Company 7", logoUrl: "/placeholder.svg?height=80&width=200" },
-  { id: "8", name: "Company 8", logoUrl: "/placeholder.svg?height=80&width=200" },
+  { id: "1", name: "Company 1", logoUrl: "/adavanapp-logo-removebg-preview.png?height=80&width=200" },
+  { id: "2", name: "Company 2", logoUrl: "/jambaze-logo.svg?height=80&width=200" },
+  { id: "3", name: "Company 3", logoUrl: "/nbs-logo.png?height=80&width=200" },
+  { id: "4", name: "Company 4", logoUrl: "/urban10-logo.svg?height=80&width=200" },
+  
 ]
 
 export function CompaniesSection() {
