@@ -1,6 +1,6 @@
 "use client"
 
-import { Home, Twitter, Instagram, FileText } from "lucide-react"
+import { Home, Twitter, Instagram, Mail, FileText } from "lucide-react"
 import Link from "next/link"
 
 export function Navbar() {
@@ -19,7 +19,7 @@ export function Navbar() {
         <Twitter className="w-5 h-5" />
       </Link>
       <Link href="https://instagram.com/chuky.obi_" target="_blank" className="text-muted-foreground hover:text-foreground">
-        <Instagram className="w-5 h-5" />
+        <Mail className="w-5 h-5" />
       </Link>
       <Link href="/resume.pdf" target="_blank" className="text-muted-foreground hover:text-foreground">
         <FileText className="w-5 h-5" />
