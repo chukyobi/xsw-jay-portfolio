@@ -4,20 +4,22 @@ import { useRef, useEffect } from "react"
 import { gsap } from "gsap"
 
 const leftImages = [
-  "/placeholder.svg",
-  "/placeholder.svg",
-  "/placeholder.svg",
-  "/placeholder.svg",
-  "/placeholder.svg",
-
+  "/left1.png",
+  "/left2.png",
+  "/left3.png",
+  "/left4.png",
+  "/left5.png",
+  
+ 
 ]
 
 const rightImages = [
-  "/placeholder.svg",
-  "/placeholder.svg",
-  "/placeholder.svg",
-  "/placeholder.svg",
-  "/placeholder.svg",
+  "/right1.png",
+  "/right2.png",
+  "/right3.png",
+  "/right4.png",
+  "/right5.png",
+  
 ]
 
 export function HeroSection() {
@@ -65,7 +67,7 @@ export function HeroSection() {
       {/* Scrolling Images */}
       <div className="absolute inset-0 flex justify-between px-12 pointer-events-none z-0">
         {/* Left Column */}
-        <div className="w-[250px] overflow-hidden relative">
+        <div className="w-[250px] h-[300px] overflow-hidden relative">
           <div ref={leftScrollRef} className="flex flex-col space-y-6">
             {[...leftImages, ...leftImages, ...leftImages].map((src, i) => (
               <img
@@ -83,7 +85,7 @@ export function HeroSection() {
         </div>
 
         {/* Right Column */}
-        <div className="w-[250px] overflow-hidden relative">
+        <div className="w-[250px] h-[300px] overflow-hidden relative">
           <div ref={rightScrollRef} className="flex flex-col space-y-6">
             {[...rightImages, ...rightImages, ...rightImages].map((src, i) => (
               <img
