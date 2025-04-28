@@ -59,7 +59,7 @@ export function HeroSection() {
   return (
     <section
       ref={heroRef}
-      className="relative min-h-screen flex flex-col items-center justify-start text-center px-4 overflow-hidden bg-white"
+      className="relative min-h-screen flex flex-col items-center justify-start text-center px-4 overflow-hidden bg-background"
     >
       {/* Dotted Grid Background */}
      <div className="absolute inset-0 bg-dot bg-repeat opacity-10 pointer-events-none" />
@@ -130,7 +130,7 @@ export function HeroSection() {
             CRAFTING SCALABLE SOFTWARE THROUGH CREATIVE PROBLEM-SOLVING.
           </p>
 
-          <div className="flex flex-wrap justify-center items-center gap-6 mt-16">
+          <div className="flex flex-wrap justify-center items-center gap-6">
             {/* Skill icons here */}
           </div>
         </div>
