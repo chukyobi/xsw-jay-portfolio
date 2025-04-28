@@ -62,7 +62,7 @@ export function HeroSection() {
       className="relative min-h-screen flex flex-col items-center justify-start text-center px-4 overflow-hidden bg-background"
     >
       {/* Dotted Grid Background */}
-      <div className="absolute inset-0 bg-[url('/dot-grid.svg')] bg-repeat opacity-10 pointer-events-none z-0" />
+     <div className="absolute inset-0 bg-dot bg-repeat opacity-10 pointer-events-none" />
 
       {/* Scrolling Images */}
       <div className="absolute inset-0 flex justify-between px-12 pointer-events-none z-0">
