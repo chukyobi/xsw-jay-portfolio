@@ -16,7 +16,6 @@ export function AboutSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Animate content
       gsap.fromTo(
         contentRef.current,
         { opacity: 0, y: 40 },
@@ -32,7 +31,6 @@ export function AboutSection() {
         }
       )
 
-      // Kinetic CHUKWUDI
       gsap.fromTo(
         kineticRef1.current,
         { opacity: 0, y: 60 },
@@ -48,7 +46,6 @@ export function AboutSection() {
         }
       )
 
-      // Kinetic OBI
       gsap.fromTo(
         kineticRef2.current,
         { opacity: 0, y: 80 },
@@ -94,54 +91,37 @@ export function AboutSection() {
       </div>
 
       {/* Foreground content */}
-      <div className="container mx-auto px-4 max-w-5xl relative z-10">
+      <div className="container mx-auto px-4 max-w-6xl relative z-10">
         <div
           ref={contentRef}
-          className="grid md:grid-cols-2 gap-12 items-center"
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center"
         >
-          {/* Image */}
-          <div className="flex justify-center md:justify-start">
+          {/* Left Text Block */}
+          <div className="flex flex-col justify-between h-full space-y-10">
+            <p className="text-muted-foreground text-lg leading-relaxed">
+              I’m a passionate software engineer crafting meaningful digital experiences that empower users and drive innovation.
+            </p>
+            <p className="text-muted-foreground text-lg leading-relaxed">
+              — Merging creativity with strong engineering principles, I focus on building clean, intuitive, and scalable applications.
+            </p>
+          </div>
+
+          {/* Center Image */}
+          <div className="flex justify-center">
             <img
-              src="/ProfileJay.jpeg" 
+              src="/ProfileJay.jpeg"
               alt="Chukwudi Obi"
-              className="rounded-2xl w-80 h-100 object-cover shadow-xl border border-border"
+              className="rounded-3xl w-[300px] h-[400px] object-cover shadow-2xl border-2 border-border"
             />
           </div>
 
-          {/* Text content */}
-          <div className="space-y-6">
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight leading-snug border-l-4 border-primary pl-4">
-              Who I Am
-            </h2>
-
+          {/* Right Text Block */}
+          <div className="flex flex-col justify-between h-full space-y-10">
             <p className="text-muted-foreground text-lg leading-relaxed">
-              I’m a software engineer passionate about designing meaningful
-              technology experiences that make life easier, smarter, and more
-              connected.
+              — Beyond the code, I’m fascinated by AI, cybersecurity, and building accessible tech that truly serves people.
             </p>
-
-            <div className="w-24 h-0.5 bg-gradient-to-r from-primary to-transparent rounded-full" />
-
             <p className="text-muted-foreground text-lg leading-relaxed">
-              — With a background rooted in creative problem-solving and strong
-              engineering principles, I enjoy building clean, scalable, and
-              intuitive systems.
-            </p>
-
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              — My journey blends hands-on development with a love for AI,
-              cybersecurity, and digital accessibility. I write code with
-              empathy — always thinking about how tech can truly serve.
-            </p>
-
-            <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground text-base">
-              “The best interfaces feel invisible — guiding, never demanding.”
-            </blockquote>
-
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              — Outside the codebase, I explore the intersections of tech,
-              human experience, and social impact — continually asking: how can
-              we build smarter and better for everyone?
+              Always learning, always evolving — committed to creating tech that bridges gaps and sparks change.
             </p>
           </div>
         </div>
