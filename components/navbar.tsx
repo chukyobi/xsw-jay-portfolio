@@ -5,11 +5,11 @@ import Link from "next/link"
 
 export function Navbar() {
   return (
-    <div className="fixed flex items-center justify-center gap-4 px-6 py-2 rounded-full border shadow-md bg-white z-50
-      top-6 md:top-6 md:bottom-auto bottom-6
-      left-1/2 transform -translate-x-1/2
-      w-[90%] max-w-[380px]">
-      
+    <div className="fixed z-50 flex items-center space-x-4 px-6 py-2 bg-white border rounded-full shadow-md
+                    left-1/2 -translate-x-1/2 
+                    top-6 md:top-6 bottom-auto
+                    md:bottom-auto md:top-6
+                    sm:bottom-6 sm:top-auto">
       {/* Icons */}
       <Link href="/" className="text-muted-foreground hover:text-foreground">
         <Home className="w-5 h-5" />
@@ -25,7 +25,7 @@ export function Navbar() {
         <FileText className="w-5 h-5" />
       </Link>
       <div className="h-5 w-px bg-muted" />
-
+      
       {/* Github Button */}
       <Link
         href="https://github.com/chukyobi"
