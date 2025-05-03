@@ -17,12 +17,13 @@ export interface Experience {
   id: string
   company: string
   position: string
-  description?: string
+  description: string
   start_date: string
-  end_date?: string
+  end_date: string | null
   is_current: boolean
   created_at: string
   updated_at: string
+  location?: string
 }
 
 export interface Education {
