@@ -1,110 +1,91 @@
-import { createServerSupabaseClient } from "@/lib/supabase"
+import { setCookie, destroyCookie } from "nookies"
+import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
 import { createClientSupabaseClient } from "@/lib/supabase"
-import { redirect } from "next/navigation"
+import { NextApiResponse } from "next"
 
-export async function signIn(email: string, password: string) {
+type User = {
+  id: string
+  email: string
+  password_hash: string
+  is_admin: boolean
+  created_at: string
+  updated_at: string
+}
+
+const JWT_SECRET = process.env.JWT_SECRET as string
+if (!JWT_SECRET) {
+  throw new Error("Missing JWT_SECRET in environment variables")
+}
+
+function createJWT(user: Pick<User, "id" | "email" | "is_admin">) {
+  return jwt.sign(user, JWT_SECRET, { expiresIn: "1d" })
+}
+
+function verifyJWT(token: string): Pick<User, "id" | "email" | "is_admin"> | null {
   try {
-    const supabase = createClientSupabaseClient()
-
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-
-    if (error) {
-      console.error("Supabase auth error:", error)
-      throw new Error(error.message)
-    }
-
-    if (!data.user || !data.session) {
-      throw new Error("Authentication failed - no user or session returned")
-    }
-
-    return data
-  } catch (error) {
-    console.error("Sign in error:", error)
-    throw error
+    return jwt.verify(token, JWT_SECRET) as any
+  } catch {
+    return null
   }
 }
 
-export async function signOut() {
+// ✅ Use this in API routes only
+export async function signIn(email: string, password: string, res: NextApiResponse) {
   const supabase = createClientSupabaseClient()
-  await supabase.auth.signOut()
-}
 
-export async function signUp(email: string, password: string, name: string) {
-  try {
-    const supabase = createClientSupabaseClient()
+  const { data: user, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("email", email)
+    .single<User>()
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          name,
-          role: "user", // Default role
-        },
-      },
-    })
+  if (error || !user) throw new Error("Invalid email or user not found")
 
-    if (error) {
-      console.error("Supabase signup error:", error)
-      throw new Error(error.message)
-    }
+  const isValid = await bcrypt.compare(password, user.password_hash)
+  if (!isValid) throw new Error("Invalid password")
 
-    return data
-  } catch (error) {
-    console.error("Sign up error:", error)
-    throw error
-  }
-}
+  const token = createJWT({
+    id: user.id,
+    email: user.email,
+    is_admin: user.is_admin,
+  })
 
-export async function getUser() {
-  const supabase = createClientSupabaseClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  setCookie({ res }, "admin_session", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    path: "/",
+    maxAge: 60 * 60 * 24,
+  })
+
   return user
 }
 
-export async function getSession() {
-  const supabase = createClientSupabaseClient()
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  return session
+export async function signOut(res: NextApiResponse) {
+  destroyCookie({ res }, "admin_session", { path: "/" })
+}
+
+// These functions are for Server Components / Middleware only
+import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
+
+export async function getUserFromSession(): Promise<Pick<User, "id" | "email" | "is_admin"> | null> {
+  const cookieStore = await cookies()
+const token = cookieStore.get("admin_session")?.value
+
+  if (!token) return null
+  return verifyJWT(token)
 }
 
 export async function requireAuth() {
-  const supabase = createServerSupabaseClient()
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-
-  if (!session) {
-    redirect("/admin/login")
-  }
-
-  return session
+  const user = await getUserFromSession()
+  if (!user) redirect("/admin/login")
+  return user
 }
 
 export async function requireAdmin() {
-  const supabase = createServerSupabaseClient()
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-
-  if (!session) {
-    redirect("/admin/login")
-  }
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (user?.user_metadata?.role !== "admin") {
-    redirect("/admin/unauthorized")
-  }
-
-  return session
+  const user = await getUserFromSession()
+  if (!user || !user.is_admin) redirect("/admin/login")
+  return user
 }

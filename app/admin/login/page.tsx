@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -10,7 +9,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Lock, AlertCircle, Info } from "lucide-react"
-import { createClientSupabaseClient } from "@/lib/supabase"
 import { toast } from "@/hooks/use-toast"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
@@ -26,72 +24,38 @@ export default function LoginPage() {
     e.preventDefault()
     setIsLoading(true)
     setError(null)
-    setDebugInfo(null)
 
     try {
-      // Check if environment variables are set
-      if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-        throw new Error("Supabase environment variables are not set")
-      }
-
-      // Log the attempt (for debugging)
-      console.log(`Attempting to sign in with email: ${email}`)
-
-      // Create Supabase client directly
-      const supabase = createClientSupabaseClient()
-
-      // Attempt to sign in
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      // Call the API route to handle the login request
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
       })
 
-      if (error) {
-        console.error("Supabase auth error:", error)
-        throw new Error(error.message)
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Login failed")
       }
-
-      if (!data.user || !data.session) {
-        throw new Error("Authentication failed - no user or session returned")
-      }
-
-      console.log("Sign in successful:", data)
-
-      // Set debug info
-      setDebugInfo(
-        JSON.stringify(
-          {
-            user: {
-              id: data.user.id,
-              email: data.user.email,
-              role: data.user.user_metadata?.role,
-            },
-            session: {
-              expires_at: data.session.expires_at,
-            },
-          },
-          null,
-          2,
-        ),
-      )
 
       toast({
         title: "Login successful",
-        description: "You have been logged in successfully",
+        description: `Welcome back, ${data.user.email}!`,
       })
 
+      // Redirect to the admin dashboard
       router.push("/admin/dashboard")
       router.refresh()
-    } catch (error) {
-      console.error("Login failed:", error)
-
-      const errorMessage = error instanceof Error ? error.message : "Invalid credentials or connection error"
-
-      setError(errorMessage)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Login failed"
+      setError(message)
 
       toast({
         title: "Login failed",
-        description: errorMessage,
+        description: message,
         variant: "destructive",
       })
     } finally {
@@ -163,8 +127,8 @@ export default function LoginPage() {
           <div className="mt-4 text-center text-sm text-muted-foreground">
             <p>
               Don't have an account? Visit the{" "}
-              <Link href="/admin/setup" className="text-primary hover:underline">
-                setup page
+              <Link href="/admin/signup" className="text-primary hover:underline">
+                signup page
               </Link>{" "}
               to create an admin account.
             </p>

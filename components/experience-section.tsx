@@ -168,7 +168,7 @@ export function ExperienceSection() {
                               <div className="text-sm text-blue-500 mb-1">
                               {formatDate(role.start_date)} - {formatDate(role.end_date)} 
                               {" "} ({calculateDuration(role.start_date, role.end_date)})
-                              {" "}• {role.location} • Full-Time
+                              {" "}• {role.location} 
                             </div> 
                       
                         </div>

@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -13,6 +12,9 @@ import { useRouter } from "next/navigation"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle, ShieldCheck, CheckCircle } from "lucide-react"
 import Link from "next/link"
+import bcrypt from 'bcryptjs';
+
+
 
 export default function AdminSignupPage() {
   const [email, setEmail] = useState("")
@@ -25,83 +27,74 @@ export default function AdminSignupPage() {
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
+    e.preventDefault();
+  
     if (password !== confirmPassword) {
-      setError("Passwords do not match")
-      return
+      setError("Passwords do not match");
+      return;
     }
-
+  
     if (password.length < 6) {
-      setError("Password must be at least 6 characters long")
-      return
+      setError("Password must be at least 6 characters long");
+      return;
     }
-
-    setIsLoading(true)
-    setError(null)
-    setSuccess(false)
-
+  
+    setIsLoading(true);
+    setError(null);
+    setSuccess(false);
+  
     try {
-      const supabase = createClientSupabaseClient()
-
-      // Create the user with admin role
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            name,
-            role: "admin", // Set as admin
-          },
-        },
-      })
-
-      if (error) throw error
-
-      // Also insert into users table for additional data if needed
-      const { error: insertError } = await supabase.from("users").insert([
+      const supabase = createClientSupabaseClient();
+  
+      const hashedPassword = await bcrypt.hash(password, 10);  
+  
+      // Insert the user directly into the users table
+      const { data, error: insertError } = await supabase.from("users").insert([
         {
-          id: data.user?.id,
           email,
-          name,
-          role: "admin",
-          password: "hashed_in_auth", // We don't store actual passwords, auth handles this
+          password_hash: hashedPassword, 
+          is_admin: true,  
         },
-      ])
-
+      ]);
+  
       if (insertError) {
-        console.warn("User created in auth but not in users table:", insertError)
+        throw insertError;
       }
-
-      setSuccess(true)
+  
+      setSuccess(true);
       toast({
         title: "Admin account created",
         description: "You can now log in with your credentials",
-      })
+      });
+  
+      
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setName("");
+  
 
-      // Clear form
-      setEmail("")
-      setPassword("")
-      setConfirmPassword("")
-      setName("")
+      setTimeout(() => router.push("/admin/login"), 2000);
+  
     } catch (error) {
-      console.error("Admin signup failed:", error)
-      const errorMessage = error instanceof Error ? error.message : "Failed to create admin account"
-      setError(errorMessage)
+      console.error("Admin signup failed:", error);
+      const errorMessage = error instanceof Error ? error.message : "Failed to create admin account";
+      setError(errorMessage);
       toast({
         title: "Signup failed",
         description: errorMessage,
         variant: "destructive",
-      })
+      });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
+  
+  
 
   return (
     <main className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-background via-background to-background">
       <Card className="w-full max-w-md relative overflow-hidden">
-        {/* Decorative gradient shadows */}
         <div className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-gradient-to-br from-blue-accent/30 to-purple-accent/30 blur-3xl pointer-events-none"></div>
         <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-gradient-to-tl from-yellow-highlight/30 to-green-500/30 blur-3xl pointer-events-none"></div>
 

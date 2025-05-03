@@ -39,24 +39,39 @@ export default function DebugPage() {
     setIsLoading(true)
     try {
       const supabase = createClientSupabaseClient()
-
-      // Create a test user with a random email
-      const testEmail = `test${Math.floor(Math.random() * 10000)}@example.com`
-      const testPassword = "password123"
-
+  
+      const testEmail = "josephclinton.obi@gmail.com"
+      const testPassword = "Zwxj2619!.com"
+  
       const { data, error } = await supabase.auth.signUp({
         email: testEmail,
         password: testPassword,
         options: {
           data: {
-            name: "Test User",
+            name: "Jay Clinton",
             role: "admin",
           },
         },
       })
-
+  
       if (error) throw error
-
+  
+      // Wait for user creation to complete
+      const user = data.user
+      if (!user) throw new Error("User not returned from signUp")
+  
+      // Insert into custom 'users' table (if you have one)
+      const { error: dbError } = await supabase.from("users").insert([
+        {
+          id: user.id,
+          email: user.email,
+          name: "Jay Clinton",
+          role: "admin",
+        },
+      ])
+  
+      if (dbError) throw dbError
+  
       return {
         success: true,
         email: testEmail,
@@ -73,6 +88,7 @@ export default function DebugPage() {
       setIsLoading(false)
     }
   }
+  
 
   return (
     <div className="container mx-auto py-10 px-4">
