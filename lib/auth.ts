@@ -30,7 +30,7 @@ function verifyJWT(token: string): Pick<User, "id" | "email" | "is_admin"> | nul
   }
 }
 
-// ✅ Use this in API routes only
+
 export async function signIn(email: string, password: string, res: NextApiResponse) {
   const supabase = createClientSupabaseClient()
 
