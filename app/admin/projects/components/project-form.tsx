@@ -1,9 +1,11 @@
 "use client"
 
 import type React from "react"
-
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { useDropzone } from "react-dropzone"
+import { Upload, X, Check, ImageIcon, FileText, AlertCircle } from "lucide-react"
+
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -22,6 +24,11 @@ export function ProjectForm({ project, isEditing = false }: ProjectFormProps) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const [uploadError, setUploadError] = useState<string | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+
   const [formData, setFormData] = useState<Omit<Project, "id" | "created_at" | "updated_at">>({
     title: project?.title || "",
     description: project?.description || "",
@@ -34,6 +41,13 @@ export function ProjectForm({ project, isEditing = false }: ProjectFormProps) {
     status: project?.status || "published",
   })
 
+  // Set preview URL if thumbnail exists
+  useEffect(() => {
+    if (formData.thumbnail_url) {
+      setPreviewUrl(formData.thumbnail_url)
+    }
+  }, [formData.thumbnail_url])
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
@@ -43,6 +57,100 @@ export function ProjectForm({ project, isEditing = false }: ProjectFormProps) {
     const technologies = e.target.value.split(",").map((tech) => tech.trim())
     setFormData((prev) => ({ ...prev, technologies }))
   }
+
+  // Simulated progress for better UX
+  const simulateProgress = () => {
+    setUploadProgress(0)
+    const interval = setInterval(() => {
+      setUploadProgress((prev) => {
+        if (prev === null) return 0
+        if (prev >= 90) {
+          clearInterval(interval)
+          return 90
+        }
+        return prev + 5
+      })
+    }, 100)
+    return interval
+  }
+
+  const onDrop = async (acceptedFiles: File[]) => {
+    const file = acceptedFiles[0]
+    if (!file) return
+
+    // Check file size (max 10MB)
+    const maxSize = 10 * 1024 * 1024 // 10MB in bytes
+    if (file.size > maxSize) {
+      setUploadError(`File size exceeds 10MB limit (${(file.size / (1024 * 1024)).toFixed(2)}MB)`)
+      return
+    }
+
+    setIsDragging(false)
+    setUploadError(null)
+
+    // Create object URL for preview
+    const objectUrl = URL.createObjectURL(file)
+    setPreviewUrl(objectUrl)
+
+    const formDataUpload = new FormData()
+    formDataUpload.append("file", file)
+
+    // Start progress simulation
+    const progressInterval = simulateProgress()
+
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formDataUpload,
+      })
+
+      const data = await res.json()
+
+      if (res.ok) {
+        // Complete progress to 100%
+        setUploadProgress(100)
+        setTimeout(() => setUploadProgress(null), 1000)
+
+        setFormData((prev) => ({ ...prev, thumbnail_url: data.url }))
+        toast({
+          title: "Upload Successful",
+          description: "File uploaded to S3",
+        })
+      } else {
+        setUploadError(data.error || "Upload failed")
+        setPreviewUrl(null)
+        toast({
+          title: "Upload Failed",
+          description: data.error || "Unknown error",
+          variant: "destructive",
+        })
+      }
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : "Upload failed")
+      setPreviewUrl(null)
+      toast({
+        title: "Upload Error",
+        description: String(err),
+        variant: "destructive",
+      })
+    } finally {
+      clearInterval(progressInterval)
+      if (uploadProgress !== 100) {
+        setUploadProgress(null)
+      }
+    }
+  }
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    onDragEnter: () => setIsDragging(true),
+    onDragLeave: () => setIsDragging(false),
+    multiple: false,
+    accept: {
+      "image/*": [],
+      "application/pdf": [],
+    },
+  })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -78,10 +186,7 @@ export function ProjectForm({ project, isEditing = false }: ProjectFormProps) {
 
   const handleDelete = async () => {
     if (!project) return
-
-    if (!confirm("Are you sure you want to delete this project? This action cannot be undone.")) {
-      return
-    }
+    if (!confirm("Are you sure you want to delete this project? This action cannot be undone.")) return
 
     setIsDeleting(true)
 
@@ -103,6 +208,21 @@ export function ProjectForm({ project, isEditing = false }: ProjectFormProps) {
     } finally {
       setIsDeleting(false)
     }
+  }
+
+  const clearFile = () => {
+    setPreviewUrl(null)
+    setFormData((prev) => ({ ...prev, thumbnail_url: "" }))
+  }
+
+  const getFileTypeIcon = () => {
+    if (!previewUrl) return <Upload className="h-10 w-10 text-muted-foreground" />
+
+    if (previewUrl.match(/\.(jpeg|jpg|gif|png|webp)$/i)) {
+      return <ImageIcon className="h-6 w-6 text-muted-foreground" />
+    }
+
+    return <FileText className="h-6 w-6 text-muted-foreground" />
   }
 
   return (
@@ -153,14 +273,94 @@ export function ProjectForm({ project, isEditing = false }: ProjectFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="thumbnail_url">Thumbnail URL</Label>
-            <Input
-              id="thumbnail_url"
-              name="thumbnail_url"
-              value={formData.thumbnail_url}
-              onChange={handleChange}
-              placeholder="https://example.com/image.jpg"
-            />
+            <Label>Upload Thumbnail / File</Label>
+            <div className="relative">
+              <div
+                {...getRootProps()}
+                className={`relative border-2 border-dashed rounded-lg p-8 transition-all duration-200 ${
+                  isDragging || isDragActive
+                    ? "border-green-500 bg-green-50 dark:bg-green-950/20"
+                    : uploadError
+                      ? "border-red-300 bg-red-50 dark:bg-red-950/20"
+                      : "border-muted hover:bg-muted/5"
+                }`}
+              >
+                <input {...getInputProps()} />
+
+                <div className="flex flex-col items-center justify-center gap-2 text-center">
+                  {previewUrl ? (
+                    <div className="flex flex-col items-center">
+                      {previewUrl.match(/\.(jpeg|jpg|gif|png|webp)$/i) ? (
+                        <div className="relative w-32 h-32 mb-2 overflow-hidden rounded-md border">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={previewUrl || "/placeholder.svg"}
+                            alt="Preview"
+                            className="object-cover w-full h-full"
+                          />
+                        </div>
+                      ) : (
+                        getFileTypeIcon()
+                      )}
+                      <p className="text-sm font-medium">
+                        {formData.thumbnail_url?.split("/").pop() || "Selected file"}
+                      </p>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="mt-2"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          clearFile()
+                        }}
+                      >
+                        <X className="h-4 w-4 mr-1" /> Remove file
+                      </Button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="rounded-full bg-muted/80 p-3">{getFileTypeIcon()}</div>
+                      <div>
+                        <p className="font-medium text-sm">
+                          <span className="text-primary">Click to upload</span> or drag and drop
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">Images or PDF (max 10MB)</p>
+                      </div>
+                    </>
+                  )}
+
+                  {uploadError && (
+                    <div className="flex items-center text-red-500 mt-2">
+                      <AlertCircle className="h-4 w-4 mr-1" />
+                      <span className="text-xs">{uploadError}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {uploadProgress !== null && (
+                <div className="mt-2">
+                  <div className="flex justify-between text-xs mb-1">
+                    <span>Uploading...</span>
+                    <span>{uploadProgress}%</span>
+                  </div>
+                  <div className="relative pt-1">
+                    <div className="overflow-hidden h-2 text-xs flex rounded bg-muted">
+                      <div
+                        className="flex flex-col justify-center rounded bg-green-500 transition-all duration-300 ease-in-out"
+                        style={{ width: `${uploadProgress}%` }}
+                      />
+                    </div>
+                    {uploadProgress === 100 && (
+                      <div className="absolute right-0 -top-1 text-green-500">
+                        <Check className="h-4 w-4" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -197,7 +397,7 @@ export function ProjectForm({ project, isEditing = false }: ProjectFormProps) {
               required
               placeholder="React, Node.js, MongoDB"
             />
-            <p className="text-sm text-muted-foreground">Comma-separated list of technologies</p>
+            <p className="text-sm text-muted-foreground">Comma-separated list</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
