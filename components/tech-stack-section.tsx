@@ -13,14 +13,46 @@ if (typeof window !== "undefined") {
 }
 
 const fallbackTechnologies: Technology[] = [
-  { id: "7", name: "Next.js", category: "frontend", icon: "/brand-nextjs.svg" },
-  { id: "8", name: "Expo", category: "frontend", icon: "/icons8-expo.svg" },
-  { id: "11", name: "Node.js", category: "backend", icon: "/logo-nodejs.svg" },
-  { id: "12", name: "Express", category: "backend", icon: "/express-original.svg" },
-  { id: "13", name: "Spring Boot", category: "backend", icon: "/spring-boot.svg" },
-  { id: "14", name: "Golang", category: "languages", icon: "/Go-black.png" },
-  { id: "15", name: "Java", category: "languages", icon: "/icons8-java-logo.svg" },
-  { id: "16", name: "Python", category: "languages", icon: "/python.svg" },
+  {
+    id: "7", name: "Next.js", category: "frontend", icon: "/brand-nextjs.svg",
+    created_at: "",
+    updated_at: ""
+  },
+  {
+    id: "8", name: "Expo", category: "frontend", icon: "/icons8-expo.svg",
+    created_at: "",
+    updated_at: ""
+  },
+  {
+    id: "11", name: "Node.js", category: "backend", icon: "/logo-nodejs.svg",
+    created_at: "",
+    updated_at: ""
+  },
+  {
+    id: "12", name: "Express", category: "backend", icon: "/express-original.svg",
+    created_at: "",
+    updated_at: ""
+  },
+  {
+    id: "13", name: "Spring Boot", category: "backend", icon: "/spring-boot.svg",
+    created_at: "",
+    updated_at: ""
+  },
+  {
+    id: "14", name: "Golang", category: "languages", icon: "/Go-black.png",
+    created_at: "",
+    updated_at: ""
+  },
+  {
+    id: "15", name: "Java", category: "languages", icon: "/icons8-java-logo.svg",
+    created_at: "",
+    updated_at: ""
+  },
+  {
+    id: "16", name: "Python", category: "languages", icon: "/python.svg",
+    created_at: "",
+    updated_at: ""
+  },
 ]
 
 export function TechStackSection() {
