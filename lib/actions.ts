@@ -600,7 +600,7 @@ export async function getTestimonialById(id: string) {
 
 export async function submitTestimonial(
   testimonial: Omit<Testimonial, "id" | "created_at" | "updated_at" | "approved">,
-) {
+): Promise<Testimonial> {
   const supabase = createServerSupabaseClient()
 
   try {
@@ -614,7 +614,7 @@ export async function submitTestimonial(
       ...testimonial,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
-    }
+    } as Testimonial // Explicitly assert the type here
 
     // Add the approved field only if the column exists
     if (hasApprovedColumn) {
@@ -637,6 +637,7 @@ export async function submitTestimonial(
     throw error
   }
 }
+
 
 export async function approveTestimonial(id: string, approved: boolean) {
   const supabase = createServerSupabaseClient()

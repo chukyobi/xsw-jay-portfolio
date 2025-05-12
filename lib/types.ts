@@ -1,3 +1,5 @@
+import { ProjectStatus } from "./validations/project"
+
 export interface Project {
   id: string
   title: string
@@ -8,7 +10,7 @@ export interface Project {
   live_url?: string
   technologies: string[]
   category?: string
-  status?: string
+  status: ProjectStatus
   created_at: string
   updated_at: string
 }
@@ -72,9 +74,9 @@ export interface Testimonial {
   company?: string
   content: string
   avatar_url?: string
-  approved?: boolean
   created_at: string
   updated_at: string
+  approved?: boolean
 }
 
 export interface User {

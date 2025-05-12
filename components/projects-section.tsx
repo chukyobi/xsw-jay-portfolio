@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
+import { useRouter } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 import { gsap } from "gsap"
@@ -56,6 +57,7 @@ const projectsData = [
 
 export function ProjectsSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -117,18 +119,25 @@ export function ProjectsSection() {
           {/* Left Column */}
           <div className="flex flex-col gap-10 items-center">
             {projectsData.filter((_, i) => i % 2 === 0).map((project) => (
-              <Link key={project.id} href={project.href} className="block w-[90%]">
+              <div key={project.id} className="block w-[90%]">
                 <div
                   className={`project-card group relative overflow-hidden rounded-3xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 ${
                     project.size === "large" ? "h-[600px]" : "h-[550px]"
                   }`}
                 >
+                  {/* Main card click area */}
+                  <div 
+                    onClick={() => router.push(project.href)}
+                    className="cursor-pointer absolute inset-0 z-0"
+                  ></div>
+                  
                   {/* External Live Link Icon */}
                   <a
                     href={project.live}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="absolute top-4 right-4 z-10 bg-white text-black rounded-full p-2 hover:bg-gray-300 transition"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <ExternalLink size={20} />
                   </a>
@@ -154,7 +163,7 @@ export function ProjectsSection() {
                         </span>
                       ))}
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 z-10" onClick={(e) => e.stopPropagation()}>
                       <a href={project.live} target="_blank" rel="noopener noreferrer" className="text-xs underline">
                         Visit
                       </a>
@@ -164,25 +173,32 @@ export function ProjectsSection() {
                     </div>
                   </div>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
 
           {/* Right Column (Offset) */}
           <div className="flex flex-col gap-10 items-center mt-12 sm:mt-20">
             {projectsData.filter((_, i) => i % 2 !== 0).map((project) => (
-              <Link key={project.id} href={project.href} className="block w-[90%]">
+              <div key={project.id} className="block w-[90%]">
                 <div
                   className={`project-card group relative overflow-hidden rounded-3xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 ${
                     project.size === "large" ? "h-[600px]" : "h-[550px]"
                   }`}
                 >
+                  {/* Main card click area */}
+                  <div 
+                    onClick={() => router.push(project.href)}
+                    className="cursor-pointer absolute inset-0 z-0"
+                  ></div>
+                  
                   {/* External Live Link Icon */}
                   <a
                     href={project.live}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="absolute top-4 right-4 z-10 bg-white text-black rounded-full p-2 hover:bg-gray-300 transition"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <ExternalLink size={20} />
                   </a>
@@ -208,7 +224,7 @@ export function ProjectsSection() {
                         </span>
                       ))}
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 z-10" onClick={(e) => e.stopPropagation()}>
                       <a href={project.live} target="_blank" rel="noopener noreferrer" className="text-xs underline">
                         Visit
                       </a>
@@ -218,7 +234,7 @@ export function ProjectsSection() {
                     </div>
                   </div>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         </div>
