@@ -1,12 +1,20 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
-import { ArrowRight, ChevronDown, ChevronLeft, ChevronRight, MessageCircle } from "lucide-react"
+import {
+  ArrowRight,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  MessageCircle,
+  X,
+  CheckCircle2,
+  Calendar,
+  FileText,
+  Clock,
+} from "lucide-react"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-
 
 type CalendarDate = {
   date: number
@@ -16,81 +24,82 @@ type CalendarDate = {
   hasEvent: boolean
 }
 
+type Tab = "quote" | "call"
+type SubmitState = "idle" | "submitting" | "success"
+
+const TIME_SLOTS = [
+  "09:00", "09:30", "10:00", "10:30",
+  "11:00", "11:30", "14:00", "14:30",
+  "15:00", "15:30", "16:00", "16:30",
+]
+
+const SERVICES = [
+  { id: "webDev", label: "Web Development" },
+  { id: "mobileDev", label: "Mobile App" },
+  { id: "automation", label: "Automation & Scripts" },
+  { id: "embedded", label: "Electronics & Embedded" },
+]
+
+const BUDGETS = [
+  { value: "below-5k", label: "Below $5,000" },
+  { value: "5k-15k", label: "$5,000 – $15,000" },
+  { value: "15k-30k", label: "$15,000 – $30,000" },
+  { value: "30k-50k", label: "$30,000 – $50,000" },
+  { value: "50k+", label: "$50,000+" },
+]
+
 export function BookingModal() {
   const [isOpen, setIsOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState("quote")
-  const [currentMonth, setCurrentMonth] = useState(new Date(2025, 4)) // May 2025
-  const [selectedDate, setSelectedDate] = useState<number | null>(null)
-  const [selectedDay, setSelectedDay] = useState<CalendarDate | null>(null)
-  const [timeFormat, setTimeFormat] = useState<"12h" | "24h">("24h")
+  const [activeTab, setActiveTab] = useState<Tab>("quote")
 
-  // Form state
+  // Calendar state
+  const now = new Date()
+  const [currentMonth, setCurrentMonth] = useState(new Date(now.getFullYear(), now.getMonth()))
+  const [selectedDate, setSelectedDate] = useState<CalendarDate | null>(null)
+  const [selectedTime, setSelectedTime] = useState<string | null>(null)
+  const [timeFormat, setTimeFormat] = useState<"12h" | "24h">("12h")
+
+  // Quote form state
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     project: "",
-    services: {
-      productDesign: false,
-      webDesign: false,
-      branding: false,
-      development: false,
-    },
+    services: {} as Record<string, boolean>,
     budget: "",
   })
-  const [errors, setErrors] = useState({
-    project: false,
-  })
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [submitState, setSubmitState] = useState<SubmitState>("idle")
 
-  // Generate calendar days
+  // Calendar helpers
   const generateCalendarDays = (): CalendarDate[] => {
     const year = currentMonth.getFullYear()
     const month = currentMonth.getMonth()
-
-    const firstDayOfMonth = new Date(year, month, 1)
-    const lastDayOfMonth = new Date(year, month + 1, 0)
-    const daysInMonth = lastDayOfMonth.getDate()
-
-    const firstDayOfWeek = firstDayOfMonth.getDay() // 0 = Sunday, 1 = Monday, etc.
-
+    const firstDay = new Date(year, month, 1).getDay()
+    const daysInMonth = new Date(year, month + 1, 0).getDate()
+    const daysInPrevMonth = new Date(year, month, 0).getDate()
+    const today = new Date()
     const days: CalendarDate[] = []
 
-    // Add days from previous month to fill the first week
-    const prevMonth = new Date(year, month - 1)
-    const daysInPrevMonth = new Date(year, month, 0).getDate()
-
-    for (let i = firstDayOfWeek - 1; i >= 0; i--) {
-      days.push({
-        date: daysInPrevMonth - i,
-        isCurrentMonth: false,
-        isToday: false,
-        isSelected: false,
-        hasEvent: false,
-      })
+    for (let i = firstDay - 1; i >= 0; i--) {
+      days.push({ date: daysInPrevMonth - i, isCurrentMonth: false, isToday: false, isSelected: false, hasEvent: false })
     }
 
-    // Add days of current month
-    const today = new Date()
     for (let i = 1; i <= daysInMonth; i++) {
+      const isToday = today.getDate() === i && today.getMonth() === month && today.getFullYear() === year
+      const isPast = new Date(year, month, i) < new Date(today.getFullYear(), today.getMonth(), today.getDate())
       days.push({
         date: i,
         isCurrentMonth: true,
-        isToday: today.getDate() === i && today.getMonth() === month && today.getFullYear() === year,
-        isSelected: selectedDate === i,
-        hasEvent: i === 3, // Example: day 3 has an event
+        isToday,
+        isSelected: selectedDate?.date === i && selectedDate.isCurrentMonth,
+        hasEvent: !isPast && i % 3 !== 0, // simulate availability
       })
     }
 
-    // Add days from next month to complete the last week
-    const remainingDays = 7 - (days.length % 7)
-    if (remainingDays < 7) {
-      for (let i = 1; i <= remainingDays; i++) {
-        days.push({
-          date: i,
-          isCurrentMonth: false,
-          isToday: false,
-          isSelected: false,
-          hasEvent: false,
-        })
+    const remaining = 7 - (days.length % 7)
+    if (remaining < 7) {
+      for (let i = 1; i <= remaining; i++) {
+        days.push({ date: i, isCurrentMonth: false, isToday: false, isSelected: false, hasEvent: false })
       }
     }
 
@@ -98,341 +107,367 @@ export function BookingModal() {
   }
 
   const calendarDays = generateCalendarDays()
+  const today = new Date()
+  const isPastMonth =
+    currentMonth.getFullYear() < today.getFullYear() ||
+    (currentMonth.getFullYear() === today.getFullYear() && currentMonth.getMonth() <= today.getMonth())
 
-  const handlePrevMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))
+  const formatMonth = (date: Date) =>
+    `${date.toLocaleString("default", { month: "long" })} ${date.getFullYear()}`
+
+  const formatTime = (time: string) => {
+    if (timeFormat === "24h") return time
+    const [h, m] = time.split(":").map(Number)
+    const suffix = h >= 12 ? "PM" : "AM"
+    const hour = h % 12 || 12
+    return `${hour}:${m.toString().padStart(2, "0")} ${suffix}`
   }
 
-  const handleNextMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))
-  }
+  const DAY_LABELS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
 
-  const handleSelectDate = (day: CalendarDate) => {
-    if (day.isCurrentMonth) {
-      setSelectedDate(day.date)
-      setSelectedDay(day)
-    }
-  }
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData({
-      ...formData,
-      [name]: value,
-    })
-
-    if (name === "project" && errors.project) {
-      setErrors({
-        ...errors,
-        project: false,
-      })
-    }
-  }
-
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target
-    setFormData({
-      ...formData,
-      services: {
-        ...formData.services,
-        [name]: checked,
-      },
-    })
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmitQuote = async (e: React.FormEvent) => {
     e.preventDefault()
+    const newErrors: Record<string, string> = {}
+    if (!formData.fullName.trim()) newErrors.fullName = "Required"
+    if (!formData.email.trim()) newErrors.email = "Required"
+    if (!formData.project.trim()) newErrors.project = "Required"
+    if (Object.keys(newErrors).length > 0) { setErrors(newErrors); return }
 
-    if (!formData.project.trim()) {
-      setErrors({
-        ...errors,
-        project: true,
-      })
-      return
-    }
+    setSubmitState("submitting")
+    // Simulate API call
+    await new Promise((r) => setTimeout(r, 1200))
+    setSubmitState("success")
+  }
 
-    // Handle form submission
-    console.log("Form submitted:", formData)
+  const handleConfirmBooking = async () => {
+    if (!selectedDate || !selectedTime) return
+    setSubmitState("submitting")
+    await new Promise((r) => setTimeout(r, 1200))
+    setSubmitState("success")
+  }
+
+  const handleClose = () => {
     setIsOpen(false)
-  }
-
-  const timeSlots = ["06:00", "06:30", "07:00", "07:30", "08:00", "08:30"]
-
-  const formatMonth = (date: Date) => {
-    return `${date.toLocaleString("default", { month: "long" })} ${date.getFullYear()}`
-  }
-
-  const getDayOfWeek = (index: number) => {
-    const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
-    return days[index]
+    setTimeout(() => {
+      setSubmitState("idle")
+      setSelectedDate(null)
+      setSelectedTime(null)
+      setFormData({ fullName: "", email: "", project: "", services: {}, budget: "" })
+      setErrors({})
+    }, 300)
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) handleClose(); else setIsOpen(true) }}>
       <DialogTrigger asChild>
-        <Button variant="default" className="flex items-center justify-center gap-1 px-8 py-8 rounded-full bg-background border border-white/20 text-lg font-semibold hover:bg-white hover:text-background transition-all duration-300">
-        
-            Work with me
-            <ArrowRight />
-        </Button>
+        <button className="group flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-background border border-white/20 text-lg font-semibold hover:bg-white hover:text-black transition-all duration-300">
+          Work with me
+          <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+        </button>
       </DialogTrigger>
-      <DialogContent className="p-0 bg-black text-white border-zinc-800 max-w-xl rounded-xl my-2">
-        {/* Tabs */}
-        <div className="grid grid-cols-2">
-          <button
-            className={`py-4 text-center font-medium ${activeTab === "quote" ? "bg-zinc-900" : "bg-zinc-800"}`}
-            onClick={() => setActiveTab("quote")}
-          >
-            REQUEST A QUOTE
-          </button>
-          <button
-            className={`py-4 text-center font-medium ${activeTab === "call" ? "bg-zinc-900" : "bg-zinc-800"}`}
-            onClick={() => {
-              setActiveTab("call")
-              setSelectedDay(null) // Reset selected day when switching to call tab
-            }}
-          >
-            BOOK A CALL
-          </button>
-        </div>
 
-        {/* Quote Form Tab */}
-        {activeTab === "quote" && (
-          <div className="p-6">
-            <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <p className="text-sm text-gray-400 mb-4">CONTACT INFORMATION</p>
+      <DialogContent className="p-0 bg-[#0f0f0f] text-white border border-white/10 max-w-lg rounded-2xl overflow-hidden shadow-2xl">
 
-                <div className="grid grid-cols-1 gap-4 mb-4">
-                  <input
-                    type="text"
-                    name="fullName"
-                    placeholder="Full name"
-                    value={formData.fullName}
-                    onChange={handleInputChange}
-                    className="bg-zinc-700 rounded-sm p-3 w-full focus:outline-none focus:ring-1 focus:ring-gray-500"
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Business email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="bg-zinc-700 rounded-sm p-3 w-full focus:outline-none focus:ring-1 focus:ring-gray-500"
-                  />
-                </div>
+        {/* Success state */}
+        {submitState === "success" ? (
+          <div className="flex flex-col items-center justify-center py-16 px-8 text-center">
+            <div className="w-16 h-16 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center mb-6">
+              <CheckCircle2 className="h-8 w-8 text-emerald-400" />
+            </div>
+            <h3 className="text-2xl font-bold text-white mb-2">
+              {activeTab === "quote" ? "Quote Sent!" : "Call Booked!"}
+            </h3>
+            <p className="text-neutral-400 text-sm max-w-sm mb-8">
+              {activeTab === "quote"
+                ? "Your request has been received. I'll get back to you within 24 hours."
+                : `Your call is scheduled. You'll receive a confirmation soon.`}
+            </p>
+            <button
+              onClick={handleClose}
+              className="px-6 py-3 bg-white text-black font-bold rounded-full hover:bg-neutral-200 transition-colors text-sm"
+            >
+              Close
+            </button>
+          </div>
+        ) : (
+          <>
+            {/* Tab header */}
+            <div className="grid grid-cols-2 border-b border-white/8">
+              {(["quote", "call"] as Tab[]).map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => { setActiveTab(tab); setSelectedDate(null); setSelectedTime(null) }}
+                  className={`py-4 text-sm font-semibold tracking-[0.1em] uppercase transition-all duration-200 flex items-center justify-center gap-2 ${activeTab === tab
+                      ? "bg-white/8 text-white border-b-2 border-blue-500"
+                      : "text-neutral-500 hover:text-neutral-300"
+                    }`}
+                >
+                  {tab === "quote" ? <FileText className="h-4 w-4" /> : <Calendar className="h-4 w-4" />}
+                  {tab === "quote" ? "Request a Quote" : "Book a Call"}
+                </button>
+              ))}
+            </div>
 
-                <div className="relative mb-4">
-                  <textarea
-                    name="project"
-                    placeholder="Tell us about your project"
-                    value={formData.project}
-                    onChange={handleInputChange}
-                    rows={4}
-                    className="bg-zinc-700 rounded-sm p-3 w-full focus:outline-none focus:ring-1 focus:ring-gray-500"
-                  ></textarea>
-                  {errors.project && (
-                    <div className="absolute bottom-4 right-4 bg-zinc-800 text-xs px-2 py-1 rounded-sm">
-                      Please fill in this field.
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <p className="text-sm text-gray-400 mb-4">WHAT DO YOU NEED HELP WITH?</p>
-
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="flex items-center">
+            {/* Quote Form */}
+            {activeTab === "quote" && (
+              <form onSubmit={handleSubmitQuote} className="p-6 space-y-5 overflow-y-auto max-h-[70vh]">
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
                     <input
-                      type="checkbox"
-                      id="productDesign"
-                      name="productDesign"
-                      checked={formData.services.productDesign}
-                      onChange={handleCheckboxChange}
-                      className="h-4 w-4 mr-2"
+                      type="text"
+                      name="fullName"
+                      placeholder="Full name"
+                      value={formData.fullName}
+                      onChange={(e) => { setFormData({ ...formData, fullName: e.target.value }); setErrors({ ...errors, fullName: "" }) }}
+                      className={`bg-white/5 border ${errors.fullName ? "border-red-500/60" : "border-white/10"} rounded-xl p-3 w-full text-sm placeholder-neutral-600 focus:outline-none focus:border-blue-500/60 transition-colors`}
                     />
-                    <label htmlFor="productDesign" className="text-sm">
-                      Product Management
-                    </label>
+                    {errors.fullName && <p className="text-red-400 text-xs mt-1">{errors.fullName}</p>}
                   </div>
-                  <div className="flex items-center">
+                  <div>
                     <input
-                      type="checkbox"
-                      id="webDesign"
-                      name="webDesign"
-                      checked={formData.services.webDesign}
-                      onChange={handleCheckboxChange}
-                      className="h-4 w-4 mr-2"
+                      type="email"
+                      name="email"
+                      placeholder="Your email"
+                      value={formData.email}
+                      onChange={(e) => { setFormData({ ...formData, email: e.target.value }); setErrors({ ...errors, email: "" }) }}
+                      className={`bg-white/5 border ${errors.email ? "border-red-500/60" : "border-white/10"} rounded-xl p-3 w-full text-sm placeholder-neutral-600 focus:outline-none focus:border-blue-500/60 transition-colors`}
                     />
-                    <label htmlFor="webDesign" className="text-sm">
-                      Web Development
-                    </label>
-                  </div>
-                  <div className="flex items-center">
-                    <input
-                      type="checkbox"
-                      id="branding"
-                      name="branding"
-                      checked={formData.services.branding}
-                      onChange={handleCheckboxChange}
-                      className="h-4 w-4 mr-2"
-                    />
-                    <label htmlFor="branding" className="text-sm">
-                      Electronics and Software
-                    </label>
-                  </div>
-                  <div className="flex items-center">
-                    <input
-                      type="checkbox"
-                      id="development"
-                      name="development"
-                      checked={formData.services.development}
-                      onChange={handleCheckboxChange}
-                      className="h-4 w-4 mr-2"
-                    />
-                    <label htmlFor="development" className="text-sm">
-                     Mobile App 
-                    </label>
+                    {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
                   </div>
                 </div>
 
                 <div>
-                  <p className="text-sm text-gray-400 mb-4">YOUR BUDGET</p>
+                  <textarea
+                    name="project"
+                    placeholder="Describe your project or idea…"
+                    value={formData.project}
+                    onChange={(e) => { setFormData({ ...formData, project: e.target.value }); setErrors({ ...errors, project: "" }) }}
+                    rows={3}
+                    className={`bg-white/5 border ${errors.project ? "border-red-500/60" : "border-white/10"} rounded-xl p-3 w-full text-sm placeholder-neutral-600 focus:outline-none focus:border-blue-500/60 transition-colors resize-none`}
+                  />
+                  {errors.project && <p className="text-red-400 text-xs mt-1">{errors.project}</p>}
+                </div>
+
+                {/* Services */}
+                <div>
+                  <p className="text-xs font-semibold text-neutral-500 uppercase tracking-[0.15em] mb-3">What do you need?</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {SERVICES.map(({ id, label }) => (
+                      <label
+                        key={id}
+                        className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl border cursor-pointer transition-all duration-200 ${formData.services[id]
+                            ? "border-blue-500/60 bg-blue-500/10 text-white"
+                            : "border-white/10 bg-white/3 text-neutral-400 hover:border-white/20"
+                          }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={!!formData.services[id]}
+                          onChange={(e) => setFormData({ ...formData, services: { ...formData.services, [id]: e.target.checked } })}
+                          className="sr-only"
+                        />
+                        <span className={`w-4 h-4 rounded flex-shrink-0 flex items-center justify-center border transition-all ${formData.services[id] ? "bg-blue-500 border-blue-500" : "border-white/20"}`}>
+                          {formData.services[id] && <span className="text-white text-[10px] font-bold">✓</span>}
+                        </span>
+                        <span className="text-xs font-medium">{label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Budget */}
+                <div>
+                  <p className="text-xs font-semibold text-neutral-500 uppercase tracking-[0.15em] mb-3">Budget Range</p>
                   <div className="relative">
                     <select
-                      name="budget"
                       value={formData.budget}
                       onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                      className="bg-zinc-700 rounded-sm p-3 w-full appearance-none focus:outline-none focus:ring-1 focus:ring-gray-500"
+                      className="bg-white/5 border border-white/10 rounded-xl p-3 w-full text-sm text-neutral-300 appearance-none focus:outline-none focus:border-blue-500/60 transition-colors pr-10"
                     >
-                      <option value="" disabled>
-                        Select...
-                      </option>
-                      <option value="5k-10k">$5,000 - $10,000</option>
-                      <option value="10k-25k">$10,000 - $25,000</option>
-                      <option value="25k-50k">$25,000 - $50,000</option>
-                      <option value="50k+">$50,000+</option>
+                      <option value="" disabled className="bg-neutral-900">Select budget…</option>
+                      {BUDGETS.map(({ value, label }) => (
+                        <option key={value} value={value} className="bg-neutral-900">{label}</option>
+                      ))}
                     </select>
-                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                      <ChevronDown className="h-5 w-5 text-gray-400" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-sm transition duration-200"
-              >
-                SEND REQUEST
-              </button>
-            </form>
-          </div>
-        )}
-
-        {/* Book a Call Tab */}
-        {activeTab === "call" && (
-          <div className="p-0">
-            {!selectedDay ? (
-              <div className="calendar">
-                {/* Month navigation */}
-                <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-800">
-                  <h2 className="text-lg font-medium">{formatMonth(currentMonth)}</h2>
-                  <div className="flex space-x-2">
-                    <button onClick={handlePrevMonth} className="p-1">
-                      <ChevronLeft className="h-5 w-5" />
-                    </button>
-                    <button onClick={handleNextMonth} className="p-1">
-                      <ChevronRight className="h-5 w-5" />
-                    </button>
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-500 pointer-events-none" />
                   </div>
                 </div>
 
-                {/* Days of week */}
-                <div className="grid grid-cols-7 text-center py-2 border-b border-zinc-800">
-                  {[0, 1, 2, 3, 4, 5, 6].map((day) => (
-                    <div key={day} className="text-xs font-medium text-gray-400">
-                      {getDayOfWeek(day)}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Calendar grid */}
-                <div className="grid grid-cols-7 gap-px">
-                  {calendarDays.map((day, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleSelectDate(day)}
-                      disabled={!day.isCurrentMonth}
-                      className={`
-                        aspect-square flex items-center justify-center relative
-                        ${!day.isCurrentMonth ? "text-zinc-700" : "text-white"}
-                        ${day.isSelected ? "border border-white" : ""}
-                        ${day.date === 5 && day.isCurrentMonth ? "bg-white text-black" : ""}
-                        ${day.date === 7 && day.isCurrentMonth ? "border border-white" : ""}
-                      `}
-                    >
-                      {day.date}
-                      {day.hasEvent && <span className="absolute bottom-2 w-1 h-1 bg-white rounded-full"></span>}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div className="time-selection p-4">
-                {/* Selected date and time format toggle */}
-                <div className="flex items-center justify-between mb-6">
-                  <div className="text-lg font-medium">Mon {selectedDay.date.toString().padStart(2, "0")}</div>
-                  <div className="flex rounded-full bg-zinc-800 p-1">
-                    <button
-                      className={`px-3 py-1 text-sm rounded-full ${timeFormat === "12h" ? "bg-zinc-700" : ""}`}
-                      onClick={() => setTimeFormat("12h")}
-                    >
-                      12h
-                    </button>
-                    <button
-                      className={`px-3 py-1 text-sm rounded-full ${timeFormat === "24h" ? "bg-zinc-700" : ""}`}
-                      onClick={() => setTimeFormat("24h")}
-                    >
-                      24h
-                    </button>
-                  </div>
-                </div>
-
-                {/* Time slots */}
-                <div className="space-y-3">
-                  {timeSlots.map((time) => (
-                    <button
-                      key={time}
-                      className="w-full py-3 px-4 rounded-full border border-zinc-700 hover:border-zinc-500 text-center"
-                      onClick={() => {
-                        console.log(`Selected time: ${time}`)
-                        // Here you would handle the time selection
-                        // For example, you could show a confirmation or close the modal
-                      }}
-                    >
-                      {time}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Chat now option */}
-                <div className="mt-8 text-center">
-                  <div className="text-xs text-zinc-500 mb-4">OR SIMPLY</div>
-                  <button className="flex items-center justify-center space-x-2 mx-auto bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-full">
-                    <MessageCircle className="h-4 w-4 text-blue-400" />
-                    <span>Chat now</span>
-                  </button>
-                </div>
-
-                {/* Back button */}
-                <button className="mt-6 text-sm text-zinc-400 hover:text-white" onClick={() => setSelectedDay(null)}>
-                  ← Back to calendar
+                <button
+                  type="submit"
+                  disabled={submitState === "submitting"}
+                  className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-60 text-white font-bold py-4 rounded-xl transition-all duration-200 text-sm tracking-wide"
+                >
+                  {submitState === "submitting" ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Sending…
+                    </span>
+                  ) : "Send Request →"}
                 </button>
+              </form>
+            )}
+
+            {/* Book a Call */}
+            {activeTab === "call" && (
+              <div className="overflow-y-auto max-h-[70vh]">
+                {!selectedDate ? (
+                  /* Calendar view */
+                  <div>
+                    <div className="flex items-center justify-between px-6 py-4 border-b border-white/8">
+                      <h3 className="font-semibold text-white">{formatMonth(currentMonth)}</h3>
+                      <div className="flex gap-1">
+                        <button
+                          onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
+                          disabled={isPastMonth}
+                          className="p-2 rounded-lg hover:bg-white/8 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                        </button>
+                        <button
+                          onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
+                          className="p-2 rounded-lg hover:bg-white/8 transition-colors"
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-7 px-4 py-2">
+                      {DAY_LABELS.map((d) => (
+                        <div key={d} className="text-center text-xs font-semibold text-neutral-600 py-2">{d}</div>
+                      ))}
+                    </div>
+
+                    <div className="grid grid-cols-7 gap-1 px-4 pb-4">
+                      {calendarDays.map((day, i) => {
+                        const isPast = day.isCurrentMonth && new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day.date) < new Date(today.getFullYear(), today.getMonth(), today.getDate())
+                        return (
+                          <button
+                            key={i}
+                            onClick={() => !isPast && day.isCurrentMonth && setSelectedDate(day)}
+                            disabled={!day.isCurrentMonth || isPast}
+                            className={`aspect-square rounded-xl text-sm font-medium transition-all duration-150 relative flex items-center justify-center
+                              ${!day.isCurrentMonth || isPast ? "text-neutral-700 cursor-not-allowed" : "cursor-pointer hover:bg-white/10 text-neutral-300"}
+                              ${day.isToday ? "ring-1 ring-blue-500/60" : ""}
+                              ${day.isSelected ? "bg-blue-600 text-white hover:bg-blue-500" : ""}
+                            `}
+                          >
+                            {day.date}
+                            {day.hasEvent && day.isCurrentMonth && !isPast && (
+                              <span className="absolute bottom-1 w-1 h-1 bg-emerald-400 rounded-full" />
+                            )}
+                          </button>
+                        )
+                      })}
+                    </div>
+
+                    <div className="flex items-center gap-4 text-xs text-neutral-500 px-6 pb-4">
+                      <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-400" />Available</span>
+                      <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full ring-1 ring-blue-500" />Today</span>
+                    </div>
+                  </div>
+                ) : !selectedTime ? (
+                  /* Time selection */
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-5">
+                      <div>
+                        <p className="text-xs text-neutral-500 mb-0.5">Selected date</p>
+                        <p className="font-semibold text-white">
+                          {new Date(currentMonth.getFullYear(), currentMonth.getMonth(), selectedDate.date).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+                        </p>
+                      </div>
+                      <div className="flex rounded-full bg-white/5 border border-white/10 p-1 gap-1">
+                        {(["12h", "24h"] as const).map((fmt) => (
+                          <button
+                            key={fmt}
+                            onClick={() => setTimeFormat(fmt)}
+                            className={`px-3 py-1 text-xs rounded-full font-medium transition-all ${timeFormat === fmt ? "bg-white/15 text-white" : "text-neutral-500"}`}
+                          >
+                            {fmt}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <p className="text-xs font-semibold text-neutral-500 uppercase tracking-[0.15em] mb-3 flex items-center gap-2">
+                      <Clock className="h-3.5 w-3.5" /> Available slots
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {TIME_SLOTS.map((time) => (
+                        <button
+                          key={time}
+                          onClick={() => setSelectedTime(time)}
+                          className="py-3 px-4 rounded-xl border border-white/10 hover:border-blue-500/60 hover:bg-blue-500/10 text-sm font-medium text-neutral-300 hover:text-white transition-all duration-200"
+                        >
+                          {formatTime(time)}
+                        </button>
+                      ))}
+                    </div>
+
+                    <button onClick={() => setSelectedDate(null)} className="mt-5 text-sm text-neutral-500 hover:text-white transition-colors flex items-center gap-1">
+                      <ChevronLeft className="h-4 w-4" /> Back to calendar
+                    </button>
+                  </div>
+                ) : (
+                  /* Confirmation */
+                  <div className="p-6">
+                    <h3 className="font-bold text-white text-lg mb-1">Confirm your booking</h3>
+                    <p className="text-neutral-500 text-sm mb-6">Review the details before confirming.</p>
+
+                    <div className="rounded-2xl border border-white/10 bg-white/3 p-4 space-y-3 mb-6">
+                      <div className="flex items-center gap-3">
+                        <Calendar className="h-4 w-4 text-blue-400" />
+                        <div>
+                          <p className="text-xs text-neutral-500">Date</p>
+                          <p className="text-sm font-semibold text-white">
+                            {new Date(currentMonth.getFullYear(), currentMonth.getMonth(), selectedDate.date).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="h-px bg-white/8" />
+                      <div className="flex items-center gap-3">
+                        <Clock className="h-4 w-4 text-blue-400" />
+                        <div>
+                          <p className="text-xs text-neutral-500">Time</p>
+                          <p className="text-sm font-semibold text-white">{formatTime(selectedTime)} (WAT)</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <button
+                        onClick={handleConfirmBooking}
+                        disabled={submitState === "submitting"}
+                        className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-60 text-white font-bold py-4 rounded-xl transition-all duration-200 text-sm"
+                      >
+                        {submitState === "submitting" ? (
+                          <span className="flex items-center justify-center gap-2">
+                            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            Confirming…
+                          </span>
+                        ) : "Confirm Booking →"}
+                      </button>
+
+                      <a
+                        href="https://wa.me/2348034567890"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-white/10 hover:border-emerald-500/40 hover:bg-emerald-500/8 text-sm text-neutral-400 hover:text-emerald-400 transition-all duration-200"
+                      >
+                        <MessageCircle className="h-4 w-4" />
+                        Or chat on WhatsApp instead
+                      </a>
+                    </div>
+
+                    <button onClick={() => setSelectedTime(null)} className="mt-4 text-sm text-neutral-500 hover:text-white transition-colors flex items-center gap-1">
+                      <ChevronLeft className="h-4 w-4" /> Change time
+                    </button>
+                  </div>
+                )}
               </div>
             )}
-          </div>
+          </>
         )}
       </DialogContent>
     </Dialog>

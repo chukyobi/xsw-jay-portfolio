@@ -25,7 +25,7 @@ const rightImages = [
 
 const phrases = ["COMPUTER", "SOFTWARE", "RESEARCH"];
 
-export function HeroSection() {
+export default function HeroSection() {
   const heroRef = useRef<HTMLDivElement>(null);
   const leftScrollRef = useRef<HTMLDivElement>(null);
   const rightScrollRef = useRef<HTMLDivElement>(null);

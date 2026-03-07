@@ -3,114 +3,128 @@
 import { useRef, useEffect } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { Card, CardContent } from "@/components/ui/card"
-import { Code, Laptop, Zap, Cpu } from "lucide-react"
+import { Code, Laptop, Zap, Cpu, ArrowUpRight } from "lucide-react"
 
-// Register GSAP plugins
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-// Sample data - would be fetched from Supabase in a real implementation
 const servicesData = [
   {
     id: "1",
     title: "Web Development",
-    description: "Building responsive, scalable web applications with modern frameworks and technologies.",
-    icon: <Laptop className="h-12 w-12 text-blue-accent" />,
+    description: "Building responsive, scalable web applications using React, Next.js, Node.js and modern tooling with best-in-class performance.",
+    icon: Laptop,
+    gradient: "from-blue-500/20 to-blue-500/5",
+    accent: "#3b82f6",
+    number: "01",
   },
   {
     id: "2",
     title: "Mobile Development",
-    description: "Creating native and cross-platform mobile applications for iOS and Android.",
-    icon: <Code className="h-12 w-12 text-blue-accent" />,
+    description: "Cross-platform iOS & Android apps built with React Native / Expo — smooth, native-feeling experiences.",
+    icon: Code,
+    gradient: "from-violet-500/20 to-violet-500/5",
+    accent: "#8b5cf6",
+    number: "02",
   },
   {
     id: "3",
-    title: "Automation",
-    description: "Streamlining workflows and processes through custom automation solutions.",
-    icon: <Zap className="h-12 w-12 text-blue-accent" />,
+    title: "Automation & Scripting",
+    description: "Custom automation pipelines, bots and scripts that eliminate repetitive work and improve team productivity.",
+    icon: Zap,
+    gradient: "from-amber-500/20 to-amber-500/5",
+    accent: "#f59e0b",
+    number: "03",
   },
   {
     id: "4",
-    title: "Electronics and Design",
-    description: "Designing and implementing electronic systems and hardware solutions.",
-    icon: <Cpu className="h-12 w-12 text-blue-accent" />,
+    title: "Electronics & Embedded",
+    description: "Designing and programming embedded systems, IoT devices and hardware-software integrations.",
+    icon: Cpu,
+    gradient: "from-emerald-500/20 to-emerald-500/5",
+    accent: "#10b981",
+    number: "04",
   },
 ]
 
 export function ServicesSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
-  const headingRef = useRef<HTMLDivElement>(null)
-  const cardsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Heading animation
       gsap.fromTo(
-        headingRef.current,
+        ".service-card-item",
         { opacity: 0, y: 50 },
         {
           opacity: 1,
           y: 0,
+          stagger: 0.12,
           duration: 0.8,
+          ease: "power3.out",
           scrollTrigger: {
-            trigger: headingRef.current,
+            trigger: sectionRef.current,
             start: "top 80%",
           },
-        },
+        }
       )
-
-      // Cards animation
-      if (cardsRef.current) {
-        const cards = cardsRef.current.querySelectorAll(".service-card")
-        gsap.fromTo(
-          cards,
-          { opacity: 0, y: 50 },
-          {
-            opacity: 1,
-            y: 0,
-            stagger: 0.1,
-            duration: 0.6,
-            scrollTrigger: {
-              trigger: cardsRef.current,
-              start: "top 75%",
-            },
-          },
-        )
-      }
     }, sectionRef)
-
     return () => ctx.revert()
   }, [])
 
   return (
-    <section id="services" ref={sectionRef} className="py-16 md:py-24 bg-background/50">
-      <div className="container mx-auto px-4">
-        <div ref={headingRef} className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Services</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Specialized services tailored to meet your development needs.
+    <section id="services" ref={sectionRef} className="py-28 md:py-36 bg-[#0a0a0a] text-white relative overflow-hidden">
+      {/* Background accent */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="container mx-auto px-6 sm:px-12">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+          <div>
+            <p className="text-xs font-semibold tracking-[0.3em] text-neutral-500 uppercase mb-4">What I Do</p>
+            <h2 className="text-5xl md:text-7xl font-extrabold leading-tight">
+              SERVICES
+            </h2>
+          </div>
+          <p className="text-neutral-400 max-w-sm text-lg leading-relaxed">
+            Specialized engineering services tailored to turn your ideas into premium digital products.
           </p>
         </div>
 
-        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {servicesData.map((service) => (
-            <Card
-              key={service.id}
-              className="service-card border border-border/50 hover:border-blue-accent/50 transition-all duration-300 hover:-translate-y-1"
-            >
-              <CardContent className="p-6">
-                <div className="flex items-start">
-                  <div className="mr-4 p-2 rounded-md bg-blue-accent/10">{service.icon}</div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-2">{service.title}</h3>
-                    <p className="text-muted-foreground">{service.description}</p>
-                  </div>
+        {/* Cards grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {servicesData.map((service) => {
+            const Icon = service.icon
+            return (
+              <div
+                key={service.id}
+                className={`service-card-item group relative rounded-3xl border border-white/8 bg-gradient-to-br ${service.gradient} p-8 overflow-hidden cursor-default
+                  hover:border-white/20 transition-all duration-500 hover:-translate-y-1`}
+              >
+                {/* Number */}
+                <span className="absolute top-6 right-8 text-6xl font-black text-white/5 select-none group-hover:text-white/10 transition-all duration-500">
+                  {service.number}
+                </span>
+
+                {/* Icon */}
+                <div
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 relative z-10"
+                  style={{ backgroundColor: `${service.accent}18`, border: `1px solid ${service.accent}30` }}
+                >
+                  <Icon className="h-7 w-7" style={{ color: service.accent }} />
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+
+                <h3 className="text-xl font-bold mb-3 relative z-10 text-white">{service.title}</h3>
+                <p className="text-neutral-400 leading-relaxed relative z-10 text-sm">{service.description}</p>
+
+                {/* Arrow indicator */}
+                <div className="mt-6 flex items-center gap-2 relative z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-0 group-hover:translate-x-1">
+                  <span className="text-sm font-medium" style={{ color: service.accent }}>Learn more</span>
+                  <ArrowUpRight className="h-4 w-4" style={{ color: service.accent }} />
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
     </section>

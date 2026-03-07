@@ -27,6 +27,7 @@ export function ExperienceForm({ experience, isEditing = false }: ExperienceForm
     company: experience?.company || "",
     position: experience?.position || "",
     description: experience?.description || "",
+    location: experience?.location || "",
     start_date: experience?.start_date || new Date().toISOString().split("T")[0],
     end_date: experience?.end_date || "",
     is_current: experience?.is_current || false,
@@ -151,6 +152,17 @@ export function ExperienceForm({ experience, isEditing = false }: ExperienceForm
             />
           </div>
 
+          <div className="space-y-2">
+            <Label htmlFor="location">Location</Label>
+            <Input
+              id="location"
+              name="location"
+              value={formData.location || ""}
+              onChange={handleChange}
+              placeholder="e.g. Lagos, NG or Remote"
+            />
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="start_date">Start Date *</Label>
@@ -170,7 +182,7 @@ export function ExperienceForm({ experience, isEditing = false }: ExperienceForm
                 id="end_date"
                 name="end_date"
                 type="date"
-                value={formData.end_date}
+                value={formData.end_date ?? ""}
                 onChange={handleChange}
                 disabled={formData.is_current}
               />

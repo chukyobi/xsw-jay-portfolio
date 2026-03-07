@@ -5,12 +5,14 @@ export interface Project {
   title: string
   description: string
   long_description?: string
-  thumbnail_url?: string
+  thumbnail_url: string
   github_url?: string
   live_url?: string
   technologies: string[]
   category?: string
   status: ProjectStatus
+  size?: "small" | "large"  
+  href?: string             
   created_at: string
   updated_at: string
 }

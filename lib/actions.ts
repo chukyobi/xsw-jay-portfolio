@@ -5,11 +5,12 @@ import type { Project, Experience, Education, Service, Technology, Company, Test
 import { revalidatePath } from "next/cache"
 
 // Projects CRUD
-export async function getProjects(limit = 3) {
+export async function getProjects(limit = 6) {
   const supabase = createServerSupabaseClient()
   const { data, error } = await supabase
     .from("projects")
     .select("*")
+    .eq("status", "published")
     .order("created_at", { ascending: false })
     .limit(limit)
 
@@ -23,10 +24,30 @@ export async function getProjects(limit = 3) {
 
 export async function getAllProjects() {
   const supabase = createServerSupabaseClient()
-  const { data, error } = await supabase.from("projects").select("*").order("created_at", { ascending: false })
+  const { data, error } = await supabase
+    .from("projects")
+    .select("*")
+    .eq("status", "published")
+    .order("created_at", { ascending: false })
 
   if (error) {
     console.error("Error fetching all projects:", error)
+    return []
+  }
+
+  return data as Project[]
+}
+
+// Admin-only: returns ALL projects regardless of status
+export async function getAllProjectsAdmin() {
+  const supabase = createServerSupabaseClient()
+  const { data, error } = await supabase
+    .from("projects")
+    .select("*")
+    .order("created_at", { ascending: false })
+
+  if (error) {
+    console.error("Error fetching admin projects:", error)
     return []
   }
 
@@ -84,6 +105,7 @@ export async function createProject(project: Omit<Project, "id" | "created_at" |
 
   revalidatePath("/projects")
   revalidatePath("/admin/projects")
+  revalidatePath("/admin/dashboard")
   revalidatePath("/")
 
   return data[0] as Project
@@ -105,6 +127,7 @@ export async function updateProject(id: string, project: Partial<Project>) {
   revalidatePath(`/projects/${id}`)
   revalidatePath("/projects")
   revalidatePath("/admin/projects")
+  revalidatePath("/admin/dashboard")
   revalidatePath("/")
 
   return data[0] as Project
@@ -121,6 +144,7 @@ export async function deleteProject(id: string) {
 
   revalidatePath("/projects")
   revalidatePath("/admin/projects")
+  revalidatePath("/admin/dashboard")
   revalidatePath("/")
 
   return true

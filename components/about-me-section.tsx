@@ -8,21 +8,43 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
+const stats = [
+  { value: "3+", label: "Years Experience" },
+  { value: "15+", label: "Projects Shipped" },
+  { value: "5+", label: "Tech Domains" },
+]
+
 export function AboutSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  const kineticRef1 = useRef<HTMLDivElement>(null)
-  const kineticRef2 = useRef<HTMLDivElement>(null)
+  const lineRef = useRef<HTMLDivElement>(null)
+  const statsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Animate headline line
+      gsap.fromTo(
+        lineRef.current,
+        { width: "0%" },
+        {
+          width: "100%",
+          duration: 1.4,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: lineRef.current,
+            start: "top 85%",
+          },
+        }
+      )
+
+      // Content fade in
       gsap.fromTo(
         contentRef.current,
         { opacity: 0, y: 40 },
         {
           opacity: 1,
           y: 0,
-          duration: 1.2,
+          duration: 1,
           ease: "power3.out",
           scrollTrigger: {
             trigger: contentRef.current,
@@ -31,31 +53,18 @@ export function AboutSection() {
         }
       )
 
+      // Stats stagger
       gsap.fromTo(
-        kineticRef1.current,
-        { opacity: 0, y: 60 },
+        ".about-stat",
+        { opacity: 0, y: 30 },
         {
-          opacity: 0.05,
+          opacity: 1,
           y: 0,
-          duration: 2.5,
+          stagger: 0.15,
+          duration: 0.8,
           ease: "power3.out",
           scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 90%",
-          },
-        }
-      )
-
-      gsap.fromTo(
-        kineticRef2.current,
-        { opacity: 0, y: 80 },
-        {
-          opacity: 0.07,
-          y: 10,
-          duration: 3,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
+            trigger: statsRef.current,
             start: "top 85%",
           },
         }
@@ -69,60 +78,78 @@ export function AboutSection() {
     <section
       id="about"
       ref={sectionRef}
-      className="py-24 md:py-32 bg-background border-t border-border relative overflow-hidden"
+      className="py-28 md:py-36 bg-[#080808] text-white relative overflow-hidden"
     >
-      {/* Accent line */}
-      <div className="absolute left-4 top-16 bottom-16 w-0.5 bg-gradient-to-b from-muted to-transparent rounded-full hidden md:block" />
+      {/* Subtle grid background */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none" />
 
-      {/* Background kinetic text */}
-      <div className="absolute inset-0 flex justify-center items-center pointer-events-none z-0">
-        <h1
-          ref={kineticRef1}
-          className="absolute top-1/4 text-[16vw] md:text-[13vw] font-black tracking-tight whitespace-nowrap text-white opacity-5 select-none"
-        >
-          CHUKWUDI
-        </h1>
-        <h1
-          ref={kineticRef2}
-          className="absolute top-1/2 text-[14vw] md:text-[11vw] font-extrabold tracking-tight whitespace-nowrap text-white opacity-5 select-none"
-        >
-          OBI
-        </h1>
-      </div>
+      <div className="container mx-auto px-6 sm:px-12 relative z-10">
+        {/* Top label */}
+        <div className="flex items-center gap-3 mb-8">
+          <span className="text-xs font-semibold tracking-[0.3em] text-neutral-400 uppercase">About Me</span>
+          <div ref={lineRef} className="h-px bg-neutral-700 w-0" />
+        </div>
 
-      {/* Foreground content */}
-      <div className="container mx-auto px-4 max-w-6xl relative z-10">
+        {/* Main content */}
         <div
           ref={contentRef}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center"
+          className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center"
         >
-          {/* Left Text Block */}
-          <div className="flex flex-col justify-between h-full space-y-10">
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              I’m a passionate software engineer crafting meaningful digital experiences that empower users and drive innovation.
-            </p>
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              — Merging creativity with strong engineering principles, I focus on building clean, intuitive, and scalable applications.
-            </p>
+          {/* Left — Image */}
+          <div className="relative">
+            <div className="relative w-full max-w-[400px] mx-auto md:mx-0">
+              {/* Decorative border */}
+              <div className="absolute -top-4 -left-4 w-full h-full rounded-3xl border border-white/10" />
+              <div className="absolute -bottom-4 -right-4 w-full h-full rounded-3xl border border-white/5" />
+              <img
+                src="/ProfileJay.jpeg"
+                alt="Chukwudi Obi"
+                className="relative z-10 rounded-3xl w-full h-[480px] object-cover object-top shadow-2xl"
+              />
+              {/* Floating badge */}
+              <div className="absolute bottom-6 left-6 z-20 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-4 py-3">
+                <p className="text-xs text-neutral-400">Currently based in</p>
+                <p className="text-sm font-semibold text-white">Anambra, Nigeria 🇳🇬</p>
+              </div>
+            </div>
           </div>
 
-          {/* Center Image */}
-          <div className="flex justify-center">
-            <img
-              src="/ProfileJay.jpeg"
-              alt="Chukwudi Obi"
-              className="rounded-3xl w-[300px] h-[400px] object-cover shadow-2xl border-2 border-border"
-            />
-          </div>
+          {/* Right — Text */}
+          <div className="flex flex-col gap-8">
+            <h2 className="text-5xl md:text-6xl font-extrabold leading-[1.1] tracking-tight">
+              Crafting digital<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                experiences
+              </span>{" "}
+              that matter.
+            </h2>
 
-          {/* Right Text Block */}
-          <div className="flex flex-col justify-between h-full space-y-10">
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              — Beyond the code, I’m fascinated by AI, cybersecurity, and building accessible tech that truly serves people.
-            </p>
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              Always learning, always evolving — committed to creating tech that bridges gaps and sparks change.
-            </p>
+            <div className="space-y-5 text-neutral-400 text-lg leading-relaxed">
+              <p>
+                I'm a <span className="text-white font-semibold">software engineer</span> with a strong focus on building
+                clean, scalable full-stack applications that deliver real value to users.
+              </p>
+              <p>
+                From web and mobile apps to automation and hardware-integrated systems, I bring ideas to life across the entire
+                engineering stack — with a deep love for elegant code and intentional design.
+              </p>
+              <p>
+                When I'm not building, I'm exploring AI, cybersecurity, and how technology can close gaps in underserved communities.
+              </p>
+            </div>
+
+            {/* Stats */}
+            <div ref={statsRef} className="grid grid-cols-3 gap-6 mt-4">
+              {stats.map((s, i) => (
+                <div
+                  key={i}
+                  className="about-stat border border-white/10 rounded-2xl p-4 bg-white/5 hover:bg-white/10 transition-all duration-300"
+                >
+                  <p className="text-3xl font-extrabold text-white">{s.value}</p>
+                  <p className="text-xs text-neutral-500 mt-1 leading-relaxed">{s.label}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

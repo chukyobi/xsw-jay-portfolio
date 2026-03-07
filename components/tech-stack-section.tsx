@@ -4,7 +4,6 @@ import { useRef, useEffect, useState } from "react"
 import Image from "next/image"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { Card, CardContent } from "@/components/ui/card"
 import { getTechnologiesByCategory } from "@/lib/actions"
 import type { Technology } from "@/lib/types"
 
@@ -13,52 +12,24 @@ if (typeof window !== "undefined") {
 }
 
 const fallbackTechnologies: Technology[] = [
-  {
-    id: "7", name: "Next.js", category: "frontend", icon: "/brand-nextjs.svg",
-    created_at: "",
-    updated_at: ""
-  },
-  {
-    id: "8", name: "Expo", category: "frontend", icon: "/icons8-expo.svg",
-    created_at: "",
-    updated_at: ""
-  },
-  {
-    id: "11", name: "Node.js", category: "backend", icon: "/logo-nodejs.svg",
-    created_at: "",
-    updated_at: ""
-  },
-  {
-    id: "12", name: "Express", category: "backend", icon: "/express-original.svg",
-    created_at: "",
-    updated_at: ""
-  },
-  {
-    id: "13", name: "Spring Boot", category: "backend", icon: "/spring-boot.svg",
-    created_at: "",
-    updated_at: ""
-  },
-  {
-    id: "14", name: "Golang", category: "languages", icon: "/Go-black.png",
-    created_at: "",
-    updated_at: ""
-  },
-  {
-    id: "15", name: "Java", category: "languages", icon: "/icons8-java-logo.svg",
-    created_at: "",
-    updated_at: ""
-  },
-  {
-    id: "16", name: "Python", category: "languages", icon: "/python.svg",
-    created_at: "",
-    updated_at: ""
-  },
+  { id: "1", name: "Next.js", category: "Frontend", icon: "/brand-nextjs.svg", created_at: "", updated_at: "" },
+  { id: "2", name: "Expo", category: "Frontend", icon: "/icons8-expo.svg", created_at: "", updated_at: "" },
+  { id: "3", name: "React", category: "Frontend", icon: "/react.svg", created_at: "", updated_at: "" },
+  { id: "4", name: "Node.js", category: "Backend", icon: "/logo-nodejs.svg", created_at: "", updated_at: "" },
+  { id: "5", name: "Express", category: "Backend", icon: "/express-original.svg", created_at: "", updated_at: "" },
+  { id: "6", name: "Spring Boot", category: "Backend", icon: "/spring-boot.svg", created_at: "", updated_at: "" },
+  { id: "7", name: "Golang", category: "Languages", icon: "/Go-black.png", created_at: "", updated_at: "" },
+  { id: "8", name: "Java", category: "Languages", icon: "/icons8-java-logo.svg", created_at: "", updated_at: "" },
+  { id: "9", name: "Python", category: "Languages", icon: "/python.svg", created_at: "", updated_at: "" },
+  { id: "10", name: "TypeScript", category: "Languages", icon: "/typescript.svg", created_at: "", updated_at: "" },
+  { id: "11", name: "PostgreSQL", category: "Database", icon: "/postgresql.svg", created_at: "", updated_at: "" },
+  { id: "12", name: "Supabase", category: "Database", icon: "/supabase.svg", created_at: "", updated_at: "" },
 ]
 
 export function TechStackSection() {
   const [technologies, setTechnologies] = useState<Technology[]>(fallbackTechnologies)
+  const [activeCategory, setActiveCategory] = useState<string>("All")
   const sectionRef = useRef<HTMLDivElement>(null)
-  const headingRef = useRef<HTMLDivElement>(null)
   const gridRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -73,81 +44,85 @@ export function TechStackSection() {
         console.error("Error fetching technologies:", error)
       }
     }
-
     fetchTechnologies()
   }, [])
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        headingRef.current,
-        { opacity: 0, y: 40 },
+        ".tech-pill-item",
+        { opacity: 0, y: 20, scale: 0.9 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.6,
-          scrollTrigger: {
-            trigger: headingRef.current,
-            start: "top 80%",
-          },
-        },
-      )
-
-      gsap.fromTo(
-        ".tech-card",
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.1,
+          scale: 1,
+          stagger: 0.05,
           duration: 0.5,
-          ease: "power2.out",
+          ease: "power3.out",
           scrollTrigger: {
             trigger: gridRef.current,
             start: "top 80%",
           },
-        },
+        }
       )
     }, sectionRef)
-
     return () => ctx.revert()
-  }, [])
+  }, [technologies])
+
+  // Build categories
+  const categories = ["All", ...Array.from(new Set(technologies.map((t) => t.category)))]
+  const filtered =
+    activeCategory === "All"
+      ? technologies
+      : technologies.filter((t) => t.category === activeCategory)
 
   return (
-    <section id="tech-stack" ref={sectionRef} className="py-16 md:py-24 bg-background">
-      <div className="container mx-auto px-4">
-        <div ref={headingRef} className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Tech Stack</h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            Tools and technologies I use to build robust, scalable applications.
-          </p>
+    <section id="tech-stack" ref={sectionRef} className="py-28 md:py-36 bg-[#0a0a0a] text-white relative overflow-hidden">
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:80px_80px] pointer-events-none" />
+
+      <div className="container mx-auto px-6 sm:px-12 relative z-10">
+        {/* Header */}
+        <div className="mb-16">
+          <p className="text-xs font-semibold tracking-[0.3em] text-neutral-500 uppercase mb-4">Skills & Tools</p>
+          <h2 className="text-5xl md:text-7xl font-extrabold leading-tight">TECH STACK</h2>
         </div>
 
-        {/* Mobile: Horizontal scroll | Tablet/Desktop: Grid */}
-        <div
-          ref={gridRef}
-          className="md:grid md:grid-cols-3 lg:grid-cols-4 gap-6 flex md:flex-none overflow-x-auto space-x-4 scrollbar-hide px-1 -mx-1"
-        >
-          {technologies.map((tech) => (
-            <Card
-              key={tech.id}
-              className="tech-card min-w-[45%] md:min-w-0 p-4 border rounded-xl hover:shadow-md transition-all flex-shrink-0 md:flex-shrink"
+        {/* Category filter */}
+        <div className="flex flex-wrap gap-2 mb-12">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${activeCategory === cat
+                  ? "bg-white text-black"
+                  : "bg-white/8 text-neutral-400 hover:bg-white/15 hover:text-white border border-white/10"
+                }`}
             >
-              <CardContent className="flex items-center gap-4">
-                <div className="w-12 h-12 flex items-center justify-center bg-white rounded-lg">
-                  <Image
-                    src={tech.icon || "/placeholder.svg"}
-                    alt={tech.name}
-                    width={40}
-                    height={40}
-                    className="object-contain"
-                  />
-                </div>
-                <div>
-                  <p className="font-semibold text-lg">{tech.name}</p>
-                </div>
-              </CardContent>
-            </Card>
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* Technologies */}
+        <div ref={gridRef} className="flex flex-wrap gap-3">
+          {filtered.map((tech) => (
+            <div
+              key={tech.id}
+              className="tech-pill-item group flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl px-4 py-3 hover:bg-white/12 hover:border-white/25 transition-all duration-300 cursor-default"
+            >
+              <div className="w-8 h-8 flex items-center justify-center rounded-xl bg-white/10 overflow-hidden flex-shrink-0">
+                <Image
+                  src={tech.icon || "/placeholder.svg"}
+                  alt={tech.name}
+                  width={20}
+                  height={20}
+                  className="object-contain"
+                />
+              </div>
+              <span className="text-sm font-semibold text-neutral-200 group-hover:text-white transition-colors whitespace-nowrap">
+                {tech.name}
+              </span>
+            </div>
           ))}
         </div>
       </div>
