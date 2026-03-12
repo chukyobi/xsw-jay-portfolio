@@ -1,5 +1,5 @@
 
-> my-v0-project@0.1.0 dev
+> my-v0-project@0.1.0 dev /Users/mac/Documents/DevWork/webApps/xsw-jay-portfolio
 > next dev
 
  ⚠ Port 3000 is in use, trying 3001 instead.
@@ -9,5 +9,4 @@
    - Environments: .env.local
 
  ✓ Starting...
- ✓ Ready in 10.1s
-[?25h
+ ✓ Ready in 4.5s

@@ -22,27 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} bg-background`}>
-        <Script
-          id="metamask-suppressor"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.addEventListener('error', function(e) {
-                var msg = e.message || '';
-                var file = e.filename || '';
-                if ((typeof msg === 'string' && msg.includes('MetaMask')) || (typeof file === 'string' && file.includes('inpage.js'))) {
-                  e.stopImmediatePropagation();
-                }
-              }, true);
-              window.addEventListener('unhandledrejection', function(e) {
-                var msg = (e.reason && e.reason.message) || '';
-                if (typeof msg === 'string' && msg.includes('MetaMask')) {
-                  e.preventDefault();
-                }
-              }, true);
-            `,
-          }}
-        />
+
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
           <Navbar />
           {children}
