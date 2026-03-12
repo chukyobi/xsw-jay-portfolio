@@ -11,15 +11,15 @@ if (typeof window !== "undefined") {
 }
 
 const contactInfo = [
-  { icon: Mail, label: "Email", value: "xswjaydev@gmail.com", href: "mailto:xswjaydev@gmail.com" },
-  { icon: Phone, label: "Phone", value: "+234 912 345 6789", href: "tel:+2349123456789" },
-  { icon: MapPin, label: "Location", value: "Anambra, Nigeria", href: null },
+  { icon: Mail, label: "Email", value: "josephclinton.obi@gmail.com", href: "mailto:josephclinton.obi@gmail.com" },
+  { icon: Phone, label: "Phone", value: "+234 814 676 3559", href: "tel:+2348146763559" },
+  { icon: MapPin, label: "Location", value: " Lagos, Nigeria", href: null },
 ]
 
 const socials = [
   { icon: Github, label: "GitHub", href: "https://github.com/chukyobi", handle: "chukyobi" },
-  { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/in/chukwudi-obi", handle: "chukwudi-obi" },
-  { icon: Twitter, label: "Twitter", href: "https://twitter.com/xswjay", handle: "@xswjay" },
+  { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/chukwudi-obi/", handle: "chukwudi-obi" },
+  { icon: Twitter, label: "Twitter", href: "https://twitter.com/chuky0bi_", handle: "@chuky0bi_" },
 ]
 
 export function ContactSection() {
@@ -128,7 +128,7 @@ export function ContactSection() {
 
             {/* Email CTA */}
             <a
-              href="mailto:xswjaydev@gmail.com"
+              href="mailto:josephclinton.obi@gmail.com"
               className="flex items-center justify-center gap-3 w-full py-4 px-8 rounded-2xl bg-white text-black font-bold hover:bg-neutral-200 transition-all duration-300 group"
             >
               Send an Email

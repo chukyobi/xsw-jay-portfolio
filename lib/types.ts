@@ -93,3 +93,15 @@ export interface AvatarOption {
   url: string
   name: string
 }
+
+export interface Profile {
+  id: string
+  name: string
+  headline: string
+  description: string[]
+  image_url: string
+  location: string
+  stats: { value: string; label: string }[]
+  created_at: string
+  updated_at: string
+}

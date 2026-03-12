@@ -11,9 +11,9 @@ const navLinks = [
 
 const socials = [
   { href: "https://github.com/chukyobi", icon: Github, label: "GitHub" },
-  { href: "https://twitter.com/xswjay", icon: Twitter, label: "Twitter" },
+  { href: "https://twitter.com/chukyobi_", icon: Twitter, label: "Twitter" },
   { href: "https://linkedin.com/in/chukwudi-obi", icon: Linkedin, label: "LinkedIn" },
-  { href: "mailto:xswjaydev@gmail.com", icon: Mail, label: "Email" },
+  { href: "mailto:josephclinton.obi@gmail.com", icon: Mail, label: "Email" },
 ]
 
 export function Footer() {
@@ -24,7 +24,7 @@ export function Footer() {
           {/* Brand */}
           <div>
             <Link href="/" className="text-2xl font-black tracking-tight mb-4 inline-block">
-              xsw<span className="text-blue-400">jay</span>
+              Chukwudi<span className="text-blue-400">Obi</span>
             </Link>
             <p className="text-neutral-500 text-sm leading-relaxed mt-4 max-w-xs">
               A full-stack software engineer building exceptional digital experiences across web, mobile and hardware.

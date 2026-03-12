@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { ExternalLink, Github, ArrowUpRight } from "lucide-react"
@@ -53,8 +54,9 @@ const fallbackProjects: Project[] = [
 ]
 
 function ProjectCard({ project }: { project: Project }) {
+  const router = useRouter()
   return (
-    <Link href={`/projects/${project.id}`} className="block group">
+    <div onClick={() => router.push(`/projects/${project.id}`)} className="block group">
       <div className="relative rounded-3xl overflow-hidden bg-neutral-900 border border-white/8 hover:border-white/20 transition-all duration-500 hover:-translate-y-2 cursor-pointer">
         {/* Image */}
         <div className="relative w-full h-60 overflow-hidden">
@@ -129,7 +131,7 @@ function ProjectCard({ project }: { project: Project }) {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   )
 }
 

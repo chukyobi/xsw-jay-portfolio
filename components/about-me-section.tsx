@@ -1,24 +1,41 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { getProfile } from "@/lib/actions"
+import type { Profile } from "@/lib/types"
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-const stats = [
+const fallbackStats = [
   { value: "3+", label: "Years Experience" },
   { value: "15+", label: "Projects Shipped" },
   { value: "5+", label: "Tech Domains" },
 ]
 
+const fallbackDescription = [
+  "I'm a software engineer with a strong focus on building clean, scalable full-stack applications that deliver real value to users.",
+  "From web and mobile apps to automation and hardware-integrated systems, I bring ideas to life across the entire engineering stack — with a deep love for elegant code and intentional design.",
+  "When I'm not building, I'm exploring AI, cybersecurity, and how technology can close gaps in underserved communities."
+]
+
 export function AboutSection() {
+  const [profile, setProfile] = useState<Profile | null>(null)
   const sectionRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const lineRef = useRef<HTMLDivElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getProfile()
+      if (data) setProfile(data)
+    }
+    fetchData()
+  }, [])
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -74,6 +91,13 @@ export function AboutSection() {
     return () => ctx.revert()
   }, [])
 
+  const headline = profile?.headline || "Crafting digital experiences that matter."
+  const name = profile?.name || "Chukwudi Obi"
+  const location = profile?.location || "Lagos, Nigeria 🇳🇬"
+  const imageUrl = profile?.image_url || "/ProfileJay.jpeg"
+  const descriptions = profile?.description || fallbackDescription
+  const stats = profile?.stats || fallbackStats
+
   return (
     <section
       id="about"
@@ -102,14 +126,14 @@ export function AboutSection() {
               <div className="absolute -top-4 -left-4 w-full h-full rounded-3xl border border-white/10" />
               <div className="absolute -bottom-4 -right-4 w-full h-full rounded-3xl border border-white/5" />
               <img
-                src="/ProfileJay.jpeg"
-                alt="Chukwudi Obi"
+                src={imageUrl}
+                alt={name}
                 className="relative z-10 rounded-3xl w-full h-[480px] object-cover object-top shadow-2xl"
               />
               {/* Floating badge */}
               <div className="absolute bottom-6 left-6 z-20 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-4 py-3">
                 <p className="text-xs text-neutral-400">Currently based in</p>
-                <p className="text-sm font-semibold text-white">Anambra, Nigeria 🇳🇬</p>
+                <p className="text-sm font-semibold text-white">{location}</p>
               </div>
             </div>
           </div>
@@ -117,25 +141,17 @@ export function AboutSection() {
           {/* Right — Text */}
           <div className="flex flex-col gap-8">
             <h2 className="text-5xl md:text-6xl font-extrabold leading-[1.1] tracking-tight">
-              Crafting digital<br />
+              {headline.split(" digital")[0] || "Crafting digital"}<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-                experiences
+                {headline.includes("experiences") ? "experiences" : "experience"}
               </span>{" "}
-              that matter.
+              {headline.split("that ")[1] ? `that ${headline.split("that ")[1]}` : "that matter."}
             </h2>
 
             <div className="space-y-5 text-neutral-400 text-lg leading-relaxed">
-              <p>
-                I'm a <span className="text-white font-semibold">software engineer</span> with a strong focus on building
-                clean, scalable full-stack applications that deliver real value to users.
-              </p>
-              <p>
-                From web and mobile apps to automation and hardware-integrated systems, I bring ideas to life across the entire
-                engineering stack — with a deep love for elegant code and intentional design.
-              </p>
-              <p>
-                When I'm not building, I'm exploring AI, cybersecurity, and how technology can close gaps in underserved communities.
-              </p>
+              {descriptions.map((p, i) => (
+                <p key={i} dangerouslySetInnerHTML={{ __html: p.replace(/software engineer/g, "<span class=\"text-white font-semibold\">software engineer</span>") }} />
+              ))}
             </div>
 
             {/* Stats */}

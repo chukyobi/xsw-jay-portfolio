@@ -23,7 +23,7 @@ const rightImages = [
   "/right5.png",
 ];
 
-const phrases = ["COMPUTER", "SOFTWARE", "RESEARCH"];
+const phrases = ["DATA", "SOFTWARE", "AI"];
 
 export default function HeroSection() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -145,7 +145,7 @@ export default function HeroSection() {
           <div className="flex items-center space-x-4">
             {/* Discord */}
             <a
-              href="https://discord.gg/your-link"
+              href="https://discord.gg/#"
               target="_blank"
               rel="noopener noreferrer"
               className="relative flex items-center justify-center bg-background border px-4 py-2 rounded-full"
@@ -173,7 +173,7 @@ export default function HeroSection() {
 
             {/* LinkedIn */}
             <a
-              href="https://www.linkedin.com/in/joseph-clinton-chukwudi-obi/"
+              href="https://www.linkedin.com/in/chukwudi-obi/"
               target="_blank"
               rel="noopener noreferrer"
               className="relative flex items-center justify-center bg-background border px-4 py-2 rounded-full"
@@ -203,7 +203,7 @@ export default function HeroSection() {
             ENGINEER<span className="inline-block align-top ml-2">©</span>
           </h1>
           <p className="text-muted-foreground text-sm md:text-base mt-6 font-medium">
-          ENGINEERING RESILIENT SOFTWARE. DRIVING COMPLEX SYSTEMS. FROM ARCHITECTURE TO EXECUTION.
+            ENGINEERING RESILIENT SOFTWARE. DRIVING COMPLEX SYSTEMS. FROM ARCHITECTURE TO EXECUTION.
           </p>
 
           <div className="flex flex-wrap justify-center items-center gap-6 mt-16">

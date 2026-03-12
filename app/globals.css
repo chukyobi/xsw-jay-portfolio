@@ -146,7 +146,7 @@
 
 /* Testimonial card glow effect */
 .testimonial-glow {
-  box-shadow: 0 10px 30px -15px rgba(var(--blue-accent), 0.2), 0 0 10px -5px rgba(var(--blue-accent), 0.1);
+  box-shadow: 0 10px 30px -15px hsl(var(--blue-accent) / 0.2), 0 0 10px -5px hsl(var(--blue-accent) / 0.1);
   transition: all 0.3s ease;
   transform-origin: center top;
   backface-visibility: hidden;
@@ -154,29 +154,29 @@
 }
 
 .testimonial-glow:hover {
-  box-shadow: 0 20px 40px -20px rgba(var(--blue-accent), 0.3), 0 0 15px -5px rgba(var(--blue-accent), 0.2);
+  box-shadow: 0 20px 40px -20px hsl(var(--blue-accent) / 0.3), 0 0 15px -5px hsl(var(--blue-accent) / 0.2);
   transform: translateY(-5px);
 }
 
 /* Dark mode adjustments */
 .dark .testimonial-glow {
-  box-shadow: 0 10px 30px -15px rgba(var(--blue-accent), 0.3), 0 0 15px -5px rgba(var(--blue-accent), 0.2);
+  box-shadow: 0 10px 30px -15px hsl(var(--blue-accent) / 0.3), 0 0 15px -5px hsl(var(--blue-accent) / 0.2);
 }
 
 .dark .testimonial-glow:hover {
-  box-shadow: 0 20px 40px -20px rgba(var(--blue-accent), 0.5), 0 0 20px -5px rgba(var(--blue-accent), 0.3);
+  box-shadow: 0 20px 40px -20px hsl(var(--blue-accent) / 0.5), 0 0 20px -5px hsl(var(--blue-accent) / 0.3);
 }
 
 /* Stacked card effect */
 .testimonial-card:not(:first-child) .testimonial-glow {
   box-shadow:
-    0 10px 30px -15px rgba(var(--blue-accent), 0.2), 0 0 10px -5px rgba(var(--blue-accent), 0.1),
+    0 10px 30px -15px hsl(var(--blue-accent) / 0.2), 0 0 10px -5px hsl(var(--blue-accent) / 0.1),
     0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
 /* Add a subtle border to make the stack more visible */
 .testimonial-card:not(:first-child) .testimonial-glow {
-  border-top: 2px solid rgba(var(--blue-accent), 0.1);
+  border-top: 2px solid hsl(var(--blue-accent) / 0.1);
 }
 /* Hide scrollbar on mobile carousel */
 .scrollbar-hide::-webkit-scrollbar {

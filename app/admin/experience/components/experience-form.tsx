@@ -50,14 +50,20 @@ export function ExperienceForm({ experience, isEditing = false }: ExperienceForm
     setIsLoading(true)
 
     try {
+      // Supabase Postgres date columns reject empty strings (""), they require null.
+      const payload = {
+        ...formData,
+        end_date: formData.end_date === "" ? null : formData.end_date,
+      } as any // using any here to bypass end_date string type constraint temporarily during payload submission if needed
+
       if (isEditing && experience) {
-        await updateExperience(experience.id, formData)
+        await updateExperience(experience.id, payload)
         toast({
           title: "Experience updated",
           description: "Your experience has been updated successfully",
         })
       } else {
-        await createExperience(formData)
+        await createExperience(payload)
         toast({
           title: "Experience created",
           description: "Your experience has been created successfully",

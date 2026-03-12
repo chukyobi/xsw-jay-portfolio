@@ -1,20 +1,23 @@
 "use client"
 
-import { useRef, useEffect } from "react"
+import Link from "next/link"
+import { useRef, useEffect, useState } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Code, Laptop, Zap, Cpu, ArrowUpRight } from "lucide-react"
+import { getServices } from "@/lib/actions"
+import type { Service } from "@/lib/types"
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-const servicesData = [
+const fallbackServices = [
   {
     id: "1",
     title: "Web Development",
     description: "Building responsive, scalable web applications using React, Next.js, Node.js and modern tooling with best-in-class performance.",
-    icon: Laptop,
+    icon: "Laptop",
     gradient: "from-blue-500/20 to-blue-500/5",
     accent: "#3b82f6",
     number: "01",
@@ -23,7 +26,7 @@ const servicesData = [
     id: "2",
     title: "Mobile Development",
     description: "Cross-platform iOS & Android apps built with React Native / Expo — smooth, native-feeling experiences.",
-    icon: Code,
+    icon: "Code",
     gradient: "from-violet-500/20 to-violet-500/5",
     accent: "#8b5cf6",
     number: "02",
@@ -32,7 +35,7 @@ const servicesData = [
     id: "3",
     title: "Automation & Scripting",
     description: "Custom automation pipelines, bots and scripts that eliminate repetitive work and improve team productivity.",
-    icon: Zap,
+    icon: "Zap",
     gradient: "from-amber-500/20 to-amber-500/5",
     accent: "#f59e0b",
     number: "03",
@@ -41,36 +44,54 @@ const servicesData = [
     id: "4",
     title: "Electronics & Embedded",
     description: "Designing and programming embedded systems, IoT devices and hardware-software integrations.",
-    icon: Cpu,
+    icon: "Cpu",
     gradient: "from-emerald-500/20 to-emerald-500/5",
     accent: "#10b981",
     number: "04",
   },
 ]
 
+const iconMap: Record<string, any> = {
+  Code,
+  Laptop,
+  Zap,
+  Cpu,
+}
+
 export function ServicesSection() {
+  const [services, setServices] = useState<Service[]>([])
   const sectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    const fetchData = async () => {
+      const data = await getServices()
+      if (data.length > 0) setServices(data)
+    }
+    fetchData()
+  }, [])
+
+  useEffect(() => {
     const ctx = gsap.context(() => {
+      // Revert to using simple string selector which context scopes to sectionRef automatically
       gsap.fromTo(
         ".service-card-item",
-        { opacity: 0, y: 50 },
+        { opacity: 0, x: -50, y: 30 },
         {
           opacity: 1,
+          x: 0,
           y: 0,
-          stagger: 0.12,
+          stagger: 0.15,
           duration: 0.8,
           ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 80%",
+            start: "top 75%",
           },
         }
       )
     }, sectionRef)
     return () => ctx.revert()
-  }, [])
+  }, [services])
 
   return (
     <section id="services" ref={sectionRef} className="py-28 md:py-36 bg-[#0a0a0a] text-white relative overflow-hidden">
@@ -93,36 +114,41 @@ export function ServicesSection() {
 
         {/* Cards grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {servicesData.map((service) => {
-            const Icon = service.icon
+          {(services.length > 0 ? services : fallbackServices).map((service, idx) => {
+            const IconName = service.icon || (fallbackServices[idx % fallbackServices.length].icon)
+            const Icon = iconMap[IconName as string] || Laptop
+            const gradient = (service as any).gradient || fallbackServices[idx % fallbackServices.length].gradient
+            const accent = (service as any).accent || fallbackServices[idx % fallbackServices.length].accent
+            const number = (service as any).number || `0${idx + 1}`
             return (
-              <div
-                key={service.id}
-                className={`service-card-item group relative rounded-3xl border border-white/8 bg-gradient-to-br ${service.gradient} p-8 overflow-hidden cursor-default
-                  hover:border-white/20 transition-all duration-500 hover:-translate-y-1`}
-              >
-                {/* Number */}
-                <span className="absolute top-6 right-8 text-6xl font-black text-white/5 select-none group-hover:text-white/10 transition-all duration-500">
-                  {service.number}
-                </span>
-
-                {/* Icon */}
+              <Link href={`/services/${service.id}`} key={service.id} className="block group">
                 <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 relative z-10"
-                  style={{ backgroundColor: `${service.accent}18`, border: `1px solid ${service.accent}30` }}
+                  className={`service-card-item relative h-full rounded-3xl border border-white/8 bg-gradient-to-br ${gradient} p-8 overflow-hidden cursor-pointer
+                    hover:border-white/20 transition-all duration-500 hover:-translate-y-1 block`}
                 >
-                  <Icon className="h-7 w-7" style={{ color: service.accent }} />
-                </div>
+                  {/* Number */}
+                  <span className="absolute top-6 right-8 text-6xl font-black text-white/5 select-none group-hover:text-white/10 transition-all duration-500">
+                    {number}
+                  </span>
 
-                <h3 className="text-xl font-bold mb-3 relative z-10 text-white">{service.title}</h3>
-                <p className="text-neutral-400 leading-relaxed relative z-10 text-sm">{service.description}</p>
+                  {/* Icon */}
+                  <div
+                    className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 relative z-10"
+                    style={{ backgroundColor: `${accent}18`, border: `1px solid ${accent}30` }}
+                  >
+                    <Icon className="h-7 w-7" style={{ color: accent }} />
+                  </div>
 
-                {/* Arrow indicator */}
-                <div className="mt-6 flex items-center gap-2 relative z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-0 group-hover:translate-x-1">
-                  <span className="text-sm font-medium" style={{ color: service.accent }}>Learn more</span>
-                  <ArrowUpRight className="h-4 w-4" style={{ color: service.accent }} />
+                  <h3 className="text-xl font-bold mb-3 relative z-10 text-white group-hover:text-blue-400 transition-colors duration-300">{service.title}</h3>
+                  <p className="text-neutral-400 leading-relaxed relative z-10 text-sm">{service.description}</p>
+
+                  {/* Arrow indicator */}
+                  <div className="mt-8 flex items-center gap-2 relative z-10 opacity-60 group-hover:opacity-100 transition-all duration-300 translate-x-0 group-hover:translate-x-1">
+                    <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: accent }}>Explore Service</span>
+                    <ArrowUpRight className="h-4 w-4" style={{ color: accent }} />
+                  </div>
                 </div>
-              </div>
+              </Link>
             )
           })}
         </div>

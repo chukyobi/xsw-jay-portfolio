@@ -14,7 +14,8 @@ import {
   FileText,
   Clock,
 } from "lucide-react"
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog"
+import { submitQuote, submitBooking } from "@/lib/actions"
 
 type CalendarDate = {
   date: number
@@ -134,15 +135,27 @@ export function BookingModal() {
     if (Object.keys(newErrors).length > 0) { setErrors(newErrors); return }
 
     setSubmitState("submitting")
-    // Simulate API call
-    await new Promise((r) => setTimeout(r, 1200))
+    try {
+      await submitQuote(formData)
+    } catch (e) {
+      console.error(e)
+    }
     setSubmitState("success")
   }
 
   const handleConfirmBooking = async () => {
     if (!selectedDate || !selectedTime) return
     setSubmitState("submitting")
-    await new Promise((r) => setTimeout(r, 1200))
+    try {
+      await submitBooking({
+        date: selectedDate.date,
+        time: selectedTime,
+        format: timeFormat,
+        month: currentMonth.toISOString()
+      })
+    } catch (e) {
+      console.error(e)
+    }
     setSubmitState("success")
   }
 
@@ -167,6 +180,7 @@ export function BookingModal() {
       </DialogTrigger>
 
       <DialogContent className="p-0 bg-[#0f0f0f] text-white border border-white/10 max-w-lg rounded-2xl overflow-hidden shadow-2xl">
+        <DialogTitle className="sr-only">Booking Dialog</DialogTitle>
 
         {/* Success state */}
         {submitState === "success" ? (

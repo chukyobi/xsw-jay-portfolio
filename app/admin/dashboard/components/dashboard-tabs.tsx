@@ -11,6 +11,7 @@ import {
     Code,
     Building,
     MessageSquare,
+    User,
 } from "lucide-react"
 
 interface DashboardTabsProps {
@@ -24,10 +25,14 @@ export function DashboardTabs({ children, pendingTestimonials }: DashboardTabsPr
 
     return (
         <Tabs defaultValue={defaultTab} className="w-full">
-            <TabsList className="grid grid-cols-4 md:grid-cols-8 mb-8">
+            <TabsList className="grid grid-cols-3 md:grid-cols-9 mb-8">
                 <TabsTrigger value="dashboard" className="flex items-center gap-2">
                     <LayoutDashboard className="h-4 w-4" />
                     <span className="hidden md:inline">Dashboard</span>
+                </TabsTrigger>
+                <TabsTrigger value="profile" className="flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    <span className="hidden md:inline">About Me</span>
                 </TabsTrigger>
                 <TabsTrigger value="projects" className="flex items-center gap-2">
                     <FolderKanban className="h-4 w-4" />

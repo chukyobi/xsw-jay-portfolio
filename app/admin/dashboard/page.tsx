@@ -19,9 +19,11 @@ import {
   getExperience,
   getEducation,
   getServices,
-  getTechnologies,
   getCompanies,
   getTestimonials,
+  getProfile,
+  getTechnologies,
+  seedDatabase,
 } from "@/lib/actions"
 import { requireAdmin } from "@/lib/auth"
 import { DashboardTabs } from "./components/dashboard-tabs"
@@ -29,7 +31,7 @@ import { DashboardTabs } from "./components/dashboard-tabs"
 export default async function AdminDashboardPage() {
   await requireAdmin()
 
-  const [projects, experience, education, services, technologies, companies, testimonials] = await Promise.all([
+  const [projects, experience, education, services, technologies, companies, testimonials, profile] = await Promise.all([
     getAllProjectsAdmin(),
     getExperience(),
     getEducation(),
@@ -37,9 +39,15 @@ export default async function AdminDashboardPage() {
     getTechnologies(),
     getCompanies(),
     getTestimonials(false),
+    getProfile(),
   ])
 
   const pendingTestimonials = testimonials.filter((t) => t.approved === false).length
+
+  const handleSeed = async () => {
+    "use server"
+    await seedDatabase()
+  }
 
   return (
     <section className="py-20 px-4">
@@ -147,6 +155,20 @@ export default async function AdminDashboardPage() {
 
                     <Card>
                       <CardHeader>
+                        <CardTitle>App Initialization</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <form action={handleSeed}>
+                          <Button type="submit" className="w-full justify-start text-blue-600 hover:text-blue-700" variant="outline">
+                            <PlusCircle className="mr-2 h-4 w-4" />
+                            Seed DB with Dummy Data
+                          </Button>
+                        </form>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader>
                         <CardTitle>Portfolio Summary</CardTitle>
                       </CardHeader>
                       <CardContent>
@@ -174,6 +196,82 @@ export default async function AdminDashboardPage() {
                       </CardContent>
                     </Card>
                   </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+ 
+            {/* Profile / About Me */}
+            <TabsContent value="profile">
+              <Card>
+                <CardHeader>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <CardTitle>About Me / Profile</CardTitle>
+                      <CardDescription>Manage your personal information and stats</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {!profile ? (
+                    <div className="text-center py-12">
+                      <p className="text-muted-foreground mb-4">No profile information found in database</p>
+                      <form action={handleSeed}>
+                        <Button type="submit">Seed Profile from Frontend Data</Button>
+                      </form>
+                    </div>
+                  ) : (
+                    <div className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="space-y-4">
+                          <div>
+                            <label className="text-sm font-medium text-muted-foreground">Full Name</label>
+                            <p className="text-lg font-semibold">{profile.name}</p>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-muted-foreground">Headline</label>
+                            <p className="text-lg font-semibold">{profile.headline}</p>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-muted-foreground">Location</label>
+                            <p>{profile.location}</p>
+                          </div>
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium text-muted-foreground">Profile Image</label>
+                          <div className="mt-2 relative w-32 h-32 rounded-2xl overflow-hidden border">
+                            <img src={profile.image_url} alt={profile.name} className="object-cover w-full h-full" />
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Description Paragraphs</label>
+                        <ul className="mt-2 space-y-2 list-disc pl-5">
+                          {profile.description.map((p, i) => (
+                            <li key={i} className="text-sm text-neutral-400">{p}</li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Stats</label>
+                        <div className="grid grid-cols-3 gap-4 mt-2">
+                          {profile.stats.map((s, i) => (
+                            <div key={i} className="p-3 border rounded-xl bg-muted/50">
+                              <p className="text-xl font-bold">{s.value}</p>
+                              <p className="text-xs text-muted-foreground">{s.label}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="pt-4 border-t">
+                        <Link href="/admin/profile/edit">
+                          <Button>Edit Profile</Button>
+                        </Link>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
