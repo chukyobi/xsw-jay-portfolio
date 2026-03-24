@@ -77,10 +77,10 @@ export function Footer() {
             © {new Date().getFullYear()} Chukwudi Obi · All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <Link href="/admin/dashboard" className="text-xs text-neutral-700 hover:text-neutral-400 transition-colors">
+            {/* <Link href="/admin/dashboard" className="text-xs text-neutral-700 hover:text-neutral-400 transition-colors">
               Admin
-            </Link>
-            <span className="text-xs text-neutral-600">Built with Next.js & ❤️</span>
+            </Link> */}
+            <span className="text-xs text-neutral-600">Built with ❤️ by Chukwudi Obi</span>
           </div>
         </div>
       </div>
