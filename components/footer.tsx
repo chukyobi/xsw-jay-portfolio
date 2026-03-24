@@ -20,9 +20,9 @@ export function Footer() {
   return (
     <footer className="bg-[#040404] border-t border-white/8 text-white">
       <div className="container mx-auto px-6 sm:px-12 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-16">
           {/* Brand */}
-          <div>
+          <div className="md:col-span-5 lg:col-span-5">
             <Link href="/" className="text-2xl font-black tracking-tight mb-4 inline-block">
               Chukwudi<span className="text-blue-400">Obi</span>
             </Link>
@@ -31,42 +31,45 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Nav */}
-          <div>
-            <h4 className="text-xs font-semibold tracking-[0.3em] uppercase text-neutral-500 mb-6">Navigation</h4>
-            <ul className="space-y-3">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-neutral-400 hover:text-white transition-colors text-sm font-medium"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Nav & Socials Grouped */}
+          <div className="grid grid-cols-2 gap-8 md:col-span-7 lg:col-span-5 lg:col-start-8">
+            {/* Nav */}
+            <div>
+              <h4 className="text-xs font-semibold tracking-[0.3em] uppercase text-neutral-500 mb-6">Navigation</h4>
+              <ul className="space-y-3">
+                {navLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-neutral-400 hover:text-white transition-colors text-sm font-medium"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Socials */}
-          <div>
-            <h4 className="text-xs font-semibold tracking-[0.3em] uppercase text-neutral-500 mb-6">Connect</h4>
-            <div className="flex flex-col gap-3">
-              {socials.map((s) => {
-                const Icon = s.icon
-                return (
-                  <Link
-                    key={s.label}
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 text-neutral-400 hover:text-white transition-colors group"
-                  >
-                    <Icon className="h-4 w-4 group-hover:text-blue-400 transition-colors" />
-                    <span className="text-sm font-medium">{s.label}</span>
-                  </Link>
-                )
-              })}
+            {/* Socials */}
+            <div>
+              <h4 className="text-xs font-semibold tracking-[0.3em] uppercase text-neutral-500 mb-6">Connect</h4>
+              <div className="flex flex-col gap-3">
+                {socials.map((s) => {
+                  const Icon = s.icon
+                  return (
+                    <Link
+                      key={s.label}
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 text-neutral-400 hover:text-white transition-colors group"
+                    >
+                      <Icon className="h-4 w-4 shrink-0 group-hover:text-blue-400 transition-colors" />
+                      <span className="text-sm font-medium truncate">{s.label}</span>
+                    </Link>
+                  )
+                })}
+              </div>
             </div>
           </div>
         </div>
